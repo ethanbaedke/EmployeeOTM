@@ -1,0 +1,6 @@
+[gd_scene format=3 uid="uid://8y3ypkmwi7io"]
+
+[ext_resource type="Script" uid="uid://xvv7lh8ko4vv" path="res://utility/OTMLogger.cs" id="1_32lwb"]
+
+[node name="Logger" type="Node" unique_id=862921338]
+script = ExtResource("1_32lwb")
