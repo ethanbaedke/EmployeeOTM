@@ -1,0 +1,17 @@
+[gd_scene format=3 uid="uid://ddsuppc5mxr32"]
+
+[ext_resource type="Script" uid="uid://djmm6ealjsf0d" path="res://entities/scientist/Scientist.cs" id="1_uawpl"]
+[ext_resource type="Texture2D" uid="uid://chey6hp3g6q6a" path="res://entities/scientist/scientist.svg" id="2_r0uoq"]
+
+[sub_resource type="CircleShape2D" id="CircleShape2D_uawpl"]
+radius = 48.0
+
+[node name="Scientist" type="CharacterBody2D" unique_id=1174776970]
+script = ExtResource("1_uawpl")
+
+[node name="Sprite2D" type="Sprite2D" parent="." unique_id=2072305348]
+scale = Vector2(0.23, 0.23)
+texture = ExtResource("2_r0uoq")
+
+[node name="CollisionShape2D" type="CollisionShape2D" parent="." unique_id=875452914]
+shape = SubResource("CircleShape2D_uawpl")

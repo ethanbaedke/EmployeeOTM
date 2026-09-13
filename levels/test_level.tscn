@@ -1,6 +1,0 @@
-[gd_scene format=3 uid="uid://bt4c44pnaed0s"]
-
-[ext_resource type="Script" uid="uid://lemngjmh4jp0" path="res://levels/KingOfTheHill.cs" id="1_46lwt"]
-
-[node name="TestLevel" type="Node2D" unique_id=739882208]
-script = ExtResource("1_46lwt")

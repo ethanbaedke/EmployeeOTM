@@ -1,0 +1,6 @@
+[gd_scene format=3 uid="uid://dv00derk6y6wv"]
+
+[ext_resource type="Script" uid="uid://i5v8q1pwavq6" path="res://entities/scientist/AIController.cs" id="1_5x5pa"]
+
+[node name="AiController" type="Node2D" unique_id=330392311]
+script = ExtResource("1_5x5pa")

@@ -1,0 +1,39 @@
+[gd_scene format=3 uid="uid://bt4c44pnaed0s"]
+
+[ext_resource type="Script" uid="uid://lemngjmh4jp0" path="res://levels/KingOfTheHill.cs" id="1_mu6ct"]
+[ext_resource type="PackedScene" uid="uid://ddsuppc5mxr32" path="res://entities/scientist/scientist.tscn" id="2_8thry"]
+[ext_resource type="PackedScene" uid="uid://bnb2b2uk8ges1" path="res://entities/scientist/PlayerController.tscn" id="3_pfrlf"]
+[ext_resource type="PackedScene" uid="uid://dv00derk6y6wv" path="res://entities/scientist/AIController.tscn" id="4_8thry"]
+
+[sub_resource type="RectangleShape2D" id="RectangleShape2D_46lwt"]
+size = Vector2(1920, 20)
+
+[node name="KingOfTheHill" type="Node2D" unique_id=739882208]
+script = ExtResource("1_mu6ct")
+
+[node name="StaticBody2D" type="StaticBody2D" parent="." unique_id=1104786449]
+
+[node name="CollisionShape2D" type="CollisionShape2D" parent="StaticBody2D" unique_id=465630816]
+position = Vector2(960, 1080)
+shape = SubResource("RectangleShape2D_46lwt")
+
+[node name="Scientist" parent="." unique_id=1174776970 instance=ExtResource("2_8thry")]
+position = Vector2(96, 1009)
+
+[node name="PlayerController" parent="Scientist" unique_id=766992434 instance=ExtResource("3_pfrlf")]
+
+[node name="Scientist2" parent="." unique_id=1941702726 instance=ExtResource("2_8thry")]
+position = Vector2(631, 992)
+
+[node name="AiController" parent="Scientist2" unique_id=330392311 instance=ExtResource("4_8thry")]
+position = Vector2(1, 0)
+
+[node name="Scientist3" parent="." unique_id=1859229547 instance=ExtResource("2_8thry")]
+position = Vector2(1250, 981)
+
+[node name="AiController" parent="Scientist3" unique_id=1293612377 instance=ExtResource("4_8thry")]
+
+[node name="Scientist4" parent="." unique_id=1556663606 instance=ExtResource("2_8thry")]
+position = Vector2(1738, 987)
+
+[node name="AiController" parent="Scientist4" unique_id=760378080 instance=ExtResource("4_8thry")]

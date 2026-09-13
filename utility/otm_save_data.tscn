@@ -1,0 +1,6 @@
+[gd_scene format=3 uid="uid://ckrrv0dmeiiel"]
+
+[ext_resource type="Script" uid="uid://csx1c4hn36h6x" path="res://utility/OTMSaveData.cs" id="1_v555h"]
+
+[node name="OtmSaveData" type="Node2D" unique_id=145620617]
+script = ExtResource("1_v555h")
