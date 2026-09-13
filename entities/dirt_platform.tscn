@@ -1,0 +1,16 @@
+[gd_scene format=3 uid="uid://bpulko32timg0"]
+
+[ext_resource type="Texture2D" uid="uid://c1q53httvyjk5" path="res://entities/dirt_platform.svg" id="1_odc3n"]
+
+[sub_resource type="RectangleShape2D" id="RectangleShape2D_odc3n"]
+size = Vector2(527, 88)
+
+[node name="DirtPlatform" type="StaticBody2D" unique_id=680107740]
+
+[node name="Sprite2D" type="Sprite2D" parent="." unique_id=561536589]
+scale = Vector2(1.1, 1.1)
+texture = ExtResource("1_odc3n")
+
+[node name="CollisionShape2D" type="CollisionShape2D" parent="." unique_id=966109056]
+position = Vector2(1.5, 3)
+shape = SubResource("RectangleShape2D_odc3n")

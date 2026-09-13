@@ -14,6 +14,7 @@ public partial class OTMSaveData : Node
 		{
 			this.Settings = ResourceLoader.Load<Settings>("user://settings.res");
 		}
+		
 		if (this.Settings != null)
 		{
 			OTMLogger.Instance.Info(this, "Settings successfully loaded from disk.");

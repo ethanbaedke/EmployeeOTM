@@ -4,36 +4,82 @@
 [ext_resource type="PackedScene" uid="uid://ddsuppc5mxr32" path="res://entities/scientist/scientist.tscn" id="2_8thry"]
 [ext_resource type="PackedScene" uid="uid://bnb2b2uk8ges1" path="res://entities/scientist/PlayerController.tscn" id="3_pfrlf"]
 [ext_resource type="PackedScene" uid="uid://dv00derk6y6wv" path="res://entities/scientist/AIController.tscn" id="4_8thry"]
+[ext_resource type="PackedScene" uid="uid://bpulko32timg0" path="res://entities/dirt_platform.tscn" id="5_pfrlf"]
 
-[sub_resource type="RectangleShape2D" id="RectangleShape2D_46lwt"]
-size = Vector2(1920, 20)
+[sub_resource type="RectangleShape2D" id="RectangleShape2D_o3a2j"]
+size = Vector2(100, 1080)
 
 [node name="KingOfTheHill" type="Node2D" unique_id=739882208]
 script = ExtResource("1_mu6ct")
 
-[node name="StaticBody2D" type="StaticBody2D" parent="." unique_id=1104786449]
-
-[node name="CollisionShape2D" type="CollisionShape2D" parent="StaticBody2D" unique_id=465630816]
-position = Vector2(960, 1080)
-shape = SubResource("RectangleShape2D_46lwt")
-
 [node name="Scientist" parent="." unique_id=1174776970 instance=ExtResource("2_8thry")]
-position = Vector2(96, 1009)
+position = Vector2(102, 969)
 
 [node name="PlayerController" parent="Scientist" unique_id=766992434 instance=ExtResource("3_pfrlf")]
 
 [node name="Scientist2" parent="." unique_id=1941702726 instance=ExtResource("2_8thry")]
-position = Vector2(631, 992)
+position = Vector2(637, 969)
 
 [node name="AiController" parent="Scientist2" unique_id=330392311 instance=ExtResource("4_8thry")]
 position = Vector2(1, 0)
 
 [node name="Scientist3" parent="." unique_id=1859229547 instance=ExtResource("2_8thry")]
-position = Vector2(1250, 981)
+position = Vector2(1259, 974)
 
 [node name="AiController" parent="Scientist3" unique_id=1293612377 instance=ExtResource("4_8thry")]
 
 [node name="Scientist4" parent="." unique_id=1556663606 instance=ExtResource("2_8thry")]
-position = Vector2(1738, 987)
+position = Vector2(1747, 980)
 
 [node name="AiController" parent="Scientist4" unique_id=760378080 instance=ExtResource("4_8thry")]
+
+[node name="DirtPlatform" parent="." unique_id=680107740 instance=ExtResource("5_pfrlf")]
+position = Vector2(174, 1081)
+
+[node name="DirtPlatform2" parent="." unique_id=1360282385 instance=ExtResource("5_pfrlf")]
+position = Vector2(697, 1081)
+
+[node name="DirtPlatform3" parent="." unique_id=1229380680 instance=ExtResource("5_pfrlf")]
+position = Vector2(1214, 1081)
+
+[node name="DirtPlatform4" parent="." unique_id=1943511531 instance=ExtResource("5_pfrlf")]
+position = Vector2(1735, 1081)
+
+[node name="DirtPlatform12" parent="." unique_id=1553320347 instance=ExtResource("5_pfrlf")]
+position = Vector2(184, -3)
+
+[node name="DirtPlatform13" parent="." unique_id=1965337230 instance=ExtResource("5_pfrlf")]
+position = Vector2(707, -3)
+
+[node name="DirtPlatform14" parent="." unique_id=1528435103 instance=ExtResource("5_pfrlf")]
+position = Vector2(1224, -3)
+
+[node name="DirtPlatform15" parent="." unique_id=186301830 instance=ExtResource("5_pfrlf")]
+position = Vector2(1745, -3)
+
+[node name="DirtPlatform5" parent="." unique_id=1310514991 instance=ExtResource("5_pfrlf")]
+position = Vector2(456, 851)
+
+[node name="DirtPlatform7" parent="." unique_id=1602525458 instance=ExtResource("5_pfrlf")]
+position = Vector2(951, 624)
+
+[node name="DirtPlatform8" parent="." unique_id=1159806947 instance=ExtResource("5_pfrlf")]
+position = Vector2(446, 380)
+
+[node name="DirtPlatform9" parent="." unique_id=494077086 instance=ExtResource("5_pfrlf")]
+position = Vector2(1489, 382)
+
+[node name="DirtPlatform6" parent="." unique_id=299573172 instance=ExtResource("5_pfrlf")]
+position = Vector2(1468, 852)
+
+[node name="StaticBody2D" type="StaticBody2D" parent="." unique_id=1604060188]
+position = Vector2(-52, 526)
+
+[node name="CollisionShape2D" type="CollisionShape2D" parent="StaticBody2D" unique_id=57227153]
+shape = SubResource("RectangleShape2D_o3a2j")
+
+[node name="StaticBody2D2" type="StaticBody2D" parent="." unique_id=1917195559]
+position = Vector2(1972, 532)
+
+[node name="CollisionShape2D" type="CollisionShape2D" parent="StaticBody2D2" unique_id=1560606836]
+shape = SubResource("RectangleShape2D_o3a2j")
