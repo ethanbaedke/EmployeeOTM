@@ -12,7 +12,8 @@ public partial class OTMLogger : Node
 		INFO,
 		WARN,
 		ERROR,
-		FATAL
+		FATAL,
+		DEBUG,
 	}
 
 	[Export] private bool _traceEnabled = true;
@@ -20,6 +21,7 @@ public partial class OTMLogger : Node
 	[Export] private bool _warnEnabled = true;
 	[Export] private bool _errorEnabled = true;
 	[Export] private bool _fatalEnabled = true;
+	[Export] private bool _debugEnabled = true;
 
 	[Export] private string[] _ignoredClasses = [];
 
@@ -56,6 +58,13 @@ public partial class OTMLogger : Node
 		if (!_fatalEnabled || _ignoredClasses.Contains(source.GetType().Name)) return;
 
 		GD.PrintRich($"[color=darkred][FATAL][/color] [{source.GetType().Name}] {message}");
+	}
+
+	public void Debug(object source, string message)
+	{
+		if (!_debugEnabled || _ignoredClasses.Contains(source.GetType().Name)) return;
+
+		GD.PrintRich($"[color=yellow][DEBUG][/color] [{source.GetType().Name}] {message}");
 	}
 
     public override void _Ready()

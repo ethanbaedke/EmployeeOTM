@@ -16,7 +16,7 @@ public abstract partial class MiniGame : Node2D
 		ScientistController targetController = target.TryGetController();
 		if (targetController != null)
 		{
-			OTMLogger.Instance.Info(this, $"Taking control of scientist #{scientistInd + 1}");
+			OTMLogger.Instance.Debug(this, $"Taking control of scientist #{scientistInd + 1}");
 			Scientist currentScientist = null;
 			PlayerController currentController = null;
 			foreach (Scientist sc in _scientists)
@@ -30,13 +30,13 @@ public abstract partial class MiniGame : Node2D
 			}
 			if (currentScientist != null && currentController != null)
 			{
-				OTMLogger.Instance.Info(this, $"Swapping controllers between existing keyboard user and scientist #{scientistInd + 1}.");
+				OTMLogger.Instance.Debug(this, $"Swapping controllers between existing keyboard user and scientist #{scientistInd + 1}.");
 				targetController.Reparent(currentScientist, false);
 				currentController.Reparent(target, false);
 			}
 			else
 			{
-				OTMLogger.Instance.Info(this, $"Replacing controller of #{scientistInd + 1} with keyboard controller.");
+				OTMLogger.Instance.Debug(this, $"Replacing controller of #{scientistInd + 1} with keyboard controller.");
 				target.RemoveChild(targetController);
 				targetController.QueueFree();
 				PlayerController newPC = _playerControllerScene.Instantiate<PlayerController>();
