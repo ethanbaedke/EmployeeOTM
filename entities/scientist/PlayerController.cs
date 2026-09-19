@@ -3,39 +3,17 @@ using System;
 using System.Collections.Generic;
 using System.Linq;
 
-public partial class PlayerController : Node2D
+public partial class PlayerController : ScientistController
 {
-	private static int s_NextInputDevice = -1;
 	public int InputDevice = -2;
 
 	private Dictionary<Settings.InputAction, bool> actionStates = new Dictionary<Settings.InputAction, bool>();
-
-	private Scientist GetScientist()
-	{
-		Node parent = this.GetParent<Node>();
-		if (parent is Scientist scientist)
-		{
-			return scientist;
-		}
-		else
-		{
-			return null;
-		}
-	}
-
-	public override void _Ready()
-	{
-		base._Ready();
-
-		InputDevice = s_NextInputDevice;
-		s_NextInputDevice++;
-	}
 
     public override void _Process(double delta)
     {
         base._Process(delta);
 
-		Scientist scientist = GetScientist();
+		Scientist scientist = TryGetScientist();
 		if (scientist == null) return;
 
 		// If on keyboard, use left and right move actions for movement.
@@ -68,7 +46,7 @@ public partial class PlayerController : Node2D
 		}
 		if (deviceInd != InputDevice) return;
 
-		Scientist scientist = GetScientist();
+		Scientist scientist = TryGetScientist();
 		if (scientist == null) return;
 
 		Settings.InputAction action = Settings.InputAction.NONE;

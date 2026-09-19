@@ -1,0 +1,27 @@
+[gd_scene format=3 uid="uid://cs3rdyu7wyyg7"]
+
+[ext_resource type="Shader" uid="uid://c7bfxsm3751mg" path="res://entities/capture_area.tres" id="1_by1tc"]
+[ext_resource type="Script" uid="uid://cy2cfi7nlsej2" path="res://entities/CaptureArea.cs" id="1_sx3y1"]
+
+[sub_resource type="ShaderMaterial" id="ShaderMaterial_63ssg"]
+shader = ExtResource("1_by1tc")
+shader_parameter/OwnerColor = Color(0, 1, 0, 1)
+shader_parameter/CapturePercent = 0.0
+shader_parameter/ContesterColor = Color(1, 0, 0, 1)
+
+[sub_resource type="CanvasTexture" id="CanvasTexture_1tvjb"]
+
+[sub_resource type="RectangleShape2D" id="RectangleShape2D_by1tc"]
+size = Vector2(1, 1)
+
+[node name="CaptureArea" type="Area2D" unique_id=1043393287]
+scale = Vector2(100, 100)
+script = ExtResource("1_sx3y1")
+
+[node name="Sprite2D" type="Sprite2D" parent="." unique_id=2052795631]
+z_index = -1
+material = SubResource("ShaderMaterial_63ssg")
+texture = SubResource("CanvasTexture_1tvjb")
+
+[node name="CollisionShape2D" type="CollisionShape2D" parent="." unique_id=1725909082]
+shape = SubResource("RectangleShape2D_by1tc")

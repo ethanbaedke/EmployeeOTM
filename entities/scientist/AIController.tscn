@@ -2,5 +2,15 @@
 
 [ext_resource type="Script" uid="uid://i5v8q1pwavq6" path="res://entities/scientist/AIController.cs" id="1_5x5pa"]
 
-[node name="AiController" type="Node2D" unique_id=330392311]
+[node name="AiController" type="Node2D" unique_id=330392311 node_paths=PackedStringArray("_debugLabel")]
 script = ExtResource("1_5x5pa")
+_debugLabel = NodePath("DebugLabel")
+
+[node name="DebugLabel" type="Label" parent="." unique_id=163882313]
+offset_left = -19.0
+offset_top = -97.0
+offset_right = 21.0
+offset_bottom = -47.0
+theme_override_colors/font_color = Color(1, 0, 0, 1)
+theme_override_font_sizes/font_size = 36
+text = "AI"

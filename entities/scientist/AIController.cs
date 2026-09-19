@@ -1,29 +1,16 @@
 using Godot;
 using System;
 
-public partial class AIController : Node2D
+public partial class AIController : ScientistController
 {
 	const double DECISION_COOLDOWN = 1.0f;
 	private double _decisionTimer = 0.0f;
 
 	private float _moveDir = 0.0f;
 
-	private Scientist GetScientist()
-	{
-		Node parent = this.GetParent<Node>();
-		if (parent is Scientist scientist)
-		{
-			return scientist;
-		}
-		else
-		{
-			return null;
-		}
-	}
-
 	private void MakeDecision()
 	{
-		Scientist scientist = GetScientist();
+		Scientist scientist = TryGetScientist();
 		if (scientist == null) return;
 
 		int decision = GD.RandRange(0, 1);
@@ -41,7 +28,7 @@ public partial class AIController : Node2D
     {
         base._Process(delta);
 
-		Scientist scientist = GetScientist();
+		Scientist scientist = TryGetScientist();
 		if (scientist == null) return;
 
 		scientist.SetMovementDirection(_moveDir);

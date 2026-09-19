@@ -5,12 +5,15 @@
 [ext_resource type="PackedScene" uid="uid://bnb2b2uk8ges1" path="res://entities/scientist/PlayerController.tscn" id="3_pfrlf"]
 [ext_resource type="PackedScene" uid="uid://dv00derk6y6wv" path="res://entities/scientist/AIController.tscn" id="4_8thry"]
 [ext_resource type="PackedScene" uid="uid://bpulko32timg0" path="res://entities/dirt_platform.tscn" id="5_pfrlf"]
+[ext_resource type="PackedScene" uid="uid://cs3rdyu7wyyg7" path="res://entities/capture_area.tscn" id="6_l53ne"]
 
 [sub_resource type="RectangleShape2D" id="RectangleShape2D_o3a2j"]
 size = Vector2(100, 1080)
 
-[node name="KingOfTheHill" type="Node2D" unique_id=739882208]
+[node name="KingOfTheHill" type="Node2D" unique_id=739882208 node_paths=PackedStringArray("_captureAreas", "_scientists")]
 script = ExtResource("1_mu6ct")
+_captureAreas = [NodePath("CaptureArea"), NodePath("CaptureArea2")]
+_scientists = [NodePath("Scientist"), NodePath("Scientist2"), NodePath("Scientist3"), NodePath("Scientist4")]
 
 [node name="Scientist" parent="." unique_id=1174776970 instance=ExtResource("2_8thry")]
 position = Vector2(102, 969)
@@ -21,7 +24,6 @@ position = Vector2(102, 969)
 position = Vector2(637, 969)
 
 [node name="AiController" parent="Scientist2" unique_id=330392311 instance=ExtResource("4_8thry")]
-position = Vector2(1, 0)
 
 [node name="Scientist3" parent="." unique_id=1859229547 instance=ExtResource("2_8thry")]
 position = Vector2(1259, 974)
@@ -83,3 +85,11 @@ position = Vector2(1972, 532)
 
 [node name="CollisionShape2D" type="CollisionShape2D" parent="StaticBody2D2" unique_id=1560606836]
 shape = SubResource("RectangleShape2D_o3a2j")
+
+[node name="CaptureArea" parent="." unique_id=678168910 instance=ExtResource("6_l53ne")]
+position = Vector2(447, 237.99998)
+scale = Vector2(500, 200)
+
+[node name="CaptureArea2" parent="." unique_id=1350320405 instance=ExtResource("6_l53ne")]
+position = Vector2(1488.9999, 238)
+scale = Vector2(500, 200)

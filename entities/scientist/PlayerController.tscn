@@ -2,5 +2,15 @@
 
 [ext_resource type="Script" uid="uid://dvncqwij45d0d" path="res://entities/scientist/PlayerController.cs" id="1_w3b3g"]
 
-[node name="PlayerController" type="Node2D" unique_id=766992434]
+[node name="PlayerController" type="Node2D" unique_id=766992434 node_paths=PackedStringArray("_debugLabel")]
 script = ExtResource("1_w3b3g")
+_debugLabel = NodePath("DebugLabel")
+
+[node name="DebugLabel" type="Label" parent="." unique_id=1796527817]
+offset_left = -10.0
+offset_top = -97.0
+offset_right = 30.0
+offset_bottom = -47.0
+theme_override_colors/font_color = Color(0, 1, 0, 1)
+theme_override_font_sizes/font_size = 36
+text = "P"
