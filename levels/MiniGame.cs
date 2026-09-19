@@ -7,43 +7,85 @@ public abstract partial class MiniGame : Node2D
 	[Export] private Scientist[] _scientists = new Scientist[4];
 
 	private PackedScene _playerControllerScene = GD.Load<PackedScene>("res://entities/scientist/PlayerController.tscn");
+	private PackedScene _aiControllerScene = GD.Load<PackedScene>("res://entities/scientist/AIController.tscn");
+	private bool _debugIsAIEnabled = true;
 
 	// A debug option to take control of a scientist with the keyboard.
 	// If a different scientist already uses the keyboard, its controller will be swapped with the target scientist.
 	private void DebugTakeControlOfScientistWithKeyboard(int scientistInd)
 	{
+		OTMLogger.Instance.Debug(this, $"Taking control of scientist #{scientistInd + 1}");
+
+		// The scientist we want to switch to.
 		Scientist target = _scientists[scientistInd];
 		ScientistController targetController = target.TryGetController();
-		if (targetController != null)
+
+		// The scientist currently using the keyboard, if one exists.
+		Scientist currentScientist = null;
+		PlayerController currentController = null;
+		foreach (Scientist sc in _scientists)
 		{
-			OTMLogger.Instance.Debug(this, $"Taking control of scientist #{scientistInd + 1}");
-			Scientist currentScientist = null;
-			PlayerController currentController = null;
-			foreach (Scientist sc in _scientists)
+			ScientistController otherController = sc.TryGetController();
+			if (otherController != targetController && otherController is PlayerController pc && pc.InputDevice == -1)
 			{
-				ScientistController otherController = sc.TryGetController();
-				if (otherController != targetController && otherController is PlayerController pc && pc.InputDevice == -1)
-				{
-					currentScientist = sc;
-					currentController = pc;
-				}
+				currentScientist = sc;
+				currentController = pc;
 			}
-			if (currentScientist != null && currentController != null)
+		}
+
+		// A scientist is already using the keyboard.
+		if (currentScientist != null && currentController != null)
+		{
+			// Our target is being controlled by something else. Give that thing control of the scientist we are leaving.
+			if (targetController != null)
 			{
 				OTMLogger.Instance.Debug(this, $"Swapping controllers between existing keyboard user and scientist #{scientistInd + 1}.");
 				targetController.Reparent(currentScientist, false);
-				currentController.Reparent(target, false);
 			}
-			else
+
+			currentController.Reparent(target, false);
+		}
+		// No one is using the keyboard. Replace our targets controller with a keyboard controller.
+		else
+		{
+			OTMLogger.Instance.Debug(this, $"Replacing controller of #{scientistInd + 1} with keyboard controller.");
+			target.RemoveChild(targetController);
+			targetController.QueueFree();
+			PlayerController newPC = _playerControllerScene.Instantiate<PlayerController>();
+			newPC.InputDevice = -1;
+			target.AddChild(newPC);
+		}
+	}
+
+	private void DebugSetAIEnabled(bool enabled)
+	{
+		if (enabled)
+		{
+			OTMLogger.Instance.Debug(this, "Enabling ai.");
+			foreach (Scientist scientist in _scientists)
 			{
-				OTMLogger.Instance.Debug(this, $"Replacing controller of #{scientistInd + 1} with keyboard controller.");
-				target.RemoveChild(targetController);
-				targetController.QueueFree();
-				PlayerController newPC = _playerControllerScene.Instantiate<PlayerController>();
-				newPC.InputDevice = -1;
-				target.AddChild(newPC);
+				ScientistController sc = scientist.TryGetController();
+				if (sc == null)
+				{
+					AIController aiController = _aiControllerScene.Instantiate<AIController>();
+					scientist.AddChild(aiController);
+				}
 			}
 		}
+		else
+		{
+			OTMLogger.Instance.Debug(this, "Disabling ai.");
+			foreach (Scientist scientist in _scientists)
+			{
+				ScientistController sc = scientist.TryGetController();
+				if (sc is AIController aiController)
+				{
+					sc.RemoveChild(aiController);
+					aiController.QueueFree();
+				}
+			}
+		}
+		_debugIsAIEnabled = enabled;
 	}
 
 	public override void _Ready()
@@ -95,7 +137,11 @@ public abstract partial class MiniGame : Node2D
 				{
 					scientistInd = 3;
 				}
-				
+				else if (keyEvent.Keycode == Key.Key5)
+				{
+					DebugSetAIEnabled(!_debugIsAIEnabled);
+				}
+
 				if (scientistInd != -1)
 				{
 					DebugTakeControlOfScientistWithKeyboard(scientistInd);
