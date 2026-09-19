@@ -6,6 +6,8 @@ public abstract partial class MiniGame : Node2D
 {
 	[Export] private Scientist[] _scientists = new Scientist[4];
 
+	private PackedScene _playerControllerScene = GD.Load<PackedScene>("res://entities/scientist/PlayerController.tscn");
+
 	// A debug option to take control of a scientist with the keyboard.
 	// If a different scientist already uses the keyboard, its controller will be swapped with the target scientist.
 	private void DebugTakeControlOfScientistWithKeyboard(int scientistInd)
@@ -37,7 +39,7 @@ public abstract partial class MiniGame : Node2D
 				OTMLogger.Instance.Info(this, $"Replacing controller of #{scientistInd + 1} with keyboard controller.");
 				target.RemoveChild(targetController);
 				targetController.QueueFree();
-				PlayerController newPC = new PlayerController();
+				PlayerController newPC = _playerControllerScene.Instantiate<PlayerController>();
 				newPC.InputDevice = -1;
 				target.AddChild(newPC);
 			}
