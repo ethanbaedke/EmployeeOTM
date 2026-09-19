@@ -4,9 +4,10 @@
 [ext_resource type="Script" uid="uid://cy2cfi7nlsej2" path="res://entities/CaptureArea.cs" id="1_sx3y1"]
 
 [sub_resource type="ShaderMaterial" id="ShaderMaterial_63ssg"]
+resource_local_to_scene = true
 shader = ExtResource("1_by1tc")
 shader_parameter/OwnerColor = Color(0, 1, 0, 1)
-shader_parameter/CapturePercent = 0.0
+shader_parameter/CapturePercent = 0.5
 shader_parameter/ContesterColor = Color(1, 0, 0, 1)
 
 [sub_resource type="CanvasTexture" id="CanvasTexture_1tvjb"]
@@ -14,9 +15,10 @@ shader_parameter/ContesterColor = Color(1, 0, 0, 1)
 [sub_resource type="RectangleShape2D" id="RectangleShape2D_by1tc"]
 size = Vector2(1, 1)
 
-[node name="CaptureArea" type="Area2D" unique_id=1043393287]
+[node name="CaptureArea" type="Area2D" unique_id=1043393287 node_paths=PackedStringArray("_sprite")]
 scale = Vector2(100, 100)
 script = ExtResource("1_sx3y1")
+_sprite = NodePath("Sprite2D")
 
 [node name="Sprite2D" type="Sprite2D" parent="." unique_id=2052795631]
 z_index = -1
