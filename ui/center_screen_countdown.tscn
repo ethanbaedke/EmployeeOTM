@@ -1,0 +1,41 @@
+[gd_scene format=3 uid="uid://km4o30h8u3rt"]
+
+[ext_resource type="Script" uid="uid://bbbs53r58qs0h" path="res://ui/CenterScreenCountdown.cs" id="1_bw00w"]
+
+[sub_resource type="Curve" id="Curve_bw00w"]
+_data = [Vector2(0, 0), 0.0, 4.9999995, 0, 1, Vector2(0.2, 1), 4.9999995, 0.0, 1, 1, Vector2(0.7, 1), 0.0, -3.3333333, 1, 1, Vector2(1, 0), -3.3333333, 0.0, 1, 0]
+point_count = 4
+metadata/_snap_enabled = true
+
+[sub_resource type="Curve" id="Curve_062px"]
+_limits = [-100.0, 100.0, 0.0, 1.0]
+_data = [Vector2(0, 100), 0.0, -500.0, 0, 0, Vector2(1, -100), -500.0, 0.0, 0, 0]
+point_count = 2
+metadata/_snap_enabled = true
+
+[node name="CenterScreenCountdown" type="Control" unique_id=1320922543 node_paths=PackedStringArray("_countdownLabel")]
+layout_mode = 3
+anchors_preset = 15
+anchor_right = 1.0
+anchor_bottom = 1.0
+grow_horizontal = 2
+grow_vertical = 2
+script = ExtResource("1_bw00w")
+_alphaCurve = SubResource("Curve_bw00w")
+_yPositionCurve = SubResource("Curve_062px")
+_countdownLabel = NodePath("Label")
+
+[node name="Label" type="Label" parent="." unique_id=1413065582]
+layout_mode = 1
+anchors_preset = 15
+anchor_right = 1.0
+anchor_bottom = 1.0
+offset_left = -0.5
+offset_top = -11.5
+offset_right = 0.5
+offset_bottom = 11.5
+grow_horizontal = 2
+grow_vertical = 2
+theme_override_font_sizes/font_size = 512
+horizontal_alignment = 1
+vertical_alignment = 1

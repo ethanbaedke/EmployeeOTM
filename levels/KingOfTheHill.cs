@@ -5,11 +5,15 @@ using Godot.Collections;
 public partial class KingOfTheHill : MiniGame
 {
     [Export] private CaptureArea[] _captureAreas;
+    [Export] private CenterScreenCountdown _centerScreenCountdown;
 
     private const double POINT_AWARD_TIME = 1.0;
+    private const double GAME_LENGTH = 30.0;
+    private const int COUNTDOWN_START_TIME = 5;
 
     private double _pointAwardTimer = 0.0;
     private Dictionary<Scientist, int> _pointTracker = new Dictionary<Scientist, int>();
+    private double _timeRemaining = GAME_LENGTH;
 
     private void AwardPoints()
     {
@@ -43,10 +47,14 @@ public partial class KingOfTheHill : MiniGame
     {
         base._Ready();
 
+        // Initialize point tracker.
         foreach (Scientist scientist in _scientists)
         {
             _pointTracker[scientist] = 0;
         }
+
+        // Initialize countdown timer.
+        _centerScreenCountdown.SetCountdownStartTime(COUNTDOWN_START_TIME);
 
         OTMLogger.Instance.Info(this, "KingOfTheHill is ready!");
     }
@@ -55,14 +63,31 @@ public partial class KingOfTheHill : MiniGame
     {
         base._Process(delta);
 
-        if (_pointAwardTimer < POINT_AWARD_TIME)
+        // Tick game time.
+        if (_timeRemaining > 0.0)
         {
-            _pointAwardTimer += delta;
+            _timeRemaining -= delta;
         }
         else
         {
-            _pointAwardTimer = 0.0;
-            AwardPoints();
+            _timeRemaining = 0.0;
+        }
+
+        if (_timeRemaining > 0.0)
+        {
+            // Tick point awarding.
+            if (_pointAwardTimer < POINT_AWARD_TIME)
+            {
+                _pointAwardTimer += delta;
+            }
+            else
+            {
+                _pointAwardTimer = 0.0;
+                AwardPoints();
+            }
+
+            // Tick countdown.
+            _centerScreenCountdown.SetTimeRemaining(_timeRemaining);
         }
     }
 

@@ -6,13 +6,15 @@
 [ext_resource type="PackedScene" uid="uid://dv00derk6y6wv" path="res://entities/scientist/AIController.tscn" id="4_8thry"]
 [ext_resource type="PackedScene" uid="uid://bpulko32timg0" path="res://entities/dirt_platform.tscn" id="5_pfrlf"]
 [ext_resource type="PackedScene" uid="uid://cs3rdyu7wyyg7" path="res://entities/capture_area.tscn" id="6_l53ne"]
+[ext_resource type="PackedScene" uid="uid://km4o30h8u3rt" path="res://ui/center_screen_countdown.tscn" id="7_6v4r3"]
 
 [sub_resource type="RectangleShape2D" id="RectangleShape2D_o3a2j"]
 size = Vector2(100, 1080)
 
-[node name="KingOfTheHill" type="Node2D" unique_id=739882208 node_paths=PackedStringArray("_captureAreas", "_scientists")]
+[node name="KingOfTheHill" type="Node2D" unique_id=739882208 node_paths=PackedStringArray("_captureAreas", "_centerScreenCountdown", "_scientists")]
 script = ExtResource("1_mu6ct")
 _captureAreas = [NodePath("CaptureArea2"), NodePath("CaptureArea4"), NodePath("CaptureArea6")]
+_centerScreenCountdown = NodePath("CanvasLayer/CenterScreenCountdown")
 _scientists = [NodePath("Scientist"), NodePath("Scientist2"), NodePath("Scientist3"), NodePath("Scientist4")]
 
 [node name="Scientist" parent="." unique_id=1174776970 instance=ExtResource("2_8thry")]
@@ -118,3 +120,7 @@ position = Vector2(1511, 276.99982)
 [node name="CaptureArea6" parent="." unique_id=768799365 instance=ExtResource("6_l53ne")]
 position = Vector2(1513, 144.99994)
 scale = Vector2(365, 200)
+
+[node name="CanvasLayer" type="CanvasLayer" parent="." unique_id=743391810]
+
+[node name="CenterScreenCountdown" parent="CanvasLayer" unique_id=1320922543 instance=ExtResource("7_6v4r3")]
