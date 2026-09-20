@@ -1,0 +1,11 @@
+root = true
+
+# From Godot C# style guide: 
+# https://docs.godotengine.org/en/latest/tutorials/scripting/c_sharp/c_sharp_style_guide.html
+[*]
+charset = utf-8
+end_of_line = lf
+indent_style = space
+indent_size = 4
+insert_final_newline = true
+max_line_length = 100
