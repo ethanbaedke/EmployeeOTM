@@ -12,7 +12,7 @@ size = Vector2(100, 1080)
 
 [node name="KingOfTheHill" type="Node2D" unique_id=739882208 node_paths=PackedStringArray("_captureAreas", "_scientists")]
 script = ExtResource("1_mu6ct")
-_captureAreas = [null, null]
+_captureAreas = [NodePath("CaptureArea2"), NodePath("CaptureArea4"), NodePath("CaptureArea6")]
 _scientists = [NodePath("Scientist"), NodePath("Scientist2"), NodePath("Scientist3"), NodePath("Scientist4")]
 
 [node name="Scientist" parent="." unique_id=1174776970 instance=ExtResource("2_8thry")]

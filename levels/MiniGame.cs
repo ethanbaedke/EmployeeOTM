@@ -4,11 +4,20 @@ using System;
 
 public abstract partial class MiniGame : Node2D
 {
-	[Export] private Scientist[] _scientists = new Scientist[4];
+	[Export] protected Scientist[] _scientists = new Scientist[4];
 
 	private PackedScene _playerControllerScene = GD.Load<PackedScene>("res://entities/scientist/PlayerController.tscn");
 	private PackedScene _aiControllerScene = GD.Load<PackedScene>("res://entities/scientist/AIController.tscn");
+	private PackedScene _pointAwardEffectScene = GD.Load<PackedScene>("res://entities/scientist/PointAwardEffect.tscn");
 	private bool _debugIsAIEnabled = true;
+
+	protected void DisplayPointAwardEffect(Scientist scientist, int numPoints)
+	{
+		PointAwardEffect effect = _pointAwardEffectScene.Instantiate<PointAwardEffect>();
+		effect.SetNumPoints(numPoints);
+		effect.SetColor(scientist.ScientistColor);
+		scientist.AddChild(effect);
+	}
 
 	// A debug option to take control of a scientist with the keyboard.
 	// If a different scientist already uses the keyboard, its controller will be swapped with the target scientist.

@@ -1,0 +1,28 @@
+[gd_scene format=3 uid="uid://rlt8yf1psq0y"]
+
+[ext_resource type="Script" uid="uid://dxdkro57qnvqd" path="res://entities/scientist/PointAwardEffect.cs" id="1_mdods"]
+
+[sub_resource type="Curve" id="Curve_mdods"]
+_data = [Vector2(0, 1), 0.0, 0.0, 0, 0, Vector2(0.5, 1), 0.0, -2.0, 0, 1, Vector2(1, 0), -2.0, 0.0, 1, 0]
+point_count = 3
+metadata/_snap_enabled = true
+
+[sub_resource type="Curve" id="Curve_sw4mv"]
+_limits = [-20.0, 0.0, 0.0, 1.0]
+_data = [Vector2(0, 0), 0.0, -100.0, 0, 0, Vector2(0.5, 0), 100.0, 0.0, 0, 0]
+point_count = 2
+metadata/_snap_enabled = true
+
+[node name="PointAwardEffect" type="Node2D" unique_id=888856365 node_paths=PackedStringArray("_pointLabel")]
+script = ExtResource("1_mdods")
+_alphaCurve = SubResource("Curve_mdods")
+_yPositionCurve = SubResource("Curve_sw4mv")
+_pointLabel = NodePath("Label")
+
+[node name="Label" type="Label" parent="." unique_id=2068536982]
+offset_left = -14.0
+offset_top = -66.0
+offset_right = 26.0
+offset_bottom = -32.0
+theme_override_font_sizes/font_size = 24
+text = "+0"

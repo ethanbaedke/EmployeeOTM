@@ -6,11 +6,12 @@ public partial class CaptureArea : Area2D
 {
     [Export] private Sprite2D _sprite;
 
-    private const double TIME_TO_CAPTURE = 2.0f;
+    private const double TIME_TO_CAPTURE = 2.0;
+
+    public Scientist ControllingScientist = null;
 
     private ShaderMaterial _shaderMat;
     private Array<Scientist> _scientistsInArea = new Array<Scientist>();
-    private Scientist _controllingScientist = null;
     private Scientist _capturingScientist = null;
     private Color _uncontrolledColor = Colors.Gray;
     private double _capturePercent = 0.0f;
@@ -18,7 +19,7 @@ public partial class CaptureArea : Area2D
     private void UpdateCaptureProgress(double delta)
     {
         // A single scientist who doesn't own the area is present.
-        if (_scientistsInArea.Count == 1 && _scientistsInArea[0] != _controllingScientist)
+        if (_scientistsInArea.Count == 1 && _scientistsInArea[0] != ControllingScientist)
         {
             // The scientist just moved in. Resetting progress and beginning capture.
             if (_scientistsInArea[0] != _capturingScientist)
@@ -35,7 +36,7 @@ public partial class CaptureArea : Area2D
             if (_capturePercent >= 1.0)
             {
                 OTMLogger.Instance.Info(this, "Area captured.");
-                _controllingScientist = _capturingScientist;
+                ControllingScientist = _capturingScientist;
                 _capturingScientist = null;
                 _capturePercent = 0.0;
             }
@@ -59,9 +60,9 @@ public partial class CaptureArea : Area2D
     private void UpdateColors()
     {
         // Set the background color to the color of whoever is controlling the area, and gray if it's uncontrolled.
-        if (_controllingScientist != null)
+        if (ControllingScientist != null)
         {
-            _shaderMat.SetShaderParameter("OwnerColor", _controllingScientist.ScientistColor);
+            _shaderMat.SetShaderParameter("OwnerColor", ControllingScientist.ScientistColor);
         }
         else
         {
