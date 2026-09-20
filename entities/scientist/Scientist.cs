@@ -4,11 +4,11 @@ using System;
 
 public partial class Scientist : CharacterBody2D
 {
-	const double MAX_H_SPEED = 1000.0f;
+	const double MAX_H_SPEED = 750.0f;
 	const double H_ACCELERATION = 10000.0f;
-	const double MAX_V_SPEED = 2000.0f;
-	const double V_ACCELERATION = 10000.0f;
-	const double JUMP_FORCE = 2500.0f;
+	const double MAX_V_SPEED = 1500.0f;
+	const double V_ACCELERATION = 5000.0f;
+	const double JUMP_FORCE = 1500.0f;
 
 	public Color ScientistColor = GetColor();
 

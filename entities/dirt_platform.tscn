@@ -3,14 +3,14 @@
 [ext_resource type="Texture2D" uid="uid://c1q53httvyjk5" path="res://entities/dirt_platform.svg" id="1_odc3n"]
 
 [sub_resource type="RectangleShape2D" id="RectangleShape2D_odc3n"]
-size = Vector2(527, 88)
+size = Vector2(369, 66)
 
 [node name="DirtPlatform" type="StaticBody2D" unique_id=680107740]
 
 [node name="Sprite2D" type="Sprite2D" parent="." unique_id=561536589]
-scale = Vector2(1.1, 1.1)
+scale = Vector2(0.75, 0.75)
 texture = ExtResource("1_odc3n")
 
 [node name="CollisionShape2D" type="CollisionShape2D" parent="." unique_id=966109056]
-position = Vector2(1.5, 3)
+position = Vector2(1.5, 1)
 shape = SubResource("RectangleShape2D_odc3n")
