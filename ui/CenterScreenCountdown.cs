@@ -47,7 +47,7 @@ public partial class CenterScreenCountdown : Control
         {
             _effectPercent = 1.0;
         }
-        
+
         double yPos = _yPositionCurve.Sample((float)_effectPercent);
         Position = new Vector2(0.0f, (float)yPos);
 

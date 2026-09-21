@@ -1,8 +1,9 @@
 using Godot;
 using System;
 using Godot.Collections;
+using System.Runtime.CompilerServices;
 
-public partial class KingOfTheHill : MiniGame
+public partial class KingOfTheHill : MiniGame, INameProvider
 {
     [Export] private CaptureArea[] _captureAreas;
     [Export] private CenterScreenCountdown _centerScreenCountdown;
@@ -41,6 +42,11 @@ public partial class KingOfTheHill : MiniGame
             _pointTracker[scientist] += toAward[scientist];
             DisplayPointAwardEffect(scientist, toAward[scientist]);
         }
+    }
+
+    public static string OTMGetName()
+    {
+        return "King of the Hill";
     }
 
     public override void _Ready()
@@ -90,5 +96,4 @@ public partial class KingOfTheHill : MiniGame
             _centerScreenCountdown.SetTimeRemaining(_timeRemaining);
         }
     }
-
 }

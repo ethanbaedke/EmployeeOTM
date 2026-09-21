@@ -1,0 +1,345 @@
+[gd_scene format=3 uid="uid://r1fqj5c7yp72"]
+
+[ext_resource type="Texture2D" uid="uid://dixcjh6ecuky8" path="res://ui/shift_schedule.svg" id="1_aergq"]
+[ext_resource type="Theme" uid="uid://b7dmkta068ob5" path="res://ui/shift_schedule.tres" id="1_tbeyl"]
+[ext_resource type="Script" uid="uid://bu4pxp0psagn5" path="res://ui/MiniGameSelection.cs" id="2_kg6bc"]
+[ext_resource type="PackedScene" uid="uid://bt4c44pnaed0s" path="res://levels/king_of_the_hill.tscn" id="3_ibsyw"]
+
+[node name="MiniGameSelection" type="Control" unique_id=154623932 node_paths=PackedStringArray("_miniGameContainer")]
+layout_mode = 3
+anchors_preset = 15
+anchor_right = 1.0
+anchor_bottom = 1.0
+grow_horizontal = 2
+grow_vertical = 2
+theme = ExtResource("1_tbeyl")
+script = ExtResource("2_kg6bc")
+_ffaMiniGameScenes = Array[PackedScene]([ExtResource("3_ibsyw"), ExtResource("3_ibsyw"), ExtResource("3_ibsyw"), ExtResource("3_ibsyw")])
+_2v2MiniGameScenes = Array[PackedScene]([ExtResource("3_ibsyw"), ExtResource("3_ibsyw"), ExtResource("3_ibsyw")])
+_3v1MiniGameScenes = Array[PackedScene]([ExtResource("3_ibsyw"), ExtResource("3_ibsyw")])
+_teamMiniGameScenes = Array[PackedScene]([ExtResource("3_ibsyw")])
+_miniGameContainer = NodePath("MiniGames")
+
+[node name="Sprite2D" type="Sprite2D" parent="." unique_id=1567910676]
+position = Vector2(960, 540)
+texture = ExtResource("1_aergq")
+
+[node name="ShiftSchedule" type="Label" parent="." unique_id=2123467107]
+layout_mode = 0
+offset_left = 257.0
+offset_top = 83.0
+offset_right = 1630.0
+offset_bottom = 200.0
+text = "Shift Schedule"
+horizontal_alignment = 1
+vertical_alignment = 1
+
+[node name="AM" type="Label" parent="." unique_id=1762828642]
+layout_mode = 0
+offset_left = 262.0
+offset_top = 206.0
+offset_right = 300.0
+offset_bottom = 240.0
+text = "AM"
+
+[node name="WeekdayHeaders" type="HBoxContainer" parent="." unique_id=1364090542]
+layout_mode = 0
+offset_left = 386.0
+offset_top = 206.0
+offset_right = 1630.0
+offset_bottom = 282.0
+
+[node name="Monday" type="Label" parent="WeekdayHeaders" unique_id=1380714384]
+layout_mode = 2
+size_flags_horizontal = 3
+size_flags_vertical = 5
+text = "Monday"
+horizontal_alignment = 1
+vertical_alignment = 1
+
+[node name="Tuesday" type="Label" parent="WeekdayHeaders" unique_id=2062239305]
+layout_mode = 2
+size_flags_horizontal = 3
+size_flags_vertical = 5
+text = "Tuesday"
+horizontal_alignment = 1
+vertical_alignment = 1
+
+[node name="Wednesday" type="Label" parent="WeekdayHeaders" unique_id=1918903222]
+layout_mode = 2
+size_flags_horizontal = 3
+size_flags_vertical = 5
+text = "Wednesday"
+horizontal_alignment = 1
+vertical_alignment = 1
+
+[node name="Thursday" type="Label" parent="WeekdayHeaders" unique_id=1207485752]
+layout_mode = 2
+size_flags_horizontal = 3
+size_flags_vertical = 5
+text = "Thursday"
+horizontal_alignment = 1
+vertical_alignment = 1
+
+[node name="Friday" type="Label" parent="WeekdayHeaders" unique_id=1433789720]
+layout_mode = 2
+size_flags_horizontal = 3
+size_flags_vertical = 5
+text = "Friday"
+horizontal_alignment = 1
+vertical_alignment = 1
+
+[node name="Saturday" type="Label" parent="WeekdayHeaders" unique_id=72323887]
+layout_mode = 2
+size_flags_horizontal = 3
+size_flags_vertical = 5
+text = "Saturday"
+horizontal_alignment = 1
+vertical_alignment = 1
+
+[node name="Sunday" type="Label" parent="WeekdayHeaders" unique_id=783239444]
+layout_mode = 2
+size_flags_horizontal = 3
+size_flags_vertical = 5
+text = "Sunday"
+horizontal_alignment = 1
+vertical_alignment = 1
+
+[node name="MiniGameTypes" type="VBoxContainer" parent="." unique_id=2144731811]
+layout_mode = 0
+offset_left = 257.0
+offset_top = 288.0
+offset_right = 373.0
+offset_bottom = 975.0
+
+[node name="FFA" type="Label" parent="MiniGameTypes" unique_id=1683413749]
+layout_mode = 2
+size_flags_vertical = 7
+text = "FFA"
+horizontal_alignment = 2
+vertical_alignment = 2
+
+[node name="2v2" type="Label" parent="MiniGameTypes" unique_id=604057894]
+layout_mode = 2
+size_flags_vertical = 7
+text = "2v2"
+horizontal_alignment = 2
+vertical_alignment = 2
+
+[node name="3v1" type="Label" parent="MiniGameTypes" unique_id=1567410583]
+layout_mode = 2
+size_flags_vertical = 7
+text = "3v1"
+horizontal_alignment = 2
+vertical_alignment = 2
+
+[node name="Team" type="Label" parent="MiniGameTypes" unique_id=1042745207]
+layout_mode = 2
+size_flags_vertical = 7
+text = "Team"
+horizontal_alignment = 2
+vertical_alignment = 2
+
+[node name="MiniGames" type="GridContainer" parent="." unique_id=1970107942]
+layout_mode = 0
+offset_left = 386.0
+offset_top = 288.0
+offset_right = 1630.0
+offset_bottom = 975.0
+columns = 7
+
+[node name="Label" type="Label" parent="MiniGames" unique_id=382126743]
+layout_mode = 2
+size_flags_horizontal = 3
+size_flags_vertical = 3
+horizontal_alignment = 1
+vertical_alignment = 1
+
+[node name="Label2" type="Label" parent="MiniGames" unique_id=671997715]
+layout_mode = 2
+size_flags_horizontal = 3
+size_flags_vertical = 3
+horizontal_alignment = 1
+vertical_alignment = 1
+
+[node name="Label3" type="Label" parent="MiniGames" unique_id=1692350102]
+layout_mode = 2
+size_flags_horizontal = 3
+size_flags_vertical = 3
+horizontal_alignment = 1
+vertical_alignment = 1
+
+[node name="Label4" type="Label" parent="MiniGames" unique_id=350100930]
+layout_mode = 2
+size_flags_horizontal = 3
+size_flags_vertical = 3
+horizontal_alignment = 1
+vertical_alignment = 1
+
+[node name="Label5" type="Label" parent="MiniGames" unique_id=1647436486]
+layout_mode = 2
+size_flags_horizontal = 3
+size_flags_vertical = 3
+horizontal_alignment = 1
+vertical_alignment = 1
+
+[node name="Label6" type="Label" parent="MiniGames" unique_id=59717600]
+layout_mode = 2
+size_flags_horizontal = 3
+size_flags_vertical = 3
+horizontal_alignment = 1
+vertical_alignment = 1
+
+[node name="Label7" type="Label" parent="MiniGames" unique_id=1554485847]
+layout_mode = 2
+size_flags_horizontal = 3
+size_flags_vertical = 3
+horizontal_alignment = 1
+vertical_alignment = 1
+
+[node name="Label8" type="Label" parent="MiniGames" unique_id=884956534]
+layout_mode = 2
+size_flags_horizontal = 3
+size_flags_vertical = 3
+horizontal_alignment = 1
+vertical_alignment = 1
+
+[node name="Label9" type="Label" parent="MiniGames" unique_id=881553416]
+layout_mode = 2
+size_flags_horizontal = 3
+size_flags_vertical = 3
+horizontal_alignment = 1
+vertical_alignment = 1
+
+[node name="Label10" type="Label" parent="MiniGames" unique_id=818245172]
+layout_mode = 2
+size_flags_horizontal = 3
+size_flags_vertical = 3
+horizontal_alignment = 1
+vertical_alignment = 1
+
+[node name="Label11" type="Label" parent="MiniGames" unique_id=598293630]
+layout_mode = 2
+size_flags_horizontal = 3
+size_flags_vertical = 3
+horizontal_alignment = 1
+vertical_alignment = 1
+
+[node name="Label12" type="Label" parent="MiniGames" unique_id=677000325]
+layout_mode = 2
+size_flags_horizontal = 3
+size_flags_vertical = 3
+horizontal_alignment = 1
+vertical_alignment = 1
+
+[node name="Label13" type="Label" parent="MiniGames" unique_id=384908480]
+layout_mode = 2
+size_flags_horizontal = 3
+size_flags_vertical = 3
+horizontal_alignment = 1
+vertical_alignment = 1
+
+[node name="Label14" type="Label" parent="MiniGames" unique_id=222295691]
+layout_mode = 2
+size_flags_horizontal = 3
+size_flags_vertical = 3
+horizontal_alignment = 1
+vertical_alignment = 1
+
+[node name="Label15" type="Label" parent="MiniGames" unique_id=260624240]
+layout_mode = 2
+size_flags_horizontal = 3
+size_flags_vertical = 3
+horizontal_alignment = 1
+vertical_alignment = 1
+
+[node name="Label16" type="Label" parent="MiniGames" unique_id=1851796609]
+layout_mode = 2
+size_flags_horizontal = 3
+size_flags_vertical = 3
+horizontal_alignment = 1
+vertical_alignment = 1
+
+[node name="Label17" type="Label" parent="MiniGames" unique_id=2128110291]
+layout_mode = 2
+size_flags_horizontal = 3
+size_flags_vertical = 3
+horizontal_alignment = 1
+vertical_alignment = 1
+
+[node name="Label18" type="Label" parent="MiniGames" unique_id=1557915800]
+layout_mode = 2
+size_flags_horizontal = 3
+size_flags_vertical = 3
+horizontal_alignment = 1
+vertical_alignment = 1
+
+[node name="Label19" type="Label" parent="MiniGames" unique_id=1321972715]
+layout_mode = 2
+size_flags_horizontal = 3
+size_flags_vertical = 3
+horizontal_alignment = 1
+vertical_alignment = 1
+
+[node name="Label20" type="Label" parent="MiniGames" unique_id=814606026]
+layout_mode = 2
+size_flags_horizontal = 3
+size_flags_vertical = 3
+horizontal_alignment = 1
+vertical_alignment = 1
+
+[node name="Label21" type="Label" parent="MiniGames" unique_id=1255792914]
+layout_mode = 2
+size_flags_horizontal = 3
+size_flags_vertical = 3
+horizontal_alignment = 1
+vertical_alignment = 1
+
+[node name="Label22" type="Label" parent="MiniGames" unique_id=1503127074]
+layout_mode = 2
+size_flags_horizontal = 3
+size_flags_vertical = 3
+horizontal_alignment = 1
+vertical_alignment = 1
+
+[node name="Label23" type="Label" parent="MiniGames" unique_id=1409881630]
+layout_mode = 2
+size_flags_horizontal = 3
+size_flags_vertical = 3
+horizontal_alignment = 1
+vertical_alignment = 1
+
+[node name="Label24" type="Label" parent="MiniGames" unique_id=291060893]
+layout_mode = 2
+size_flags_horizontal = 3
+size_flags_vertical = 3
+horizontal_alignment = 1
+vertical_alignment = 1
+
+[node name="Label25" type="Label" parent="MiniGames" unique_id=1370202257]
+layout_mode = 2
+size_flags_horizontal = 3
+size_flags_vertical = 3
+horizontal_alignment = 1
+vertical_alignment = 1
+
+[node name="Label26" type="Label" parent="MiniGames" unique_id=24705740]
+layout_mode = 2
+size_flags_horizontal = 3
+size_flags_vertical = 3
+horizontal_alignment = 1
+vertical_alignment = 1
+
+[node name="Label27" type="Label" parent="MiniGames" unique_id=1417313068]
+layout_mode = 2
+size_flags_horizontal = 3
+size_flags_vertical = 3
+horizontal_alignment = 1
+vertical_alignment = 1
+
+[node name="Label28" type="Label" parent="MiniGames" unique_id=1368130117]
+layout_mode = 2
+size_flags_horizontal = 3
+size_flags_vertical = 3
+horizontal_alignment = 1
+vertical_alignment = 1
