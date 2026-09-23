@@ -6,6 +6,9 @@ public abstract partial class MiniGame : Node2D
 {
     [Export] protected Scientist[] _scientists = new Scientist[4];
 
+    [Signal]
+    public delegate void GameFinishedEventHandler();
+
     private PackedScene _playerControllerScene = GD.Load<PackedScene>("res://entities/scientist/PlayerController.tscn");
     private PackedScene _aiControllerScene = GD.Load<PackedScene>("res://entities/scientist/AIController.tscn");
     private PackedScene _pointAwardEffectScene = GD.Load<PackedScene>("res://entities/scientist/PointAwardEffect.tscn");

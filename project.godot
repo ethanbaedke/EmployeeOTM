@@ -11,7 +11,7 @@ config_version=5
 [application]
 
 config/name="EmployeeOTM"
-run/main_scene="uid://r1fqj5c7yp72"
+run/main_scene="uid://cuocmw5g0v3sm"
 config/features=PackedStringArray("4.7", "C#", "Forward Plus")
 config/icon="res://icon.svg"
 

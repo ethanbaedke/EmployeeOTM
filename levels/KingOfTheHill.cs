@@ -77,6 +77,7 @@ public partial class KingOfTheHill : MiniGame, INameProvider
         else
         {
             _timeRemaining = 0.0;
+            EmitSignal("GameFinished");
         }
 
         if (_timeRemaining > 0.0)

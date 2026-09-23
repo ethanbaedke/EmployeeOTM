@@ -23,6 +23,7 @@ public partial class MiniGameSelection : Control
 
     public async Task<PackedScene> SelectMiniGame()
     {
+        OTMLogger.Instance.Info(this, "Selecting mini-game.");
         int startInd = GD.RandRange(0, _miniGames.Count - 1);
 
         // Selection animation, excluding the final selection.
@@ -37,6 +38,7 @@ public partial class MiniGameSelection : Control
         }
 
         // Select the actual mini-game.
+        OTMLogger.Instance.Info(this, $"{GetMiniGameNameFromScene(_miniGames[miniGameIndex])} selected.");
         SelectedHighlightMiniGame(miniGameIndex);
         return _miniGames[miniGameIndex];
     }
@@ -160,7 +162,5 @@ public partial class MiniGameSelection : Control
                 targetLabel.Text = GetMiniGameNameFromScene(miniGameScene);
             }
         }
-
-        SelectMiniGame();
     }
 }
