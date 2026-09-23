@@ -46,7 +46,7 @@ public partial class KingOfTheHill : MiniGame, INameProvider
 
     public static string OTMGetName()
     {
-        return "King of the Hill";
+        return "Lunch Break";
     }
 
     public override void _Ready()

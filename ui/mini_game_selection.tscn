@@ -5,6 +5,11 @@
 [ext_resource type="Script" uid="uid://bu4pxp0psagn5" path="res://ui/MiniGameSelection.cs" id="2_kg6bc"]
 [ext_resource type="PackedScene" uid="uid://bt4c44pnaed0s" path="res://levels/king_of_the_hill.tscn" id="3_ibsyw"]
 
+[sub_resource type="Curve" id="Curve_kg6bc"]
+_data = [Vector2(0, 0), 0.0, 0.0, 0, 0, Vector2(0.8, 0.3), 1.1577299, 1.1577299, 0, 0, Vector2(1, 1), 6.3275824, 0.0, 0, 0]
+point_count = 3
+metadata/_snap_enabled = true
+
 [node name="MiniGameSelection" type="Control" unique_id=154623932 node_paths=PackedStringArray("_miniGameContainer")]
 layout_mode = 3
 anchors_preset = 15
@@ -14,11 +19,12 @@ grow_horizontal = 2
 grow_vertical = 2
 theme = ExtResource("1_tbeyl")
 script = ExtResource("2_kg6bc")
-_ffaMiniGameScenes = Array[PackedScene]([ExtResource("3_ibsyw"), ExtResource("3_ibsyw"), ExtResource("3_ibsyw"), ExtResource("3_ibsyw")])
-_2v2MiniGameScenes = Array[PackedScene]([ExtResource("3_ibsyw"), ExtResource("3_ibsyw"), ExtResource("3_ibsyw")])
-_3v1MiniGameScenes = Array[PackedScene]([ExtResource("3_ibsyw"), ExtResource("3_ibsyw")])
+_ffaMiniGameScenes = Array[PackedScene]([ExtResource("3_ibsyw"), ExtResource("3_ibsyw"), ExtResource("3_ibsyw"), ExtResource("3_ibsyw"), ExtResource("3_ibsyw")])
+_2v2MiniGameScenes = Array[PackedScene]([ExtResource("3_ibsyw")])
+_3v1MiniGameScenes = Array[PackedScene]([ExtResource("3_ibsyw")])
 _teamMiniGameScenes = Array[PackedScene]([ExtResource("3_ibsyw")])
 _miniGameContainer = NodePath("MiniGames")
+_selectionHoldTime = SubResource("Curve_kg6bc")
 
 [node name="Sprite2D" type="Sprite2D" parent="." unique_id=1567910676]
 position = Vector2(960, 540)

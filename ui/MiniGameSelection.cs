@@ -2,6 +2,7 @@ using Godot;
 using System;
 using Godot.Collections;
 using System.Reflection;
+using System.Threading.Tasks;
 
 public partial class MiniGameSelection : Control
 {
@@ -10,9 +11,59 @@ public partial class MiniGameSelection : Control
     [Export] private Array<PackedScene> _3v1MiniGameScenes = new Array<PackedScene>();
     [Export] private Array<PackedScene> _teamMiniGameScenes = new Array<PackedScene>();
     [Export] private GridContainer _miniGameContainer;
+    // This curve determines that amount of time we should wait for our next selection based on how far through selection we are.
+    [Export] private Curve _selectionHoldTime;
+
+    // This is the number of mini-games that will be highlighted while rolling a selection.
+    private const int NUM_SELECTION_HIGHLIGHTS = 20;
 
     private Array<PackedScene> _miniGames = new Array<PackedScene>();
     private Array<Label> _miniGameLabels = new Array<Label>();
+    private Label _highlightedLabel = null;
+
+    public async Task<PackedScene> SelectMiniGame()
+    {
+        int startInd = GD.RandRange(0, _miniGames.Count - 1);
+
+        // Selection animation, excluding the final selection.
+        int miniGameIndex = startInd;
+        for (int i = 0; i < NUM_SELECTION_HIGHLIGHTS; i++)
+        {
+            miniGameIndex = (startInd + i) % _miniGames.Count;
+            HighlightMiniGame(miniGameIndex);
+            float percentFinished = i / (float)NUM_SELECTION_HIGHLIGHTS;
+            float waitTime = _selectionHoldTime.Sample(percentFinished);
+            await ToSignal(GetTree().CreateTimer(waitTime), SceneTreeTimer.SignalName.Timeout);
+        }
+
+        // Select the actual mini-game.
+        SelectedHighlightMiniGame(miniGameIndex);
+        return _miniGames[miniGameIndex];
+    }
+
+    // Highlights a mini-game during our animation.
+    private void HighlightMiniGame(int miniGameIndex)
+    {
+        if (_highlightedLabel != null)
+        {
+            _highlightedLabel.RemoveThemeColorOverride("font_color");
+        }
+
+        _miniGameLabels[miniGameIndex].AddThemeColorOverride("font_color", Colors.Goldenrod);
+        _highlightedLabel = _miniGameLabels[miniGameIndex];
+    }
+
+    // Special highlight applied to the finally selected mini-game.
+    private void SelectedHighlightMiniGame(int miniGameIndex)
+    {
+        if (_highlightedLabel != null)
+        {
+            _highlightedLabel.RemoveThemeColorOverride("font_color");
+        }
+
+        _miniGameLabels[miniGameIndex].AddThemeColorOverride("font_color", Colors.Gold);
+        _highlightedLabel = _miniGameLabels[miniGameIndex];
+    }
 
     private void EnsureSafeMiniGameSceneListSize(Array<PackedScene> sceneList)
     {
@@ -82,6 +133,19 @@ public partial class MiniGameSelection : Control
             _3v1MiniGameScenes,
             _teamMiniGameScenes
         };
+
+        // Ensure at least one mini-game exists.
+        int numMiniGames = 0;
+        foreach (Array<PackedScene> sceneList in sceneLists)
+        {
+            numMiniGames += sceneList.Count;
+        }
+        if (numMiniGames == 0)
+        {
+            OTMLogger.Instance.Fatal(this, "No mini-game references set.");
+            return;
+        }
+
         for (int listInd = 0; listInd < 4; listInd++)
         {
             int numScenes = sceneLists[listInd].Count;
@@ -96,5 +160,7 @@ public partial class MiniGameSelection : Control
                 targetLabel.Text = GetMiniGameNameFromScene(miniGameScene);
             }
         }
+
+        SelectMiniGame();
     }
 }
