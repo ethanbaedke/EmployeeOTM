@@ -20,9 +20,12 @@ public partial class Scientist : CharacterBody2D
         _movement_direction = dir;
     }
 
-    public void Jump()
+    public void Jump(bool isInitialJump)
     {
-        this.Velocity = new Vector2(this.Velocity.X, -(float)JUMP_FORCE);
+        if (isInitialJump)
+        {        
+            this.Velocity = new Vector2(this.Velocity.X, -(float)JUMP_FORCE);
+        }
     }
 
     public ScientistController TryGetController()

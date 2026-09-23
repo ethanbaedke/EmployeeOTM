@@ -20,7 +20,7 @@ public partial class AIController : ScientistController
         }
         else
         {
-            scientist.Jump();
+            scientist.Jump(true);
         }
     }
 

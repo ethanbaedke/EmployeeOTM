@@ -28,6 +28,10 @@ public partial class PlayerController : ScientistController
             {
                 moveDir += 1.0f;
             }
+            if (actionStates.ContainsKey(Settings.InputAction.JUMP) && actionStates[Settings.InputAction.JUMP])
+            {
+                scientist.Jump(false);
+            }
 
             scientist.SetMovementDirection(moveDir);
         }
@@ -75,10 +79,10 @@ public partial class PlayerController : ScientistController
             actionStates[action] = false;
         }
 
-        // Only listen to the first press for jumping.
+        // Call jump with isInitialJump=true if the jump input was pressed from a released state.
         if (action == Settings.InputAction.JUMP && actionStates[Settings.InputAction.JUMP] == false)
         {
-            scientist.Jump();
+            scientist.Jump(true);
         }
 
         actionStates[action] = @event.IsPressed();
