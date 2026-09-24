@@ -93,6 +93,7 @@ public partial class FridayLayoffs : MiniGame, INameProvider
                 if (_remainingScientists.Count > 1)
                 {
                     _fireTimer = FIRE_TIME;
+                    _centerScreenCountdown.ResetCountdown();
                     GiveNewScientistPinkSlip();
                 }
                 else

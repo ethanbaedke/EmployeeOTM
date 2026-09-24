@@ -12,10 +12,17 @@ public partial class CenterScreenCountdown : Control
     // Starts at 1.0 since the label is hidden at the end of the effect.
     private double _effectPercent = 1.0;
     private int _lastShownNumber = -1;
+    private int _countdownStartTime = 0;
 
     public void SetCountdownStartTime(int startTime)
     {
-        _lastShownNumber = startTime + 1;
+        _countdownStartTime = startTime;
+        ResetCountdown();
+    }
+
+    public void ResetCountdown()
+    {
+        _lastShownNumber = _countdownStartTime + 1;
     }
 
     public void SetTimeRemaining(double timeRemaining)
@@ -26,7 +33,7 @@ public partial class CenterScreenCountdown : Control
             return;
         }
 
-        if (timeRemaining <= _lastShownNumber - 1)
+        if (_lastShownNumber > 1 && timeRemaining <= _lastShownNumber - 1)
         {
             _lastShownNumber--;
             _countdownLabel.Text = _lastShownNumber.ToString();

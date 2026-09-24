@@ -3,6 +3,7 @@
 [ext_resource type="Texture2D" uid="uid://dixcjh6ecuky8" path="res://ui/shift_schedule.svg" id="1_aergq"]
 [ext_resource type="Theme" uid="uid://b7dmkta068ob5" path="res://ui/shift_schedule.tres" id="1_tbeyl"]
 [ext_resource type="Script" uid="uid://bu4pxp0psagn5" path="res://ui/MiniGameSelection.cs" id="2_kg6bc"]
+[ext_resource type="PackedScene" uid="uid://bt4c44pnaed0s" path="res://levels/king_of_the_hill.tscn" id="3_ibsyw"]
 [ext_resource type="PackedScene" uid="uid://bvqw7lc1tcsrt" path="res://levels/friday_layoffs.tscn" id="3_kg6bc"]
 
 [sub_resource type="Curve" id="Curve_kg6bc"]
@@ -19,7 +20,7 @@ grow_horizontal = 2
 grow_vertical = 2
 theme = ExtResource("1_tbeyl")
 script = ExtResource("2_kg6bc")
-_ffaMiniGameScenes = Array[PackedScene]([ExtResource("3_kg6bc")])
+_ffaMiniGameScenes = Array[PackedScene]([ExtResource("3_kg6bc"), ExtResource("3_ibsyw")])
 _miniGameContainer = NodePath("MiniGames")
 _selectionHoldTime = SubResource("Curve_kg6bc")
 
