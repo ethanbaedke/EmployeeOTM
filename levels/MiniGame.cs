@@ -9,6 +9,14 @@ public abstract partial class MiniGame : Node2D
     [Signal]
     public delegate void GameFinishedEventHandler();
 
+    private static Color[] _scientistColors =
+    {
+        Colors.Red,
+        Colors.Green,
+        Colors.Blue,
+        Colors.Yellow,
+    };
+
     private PackedScene _playerControllerScene = GD.Load<PackedScene>("res://entities/scientist/PlayerController.tscn");
     private PackedScene _aiControllerScene = GD.Load<PackedScene>("res://entities/scientist/AIController.tscn");
     private PackedScene _pointAwardEffectScene = GD.Load<PackedScene>("res://entities/scientist/PointAwardEffect.tscn");
@@ -114,6 +122,12 @@ public abstract partial class MiniGame : Node2D
                 pc.InputDevice = inputDevice;
                 inputDevice++;
             }
+        }
+
+        // Set scientist colors.
+        for (int i = 0; i < _scientists.Length; i++)
+        {
+            _scientists[i].SetColor(_scientistColors[i]);
         }
 
         OTMLogger.Instance.Info(this, "MiniGame is ready!");

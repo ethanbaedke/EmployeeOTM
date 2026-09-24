@@ -4,15 +4,25 @@ using System;
 
 public partial class Scientist : CharacterBody2D
 {
+    [Export]
+    private Sprite2D _sprite;
+
     const double MAX_H_SPEED = 750.0f;
     const double H_ACCELERATION = 10000.0f;
     const double MAX_V_SPEED = 1500.0f;
     const double V_ACCELERATION = 5000.0f;
     const double JUMP_FORCE = 1500.0f;
 
-    public Color ScientistColor = GetColor();
+    public Color ScientistColor = Colors.White;
 
     private float _movement_direction = 0.0f;
+
+    public void SetColor(Color color)
+    {
+        ScientistColor = color;
+        ShaderMaterial shaderMat = _sprite.Material as ShaderMaterial;
+        shaderMat.SetShaderParameter("outline_color", color);
+    }
 
     // Expects a direciton between (-1.0, 1.0).
     public void SetMovementDirection(float dir)
@@ -41,20 +51,11 @@ public partial class Scientist : CharacterBody2D
         return controller;
     }
 
-    // TEMPORARY
-    private static Color[] _scientistColors =
+    public override void _Ready()
     {
-        Colors.Red,
-        Colors.Green,
-        Colors.Blue,
-        Colors.Yellow,
-    };
-    private static int _colorInd = 0;
-    private static Color GetColor()
-    {
-        Color toReturn = _scientistColors[_colorInd];
-        _colorInd = (_colorInd + 1) % _scientistColors.Length;
-        return toReturn;
+        base._Ready();
+
+
     }
 
     public override void _PhysicsProcess(double delta)
