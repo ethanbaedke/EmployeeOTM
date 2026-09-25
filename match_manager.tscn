@@ -1,0 +1,11 @@
+[gd_scene format=3 uid="uid://cpgb6caqng3qx"]
+
+[ext_resource type="Script" uid="uid://dcb310uu47ii7" path="res://MatchManager.cs" id="1_5j2v8"]
+[ext_resource type="PackedScene" uid="uid://r1fqj5c7yp72" path="res://ui/mini_game_selection.tscn" id="2_3tnfu"]
+
+[node name="MatchManager" type="Node2D" unique_id=1381656787 node_paths=PackedStringArray("_miniGameSelection")]
+script = ExtResource("1_5j2v8")
+_miniGameSelection = NodePath("MiniGameSelection")
+
+[node name="MiniGameSelection" parent="." unique_id=154623932 instance=ExtResource("2_3tnfu")]
+visible = false

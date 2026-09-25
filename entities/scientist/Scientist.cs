@@ -13,15 +13,32 @@ public partial class Scientist : CharacterBody2D
     const double V_ACCELERATION = 5000.0f;
     const double JUMP_FORCE = 1500.0f;
 
-    public Color ScientistColor = Colors.White;
+    public EmployeeData HeldEmployeeData = null;
 
+    private PackedScene _playerControllerScene = GD.Load<PackedScene>("res://entities/scientist/PlayerController.tscn");
+    private PackedScene _aiControllerScene = GD.Load<PackedScene>("res://entities/scientist/AIController.tscn");
     private float _movement_direction = 0.0f;
 
-    public void SetColor(Color color)
+    public void InitializeScientist(EmployeeData employeeData)
     {
-        ScientistColor = color;
+        HeldEmployeeData = employeeData;
+
+        // Set outline color.
         ShaderMaterial shaderMat = _sprite.Material as ShaderMaterial;
-        shaderMat.SetShaderParameter("outline_color", color);
+        shaderMat.SetShaderParameter("outline_color", employeeData.EmployeeColor);
+
+        // Create controller.
+        if (employeeData.inputDevice == -2)
+        {
+            AIController controller = _aiControllerScene.Instantiate<AIController>();
+            this.AddChild(controller);
+        }
+        else
+        {
+            PlayerController controller = _playerControllerScene.Instantiate<PlayerController>();
+            controller.InputDevice = employeeData.inputDevice;
+            this.AddChild(controller);
+        }
     }
 
     // Expects a direciton between (-1.0, 1.0).

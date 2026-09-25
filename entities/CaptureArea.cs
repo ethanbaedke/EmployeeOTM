@@ -62,7 +62,7 @@ public partial class CaptureArea : Area2D
         // Set the background color to the color of whoever is controlling the area, and gray if it's uncontrolled.
         if (ControllingScientist != null)
         {
-            _shaderMat.SetShaderParameter("OwnerColor", ControllingScientist.ScientistColor);
+            _shaderMat.SetShaderParameter("OwnerColor", ControllingScientist.HeldEmployeeData.EmployeeColor);
         }
         else
         {
@@ -72,7 +72,7 @@ public partial class CaptureArea : Area2D
         // Set the capture progress color to whoever is capture the area.
         if (_capturingScientist != null)
         {
-            _shaderMat.SetShaderParameter("ContesterColor", _capturingScientist.ScientistColor);
+            _shaderMat.SetShaderParameter("ContesterColor", _capturingScientist.HeldEmployeeData.EmployeeColor);
         }
     }
 

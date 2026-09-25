@@ -9,24 +9,33 @@ public abstract partial class MiniGame : Node2D
     [Signal]
     public delegate void GameFinishedEventHandler();
 
-    private static Color[] _scientistColors =
-    {
-        Colors.Red,
-        Colors.Green,
-        Colors.Blue,
-        Colors.Yellow,
-    };
-
     private PackedScene _playerControllerScene = GD.Load<PackedScene>("res://entities/scientist/PlayerController.tscn");
     private PackedScene _aiControllerScene = GD.Load<PackedScene>("res://entities/scientist/AIController.tscn");
     private PackedScene _pointAwardEffectScene = GD.Load<PackedScene>("res://entities/scientist/PointAwardEffect.tscn");
     private bool _debugIsAIEnabled = true;
 
+    public void InitializeMiniGame(EmployeeData[] employeeData)
+    {
+        if (employeeData.Length != 4)
+        {
+            OTMLogger.Instance.Fatal(this, "Mini-game must be initialized with employee data array of size 4.");
+            return;
+        }
+
+        // Initialize employees.
+        for (int i = 0; i < 4; i++)
+        {
+            _scientists[i].InitializeScientist(employeeData[i]);
+        }
+
+        OTMLogger.Instance.Info(this, "MiniGame is ready!");
+    }
+
     protected void DisplayPointAwardEffect(Scientist scientist, int numPoints)
     {
         PointAwardEffect effect = _pointAwardEffectScene.Instantiate<PointAwardEffect>();
         effect.SetNumPoints(numPoints);
-        effect.SetColor(scientist.ScientistColor);
+        effect.SetColor(scientist.HeldEmployeeData.EmployeeColor);
         scientist.AddChild(effect);
     }
 
@@ -100,37 +109,12 @@ public abstract partial class MiniGame : Node2D
                 ScientistController sc = scientist.TryGetController();
                 if (sc is AIController aiController)
                 {
-                    sc.RemoveChild(aiController);
+                    scientist.RemoveChild(aiController);
                     aiController.QueueFree();
                 }
             }
         }
         _debugIsAIEnabled = enabled;
-    }
-
-    public override void _Ready()
-    {
-        base._Ready();
-
-        // TODO: Don't set input devices here. Will need to be passed in from join menu.
-        int inputDevice = -1;
-        foreach (Scientist sc in _scientists)
-        {
-            ScientistController controller = sc.TryGetController();
-            if (controller != null && controller is PlayerController pc)
-            {
-                pc.InputDevice = inputDevice;
-                inputDevice++;
-            }
-        }
-
-        // Set scientist colors.
-        for (int i = 0; i < _scientists.Length; i++)
-        {
-            _scientists[i].SetColor(_scientistColors[i]);
-        }
-
-        OTMLogger.Instance.Info(this, "MiniGame is ready!");
     }
 
     public override void _Input(InputEvent @event)
