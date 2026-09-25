@@ -69,8 +69,7 @@ public partial class FridayLayoffs : MiniGame, INameProvider
 
     protected override void AwardMiniGamePoints()
     {
-        Array<Scientist> finishOrder = new Array<Scientist>();
-        finishOrder.OrderBy(p => p.HeldEmployeeData.MiniGamePointTracker);
+        Scientist[] finishOrder = new Array<Scientist>(_scientists).OrderBy(p => p.HeldEmployeeData.MiniGamePointTracker).ToArray();
         for (int i = 0; i < 4; i++)
         {
             finishOrder[i].HeldEmployeeData.PointsToAwardFromLastMiniGame = i + 1;

@@ -21,10 +21,6 @@ void fragment() {
         // If current pixel is transparent but a neighbor isn't, draw outline.
         if (tex_color.a < 0.9 && outline_alpha > 0.0) {
             COLOR = vec4(outline_color.rgb, outline_alpha * outline_color.a);
-        } else {
-            COLOR = tex_color;
         }
-    } else {
-        COLOR = tex_color;
     }
 }

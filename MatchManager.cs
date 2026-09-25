@@ -5,6 +5,7 @@ using System.Threading.Tasks;
 public partial class MatchManager : Node2D
 {
     [Export] private MiniGameSelection _miniGameSelection;
+    [Export] private MiniGamePlacement _miniGamePlacement;
 
     private static Color[] _scientistColors =
     {
@@ -41,6 +42,7 @@ public partial class MatchManager : Node2D
             miniGameInstance.QueueFree();
 
             // Show mini-game results.
+            await _miniGamePlacement.ShowPlacement(_employees);
 
             // Award stars.
 
