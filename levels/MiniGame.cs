@@ -31,6 +31,15 @@ public abstract partial class MiniGame : Node2D
         OTMLogger.Instance.Info(this, "MiniGame is ready!");
     }
 
+    // Called once when the mini-game is ending to set the amount of points each employee should get.
+    protected abstract void AwardMiniGamePoints();
+
+    protected void EndMiniGame()
+    {
+        AwardMiniGamePoints();
+        EmitSignal("GameFinished");
+    }
+
     protected void DisplayPointAwardEffect(Scientist scientist, int numPoints)
     {
         PointAwardEffect effect = _pointAwardEffectScene.Instantiate<PointAwardEffect>();

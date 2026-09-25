@@ -1,7 +1,7 @@
 using Godot;
 using System;
 using Godot.Collections;
-using System.Diagnostics;
+using System.Linq;
 
 public partial class FridayLayoffs : MiniGame, INameProvider
 {
@@ -59,6 +59,24 @@ public partial class FridayLayoffs : MiniGame, INameProvider
         }
     }
 
+    private void AwardPoints()
+    {
+        foreach (Scientist scientist in _remainingScientists)
+        {
+            scientist.HeldEmployeeData.MiniGamePointTracker++;
+        }
+    }
+
+    protected override void AwardMiniGamePoints()
+    {
+        Array<Scientist> finishOrder = new Array<Scientist>();
+        finishOrder.OrderBy(p => p.HeldEmployeeData.MiniGamePointTracker);
+        for (int i = 0; i < 4; i++)
+        {
+            finishOrder[i].HeldEmployeeData.PointsToAwardFromLastMiniGame = i + 1;
+        }
+    }
+
     public static string OTMGetName()
     {
         return "Friday Layoffs";
@@ -90,6 +108,8 @@ public partial class FridayLayoffs : MiniGame, INameProvider
             {
                 _fireTimer = 0.0;
                 FirePinkSlipHolder();
+                // Give points to remaining employees.
+                AwardPoints();
                 if (_remainingScientists.Count > 1)
                 {
                     _fireTimer = FIRE_TIME;

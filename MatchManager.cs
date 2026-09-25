@@ -32,12 +32,24 @@ public partial class MatchManager : Node2D
         // Match loop.
         while (true)
         {
+            // Play a mini-game.
             PackedScene miniGameScene = await SelectMiniGame();
             MiniGame miniGameInstance = miniGameScene.Instantiate<MiniGame>();
             this.AddChild(miniGameInstance);
             miniGameInstance.InitializeMiniGame(_employees);
             await ToSignal(miniGameInstance, "GameFinished");
             miniGameInstance.QueueFree();
+
+            // Show mini-game results.
+
+            // Award stars.
+
+            // Reset point tracking.
+            foreach (EmployeeData data in _employees)
+            {
+                data.PointsToAwardFromLastMiniGame = 0;
+                data.MiniGamePointTracker = 0;
+            }
         }
     }
 

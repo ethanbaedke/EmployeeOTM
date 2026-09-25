@@ -1,7 +1,7 @@
 using Godot;
 using System;
 using Godot.Collections;
-using System.Runtime.CompilerServices;
+using System.Linq;
 
 public partial class KingOfTheHill : MiniGame, INameProvider
 {
@@ -13,9 +13,9 @@ public partial class KingOfTheHill : MiniGame, INameProvider
     private const int COUNTDOWN_START_TIME = 5;
 
     private double _pointAwardTimer = 0.0;
-    private Dictionary<Scientist, int> _pointTracker = new Dictionary<Scientist, int>();
     private double _timeRemaining = GAME_LENGTH;
 
+    // Called during the mini-game to award points for captured zones.
     private void AwardPoints()
     {
         OTMLogger.Instance.Info(this, "Awarding points.");
@@ -39,7 +39,7 @@ public partial class KingOfTheHill : MiniGame, INameProvider
         // Award points to those scientists.
         foreach (Scientist scientist in toAward.Keys)
         {
-            _pointTracker[scientist] += toAward[scientist];
+            scientist.HeldEmployeeData.MiniGamePointTracker += toAward[scientist];
             DisplayPointAwardEffect(scientist, toAward[scientist]);
         }
     }
@@ -49,15 +49,19 @@ public partial class KingOfTheHill : MiniGame, INameProvider
         return "Lunch Break";
     }
 
+    protected override void AwardMiniGamePoints()
+    {
+        Array<Scientist> finishOrder = new Array<Scientist>(_scientists);
+        finishOrder.OrderBy(p => p.HeldEmployeeData.MiniGamePointTracker);
+        for (int i = 0; i < 4; i++)
+        {
+            finishOrder[i].HeldEmployeeData.PointsToAwardFromLastMiniGame = i + 1;
+        }
+    }
+
     public override void _Ready()
     {
         base._Ready();
-
-        // Initialize point tracker.
-        foreach (Scientist scientist in _scientists)
-        {
-            _pointTracker[scientist] = 0;
-        }
 
         // Initialize countdown timer.
         _centerScreenCountdown.SetCountdownStartTime(COUNTDOWN_START_TIME);
@@ -77,7 +81,7 @@ public partial class KingOfTheHill : MiniGame, INameProvider
         else
         {
             _timeRemaining = 0.0;
-            EmitSignal("GameFinished");
+            EndMiniGame();
         }
 
         if (_timeRemaining > 0.0)
