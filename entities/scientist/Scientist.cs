@@ -13,6 +13,7 @@ public partial class Scientist : CharacterBody2D
 	const double MAX_AIR_ACCELERATION = 5000.0f;
 	const double MAX_FALL_SPEED = 1500.0f;
 	const double GRAVITY = 5000.0f;
+	const double KNOCKBACK_DURATION = 0.3f;
 
 	const double JUMP_FORCE = 1200.0f;
 
@@ -20,7 +21,11 @@ public partial class Scientist : CharacterBody2D
 
 	private PackedScene _playerControllerScene = GD.Load<PackedScene>("res://entities/scientist/PlayerController.tscn");
 	private PackedScene _aiControllerScene = GD.Load<PackedScene>("res://entities/scientist/AIController.tscn");
+
 	private float _movement_direction = 0.0f;
+	private float _collision_cooldown = 0.0f;
+	private Vector2 _knockback_velocity = Vector2.Zero;
+	private float _knockback_timer = 0.0f;
 
 	public void InitializeScientist(EmployeeData employeeData)
 	{
@@ -93,7 +98,29 @@ public partial class Scientist : CharacterBody2D
 		// Apply movement direction.
 		ApplyHorizontalMovement(delta);
 
+
+		if (_collision_cooldown > 0)
+			_collision_cooldown -= (float)delta;
+
+		if (_knockback_timer > 0)
+		{
+			_knockback_timer -= (float)delta;
+
+			Velocity = new Vector2(
+				_knockback_velocity.X,
+				Velocity.Y
+			);
+
+			_knockback_velocity = _knockback_velocity.MoveToward(
+				Vector2.Zero,
+				3000.0f * (float)delta
+			);
+		}
+
 		MoveAndSlide();
+
+		//check for collisions between scientists
+		CollisionDetection();
 	}
 
 	private void ApplyGravity(double delta)
@@ -117,5 +144,58 @@ public partial class Scientist : CharacterBody2D
 		}
 
 		this.Velocity = Velocity.MoveToward(new Vector2((float)targetSpeed, Velocity.Y), (float)acceleration * (float)delta);
+	}
+
+	private void CollisionDetection()
+	{
+		for (int i = 0; i < GetSlideCollisionCount(); i++)
+		{
+			KinematicCollision2D collision = GetSlideCollision(i);
+
+			if (collision.GetCollider() is Scientist otherScientist)
+			{
+				Vector2 normal = collision.GetNormal();
+
+				if (Mathf.Abs(normal.X) > Mathf.Abs(normal.Y))
+				{
+					CalculateCollision(otherScientist);
+				}
+			}
+		}
+	}
+
+	private void CalculateCollision(Scientist otherScientist)
+	{
+		if (_collision_cooldown > 0)
+			return;
+
+		Vector2 toOther = otherScientist.GlobalPosition - GlobalPosition;
+
+		if (Mathf.IsZeroApprox(Velocity.X))
+			return;
+
+		if (Mathf.Sign(Velocity.X) != Mathf.Sign(toOther.X))
+			return;
+
+		Vector2 bounceDirection = (GlobalPosition - otherScientist.GlobalPosition).Normalized();
+
+		float collisionSpeed = Mathf.Abs(Velocity.X);
+		float bounceForce = collisionSpeed * 1.5f;
+
+		// Small bounce for the runner.
+		_knockback_velocity = new Vector2(bounceDirection.X * 800.0f,0);
+
+		Velocity = new Vector2(Velocity.X, -400.0f);
+
+		_knockback_timer = (float)KNOCKBACK_DURATION;
+
+		// Big launch for the other Scientist.
+		otherScientist._knockback_velocity = new Vector2(-bounceDirection.X * bounceForce,0);
+
+		otherScientist.Velocity = new Vector2(otherScientist.Velocity.X,-bounceForce * 0.5f);
+
+		otherScientist._knockback_timer = (float)KNOCKBACK_DURATION;
+
+		_collision_cooldown = 0.1f;
 	}
 }
