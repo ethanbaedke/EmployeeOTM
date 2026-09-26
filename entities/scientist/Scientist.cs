@@ -61,7 +61,7 @@ public partial class Scientist : CharacterBody2D
 
 		else if (this.Velocity.Y < 0) 
 		{ 
-			this.Velocity = new Vector2(this.Velocity.X, this.Velocity.Y - 20.0f); //the user is holding jump, slowly decrease their vertical velocity until they hit the peak of their jump
+			this.Velocity = new Vector2(this.Velocity.X, this.Velocity.Y - 15.0f); //the user is holding jump, slowly decrease their vertical velocity until they hit the peak of their jump
 		}
 	}
 
