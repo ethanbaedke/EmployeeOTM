@@ -5,16 +5,18 @@
 [ext_resource type="PackedScene" uid="uid://5c2doc244jws" path="res://ui/star_sheet.tscn" id="2_sgbhi"]
 [ext_resource type="PackedScene" uid="uid://bt4c44pnaed0s" path="res://levels/king_of_the_hill.tscn" id="3_sgbhi"]
 [ext_resource type="PackedScene" uid="uid://dhug5h2y0ce7e" path="res://mini_game_placement.tscn" id="4_xfb0p"]
+[ext_resource type="PackedScene" uid="uid://bvqw7lc1tcsrt" path="res://levels/friday_layoffs.tscn" id="5_vw4lq"]
 
-[node name="MatchManager" type="Node2D" unique_id=1381656787 node_paths=PackedStringArray("_miniGameSelection", "_miniGamePlacement")]
+[node name="MatchManager" type="Node2D" unique_id=1381656787 node_paths=PackedStringArray("_miniGameSelection", "_miniGamePlacement", "_starSheet")]
 script = ExtResource("1_5j2v8")
 _miniGameSelection = NodePath("MiniGameSelection")
 _miniGamePlacement = NodePath("MiniGamePlacement")
+_starSheet = NodePath("StarSheet")
 
 [node name="StarSheet" parent="." unique_id=1972792217 instance=ExtResource("2_sgbhi")]
 visible = false
 
 [node name="MiniGameSelection" parent="." unique_id=154623932 instance=ExtResource("2_3tnfu")]
-_ffaMiniGameScenes = Array[PackedScene]([ExtResource("3_sgbhi")])
+_ffaMiniGameScenes = Array[PackedScene]([ExtResource("3_sgbhi"), ExtResource("5_vw4lq")])
 
 [node name="MiniGamePlacement" parent="." unique_id=573806813 instance=ExtResource("4_xfb0p")]

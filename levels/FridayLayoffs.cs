@@ -8,7 +8,7 @@ public partial class FridayLayoffs : MiniGame, INameProvider
 	[Export] private CenterScreenCountdown _centerScreenCountdown;
 
     // Amount of time until the player holding the pink slip is fired.
-    private const double FIRE_TIME = 15.0;
+    private const double FIRE_TIME = 7.5;
 
     private PackedScene _pinkSlipScene = GD.Load<PackedScene>("res://entities/pink_slip.tscn");
     private Array<Scientist> _remainingScientists;
@@ -117,7 +117,7 @@ public partial class FridayLayoffs : MiniGame, INameProvider
                 }
                 else
                 {
-                    EmitSignal("GameFinished");
+                    EndMiniGame();
                 }
             }
         }

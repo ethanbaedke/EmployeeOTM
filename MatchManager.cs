@@ -1,13 +1,15 @@
 using Godot;
 using System;
 using System.Threading.Tasks;
+using Godot.Collections;
 
 public partial class MatchManager : Node2D
 {
     [Export] private MiniGameSelection _miniGameSelection;
     [Export] private MiniGamePlacement _miniGamePlacement;
+    [Export] private StarSheet _starSheet;
 
-    private static Color[] _scientistColors =
+    public static Color[] ScientistColors =
     {
         Colors.Red,
         Colors.Green,
@@ -25,7 +27,7 @@ public partial class MatchManager : Node2D
         _employees = new EmployeeData[4];
         for (int i = 0; i < 4; i++)
         {
-            _employees[i] = new EmployeeData(_scientistColors[i]);
+            _employees[i] = new EmployeeData(ScientistColors[i]);
         }
         // TEMP: Give the first employee keyboard controls.
         _employees[0].inputDevice = -1;
@@ -45,6 +47,14 @@ public partial class MatchManager : Node2D
             await _miniGamePlacement.ShowPlacement(_employees);
 
             // Award stars.
+            Array<EmployeeData> matchWinners = await _starSheet.PlaceStars(_employees);
+
+            // Match over.
+            if (matchWinners.Count > 0)
+            {
+                OTMLogger.Instance.Info(this, "Match finished.");
+                return;
+            }
 
             // Reset point tracking.
             foreach (EmployeeData data in _employees)
