@@ -1,0 +1,175 @@
+[gd_scene format=3 uid="uid://dhug5h2y0ce7e"]
+
+[ext_resource type="Script" uid="uid://cpbbddy68r764" path="res://MiniGamePlacement.cs" id="1_fqogx"]
+[ext_resource type="Texture2D" uid="uid://chey6hp3g6q6a" path="res://entities/scientist/scientist.svg" id="2_7c35k"]
+
+[sub_resource type="Shader" id="Shader_vw4lq"]
+code = "shader_type canvas_item;
+
+uniform vec4 outline_color : source_color = vec4(1.0, 1.0, 1.0, 1.0);
+uniform float outline_width : hint_range(0.0, 20.0) = 1.0;
+uniform bool outline_enabled = true;
+
+void fragment() {
+    vec4 tex_color = texture(TEXTURE, UV);
+
+    if (outline_enabled) {
+        vec2 texel_size = outline_width / vec2(textureSize(TEXTURE, 0));
+
+        // Sample alpha in 4 directions (and optionally diagonals)
+        float alpha_up    = texture(TEXTURE, UV + vec2(0.0, -texel_size.y)).a;
+        float alpha_down  = texture(TEXTURE, UV + vec2(0.0, texel_size.y)).a;
+        float alpha_left  = texture(TEXTURE, UV + vec2(-texel_size.x, 0.0)).a;
+        float alpha_right = texture(TEXTURE, UV + vec2(texel_size.x, 0.0)).a;
+
+        float outline_alpha = clamp(alpha_up + alpha_down + alpha_left + alpha_right, 0.0, 1.0);
+
+        // If current pixel is transparent but a neighbor isn't, draw outline.
+        if (tex_color.a < 0.9 && outline_alpha > 0.0) {
+            COLOR = vec4(outline_color.rgb, outline_alpha * outline_color.a);
+        }
+    }
+}"
+
+[sub_resource type="ShaderMaterial" id="ShaderMaterial_4lc7o"]
+resource_local_to_scene = true
+shader = SubResource("Shader_vw4lq")
+shader_parameter/outline_color = Color(0.25, 0.25, 0.25, 1)
+shader_parameter/outline_width = 20.0
+shader_parameter/outline_enabled = true
+
+[sub_resource type="Shader" id="Shader_xfb0p"]
+code = "shader_type canvas_item;
+
+uniform vec4 outline_color : source_color = vec4(1.0, 1.0, 1.0, 1.0);
+uniform float outline_width : hint_range(0.0, 20.0) = 1.0;
+uniform bool outline_enabled = true;
+
+void fragment() {
+    vec4 tex_color = texture(TEXTURE, UV);
+
+    if (outline_enabled) {
+        vec2 texel_size = outline_width / vec2(textureSize(TEXTURE, 0));
+
+        // Sample alpha in 4 directions (and optionally diagonals)
+        float alpha_up    = texture(TEXTURE, UV + vec2(0.0, -texel_size.y)).a;
+        float alpha_down  = texture(TEXTURE, UV + vec2(0.0, texel_size.y)).a;
+        float alpha_left  = texture(TEXTURE, UV + vec2(-texel_size.x, 0.0)).a;
+        float alpha_right = texture(TEXTURE, UV + vec2(texel_size.x, 0.0)).a;
+
+        float outline_alpha = clamp(alpha_up + alpha_down + alpha_left + alpha_right, 0.0, 1.0);
+
+        // If current pixel is transparent but a neighbor isn't, draw outline.
+        if (tex_color.a < 0.9 && outline_alpha > 0.0) {
+            COLOR = vec4(outline_color.rgb, outline_alpha * outline_color.a);
+        }
+    }
+}"
+
+[sub_resource type="ShaderMaterial" id="ShaderMaterial_xfb0p"]
+shader = SubResource("Shader_xfb0p")
+shader_parameter/outline_color = Color(0.5, 0.5, 0.5, 1)
+shader_parameter/outline_width = 20.0
+shader_parameter/outline_enabled = true
+
+[sub_resource type="Shader" id="Shader_sgbhi"]
+code = "shader_type canvas_item;
+
+uniform vec4 outline_color : source_color = vec4(1.0, 1.0, 1.0, 1.0);
+uniform float outline_width : hint_range(0.0, 20.0) = 1.0;
+uniform bool outline_enabled = true;
+
+void fragment() {
+    vec4 tex_color = texture(TEXTURE, UV);
+
+    if (outline_enabled) {
+        vec2 texel_size = outline_width / vec2(textureSize(TEXTURE, 0));
+
+        // Sample alpha in 4 directions (and optionally diagonals)
+        float alpha_up    = texture(TEXTURE, UV + vec2(0.0, -texel_size.y)).a;
+        float alpha_down  = texture(TEXTURE, UV + vec2(0.0, texel_size.y)).a;
+        float alpha_left  = texture(TEXTURE, UV + vec2(-texel_size.x, 0.0)).a;
+        float alpha_right = texture(TEXTURE, UV + vec2(texel_size.x, 0.0)).a;
+
+        float outline_alpha = clamp(alpha_up + alpha_down + alpha_left + alpha_right, 0.0, 1.0);
+
+        // If current pixel is transparent but a neighbor isn't, draw outline.
+        if (tex_color.a < 0.9 && outline_alpha > 0.0) {
+            COLOR = vec4(outline_color.rgb, outline_alpha * outline_color.a);
+        }
+    }
+}"
+
+[sub_resource type="ShaderMaterial" id="ShaderMaterial_vw4lq"]
+resource_local_to_scene = true
+shader = SubResource("Shader_sgbhi")
+shader_parameter/outline_color = Color(0.75, 0.75, 0.75, 1)
+shader_parameter/outline_width = 20.0
+shader_parameter/outline_enabled = true
+
+[sub_resource type="Shader" id="Shader_4lc7o"]
+code = "shader_type canvas_item;
+
+uniform vec4 outline_color : source_color = vec4(1.0, 1.0, 1.0, 1.0);
+uniform float outline_width : hint_range(0.0, 20.0) = 1.0;
+uniform bool outline_enabled = true;
+
+void fragment() {
+    vec4 tex_color = texture(TEXTURE, UV);
+
+    if (outline_enabled) {
+        vec2 texel_size = outline_width / vec2(textureSize(TEXTURE, 0));
+
+        // Sample alpha in 4 directions (and optionally diagonals)
+        float alpha_up    = texture(TEXTURE, UV + vec2(0.0, -texel_size.y)).a;
+        float alpha_down  = texture(TEXTURE, UV + vec2(0.0, texel_size.y)).a;
+        float alpha_left  = texture(TEXTURE, UV + vec2(-texel_size.x, 0.0)).a;
+        float alpha_right = texture(TEXTURE, UV + vec2(texel_size.x, 0.0)).a;
+
+        float outline_alpha = clamp(alpha_up + alpha_down + alpha_left + alpha_right, 0.0, 1.0);
+
+        // If current pixel is transparent but a neighbor isn't, draw outline.
+        if (tex_color.a < 0.9 && outline_alpha > 0.0) {
+            COLOR = vec4(outline_color.rgb, outline_alpha * outline_color.a);
+        }
+    }
+}"
+
+[sub_resource type="ShaderMaterial" id="ShaderMaterial_8kas3"]
+shader = SubResource("Shader_4lc7o")
+shader_parameter/outline_color = Color(1, 1, 1, 1)
+shader_parameter/outline_width = 20.0
+shader_parameter/outline_enabled = true
+
+[node name="MiniGamePlacement" type="Node2D" unique_id=573806813 node_paths=PackedStringArray("_1234")]
+script = ExtResource("1_fqogx")
+_1234 = NodePath("1234")
+
+[node name="1234" type="Node2D" parent="." unique_id=8304734]
+visible = false
+
+[node name="4" type="Sprite2D" parent="1234" unique_id=2028559942]
+modulate = Color(0.2509804, 0.2509804, 0.2509804, 1)
+material = SubResource("ShaderMaterial_4lc7o")
+position = Vector2(1424, 540)
+scale = Vector2(0.5, 0.5)
+texture = ExtResource("2_7c35k")
+
+[node name="3" type="Sprite2D" parent="1234" unique_id=1160728553]
+modulate = Color(0.5, 0.5, 0.5, 1)
+material = SubResource("ShaderMaterial_xfb0p")
+position = Vector2(1248, 540)
+scale = Vector2(0.75, 0.75)
+texture = ExtResource("2_7c35k")
+
+[node name="2" type="Sprite2D" parent="1234" unique_id=891708074]
+modulate = Color(0.75, 0.75, 0.75, 1)
+material = SubResource("ShaderMaterial_vw4lq")
+position = Vector2(608, 540.00006)
+texture = ExtResource("2_7c35k")
+
+[node name="1" type="Sprite2D" parent="1234" unique_id=932908781]
+material = SubResource("ShaderMaterial_8kas3")
+position = Vector2(960, 540)
+scale = Vector2(1.25, 1.25)
+texture = ExtResource("2_7c35k")

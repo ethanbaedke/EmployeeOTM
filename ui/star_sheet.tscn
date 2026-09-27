@@ -1,0 +1,344 @@
+[gd_scene format=3 uid="uid://5c2doc244jws"]
+
+[ext_resource type="Script" uid="uid://c03ty42hkk0qi" path="res://ui/StarSheet.cs" id="1_1o0ia"]
+[ext_resource type="Texture2D" uid="uid://cms0p3fwc0gsw" path="res://ui/star_sheet.svg" id="2_sx4si"]
+[ext_resource type="Texture2D" uid="uid://csqd621gdidxy" path="res://ui/star.svg" id="3_lfsvn"]
+
+[node name="StarSheet" type="Control" unique_id=1972792217]
+layout_mode = 3
+anchors_preset = 15
+anchor_right = 1.0
+anchor_bottom = 1.0
+grow_horizontal = 2
+grow_vertical = 2
+script = ExtResource("1_1o0ia")
+
+[node name="Sprite2D" type="Sprite2D" parent="." unique_id=255090509]
+position = Vector2(960, 540)
+texture = ExtResource("2_sx4si")
+
+[node name="Names" type="VBoxContainer" parent="." unique_id=975152774]
+layout_mode = 0
+offset_left = 309.0
+offset_top = 461.0
+offset_right = 611.0
+offset_bottom = 855.0
+
+[node name="1" type="Label" parent="Names" unique_id=1073987828]
+layout_mode = 2
+size_flags_vertical = 7
+
+[node name="2" type="Label" parent="Names" unique_id=2051358815]
+layout_mode = 2
+size_flags_vertical = 7
+
+[node name="3" type="Label" parent="Names" unique_id=1841960818]
+layout_mode = 2
+size_flags_vertical = 7
+
+[node name="4" type="Label" parent="Names" unique_id=1830717253]
+layout_mode = 2
+size_flags_vertical = 7
+
+[node name="StarRows" type="VBoxContainer" parent="." unique_id=236725041]
+layout_mode = 0
+offset_left = 617.0
+offset_top = 461.0
+offset_right = 1612.0
+offset_bottom = 855.0
+
+[node name="1" type="HBoxContainer" parent="StarRows" unique_id=655010667]
+layout_mode = 2
+size_flags_vertical = 3
+
+[node name="Star" type="TextureRect" parent="StarRows/1" unique_id=1824515777]
+visible = false
+layout_mode = 2
+size_flags_horizontal = 3
+texture = ExtResource("3_lfsvn")
+expand_mode = 1
+
+[node name="Star2" type="TextureRect" parent="StarRows/1" unique_id=2048372527]
+visible = false
+layout_mode = 2
+size_flags_horizontal = 3
+texture = ExtResource("3_lfsvn")
+expand_mode = 1
+
+[node name="Star3" type="TextureRect" parent="StarRows/1" unique_id=821097286]
+visible = false
+layout_mode = 2
+size_flags_horizontal = 3
+texture = ExtResource("3_lfsvn")
+expand_mode = 1
+
+[node name="Star4" type="TextureRect" parent="StarRows/1" unique_id=157900796]
+visible = false
+layout_mode = 2
+size_flags_horizontal = 3
+texture = ExtResource("3_lfsvn")
+expand_mode = 1
+
+[node name="Star5" type="TextureRect" parent="StarRows/1" unique_id=770038566]
+visible = false
+layout_mode = 2
+size_flags_horizontal = 3
+texture = ExtResource("3_lfsvn")
+expand_mode = 1
+
+[node name="Star6" type="TextureRect" parent="StarRows/1" unique_id=623918752]
+visible = false
+layout_mode = 2
+size_flags_horizontal = 3
+texture = ExtResource("3_lfsvn")
+expand_mode = 1
+
+[node name="Star7" type="TextureRect" parent="StarRows/1" unique_id=519067856]
+visible = false
+layout_mode = 2
+size_flags_horizontal = 3
+texture = ExtResource("3_lfsvn")
+expand_mode = 1
+
+[node name="Star8" type="TextureRect" parent="StarRows/1" unique_id=264224045]
+visible = false
+layout_mode = 2
+size_flags_horizontal = 3
+texture = ExtResource("3_lfsvn")
+expand_mode = 1
+
+[node name="Star9" type="TextureRect" parent="StarRows/1" unique_id=719805034]
+visible = false
+layout_mode = 2
+size_flags_horizontal = 3
+texture = ExtResource("3_lfsvn")
+expand_mode = 1
+
+[node name="Star10" type="TextureRect" parent="StarRows/1" unique_id=699624076]
+visible = false
+layout_mode = 2
+size_flags_horizontal = 3
+texture = ExtResource("3_lfsvn")
+expand_mode = 1
+
+[node name="2" type="HBoxContainer" parent="StarRows" unique_id=1119945529]
+layout_mode = 2
+size_flags_vertical = 3
+
+[node name="Star" type="TextureRect" parent="StarRows/2" unique_id=1476220040]
+visible = false
+layout_mode = 2
+size_flags_horizontal = 3
+texture = ExtResource("3_lfsvn")
+expand_mode = 1
+
+[node name="Star2" type="TextureRect" parent="StarRows/2" unique_id=1968716231]
+visible = false
+layout_mode = 2
+size_flags_horizontal = 3
+texture = ExtResource("3_lfsvn")
+expand_mode = 1
+
+[node name="Star3" type="TextureRect" parent="StarRows/2" unique_id=111647409]
+visible = false
+layout_mode = 2
+size_flags_horizontal = 3
+texture = ExtResource("3_lfsvn")
+expand_mode = 1
+
+[node name="Star4" type="TextureRect" parent="StarRows/2" unique_id=333344252]
+visible = false
+layout_mode = 2
+size_flags_horizontal = 3
+texture = ExtResource("3_lfsvn")
+expand_mode = 1
+
+[node name="Star5" type="TextureRect" parent="StarRows/2" unique_id=147184968]
+visible = false
+layout_mode = 2
+size_flags_horizontal = 3
+texture = ExtResource("3_lfsvn")
+expand_mode = 1
+
+[node name="Star6" type="TextureRect" parent="StarRows/2" unique_id=1666962726]
+visible = false
+layout_mode = 2
+size_flags_horizontal = 3
+texture = ExtResource("3_lfsvn")
+expand_mode = 1
+
+[node name="Star7" type="TextureRect" parent="StarRows/2" unique_id=674506707]
+visible = false
+layout_mode = 2
+size_flags_horizontal = 3
+texture = ExtResource("3_lfsvn")
+expand_mode = 1
+
+[node name="Star8" type="TextureRect" parent="StarRows/2" unique_id=57512580]
+visible = false
+layout_mode = 2
+size_flags_horizontal = 3
+texture = ExtResource("3_lfsvn")
+expand_mode = 1
+
+[node name="Star9" type="TextureRect" parent="StarRows/2" unique_id=1579793131]
+visible = false
+layout_mode = 2
+size_flags_horizontal = 3
+texture = ExtResource("3_lfsvn")
+expand_mode = 1
+
+[node name="Star10" type="TextureRect" parent="StarRows/2" unique_id=1526044327]
+visible = false
+layout_mode = 2
+size_flags_horizontal = 3
+texture = ExtResource("3_lfsvn")
+expand_mode = 1
+
+[node name="3" type="HBoxContainer" parent="StarRows" unique_id=842566843]
+layout_mode = 2
+size_flags_vertical = 3
+
+[node name="Star" type="TextureRect" parent="StarRows/3" unique_id=54246003]
+visible = false
+layout_mode = 2
+size_flags_horizontal = 3
+texture = ExtResource("3_lfsvn")
+expand_mode = 1
+
+[node name="Star2" type="TextureRect" parent="StarRows/3" unique_id=624641100]
+visible = false
+layout_mode = 2
+size_flags_horizontal = 3
+texture = ExtResource("3_lfsvn")
+expand_mode = 1
+
+[node name="Star3" type="TextureRect" parent="StarRows/3" unique_id=902503485]
+visible = false
+layout_mode = 2
+size_flags_horizontal = 3
+texture = ExtResource("3_lfsvn")
+expand_mode = 1
+
+[node name="Star4" type="TextureRect" parent="StarRows/3" unique_id=1506351217]
+visible = false
+layout_mode = 2
+size_flags_horizontal = 3
+texture = ExtResource("3_lfsvn")
+expand_mode = 1
+
+[node name="Star5" type="TextureRect" parent="StarRows/3" unique_id=1854862504]
+visible = false
+layout_mode = 2
+size_flags_horizontal = 3
+texture = ExtResource("3_lfsvn")
+expand_mode = 1
+
+[node name="Star6" type="TextureRect" parent="StarRows/3" unique_id=156793385]
+visible = false
+layout_mode = 2
+size_flags_horizontal = 3
+texture = ExtResource("3_lfsvn")
+expand_mode = 1
+
+[node name="Star7" type="TextureRect" parent="StarRows/3" unique_id=1030557494]
+visible = false
+layout_mode = 2
+size_flags_horizontal = 3
+texture = ExtResource("3_lfsvn")
+expand_mode = 1
+
+[node name="Star8" type="TextureRect" parent="StarRows/3" unique_id=1920139339]
+visible = false
+layout_mode = 2
+size_flags_horizontal = 3
+texture = ExtResource("3_lfsvn")
+expand_mode = 1
+
+[node name="Star9" type="TextureRect" parent="StarRows/3" unique_id=1951225938]
+visible = false
+layout_mode = 2
+size_flags_horizontal = 3
+texture = ExtResource("3_lfsvn")
+expand_mode = 1
+
+[node name="Star10" type="TextureRect" parent="StarRows/3" unique_id=375909002]
+visible = false
+layout_mode = 2
+size_flags_horizontal = 3
+texture = ExtResource("3_lfsvn")
+expand_mode = 1
+
+[node name="4" type="HBoxContainer" parent="StarRows" unique_id=809999188]
+layout_mode = 2
+size_flags_vertical = 3
+
+[node name="Star" type="TextureRect" parent="StarRows/4" unique_id=998727142]
+visible = false
+layout_mode = 2
+size_flags_horizontal = 3
+texture = ExtResource("3_lfsvn")
+expand_mode = 1
+
+[node name="Star2" type="TextureRect" parent="StarRows/4" unique_id=1638292092]
+visible = false
+layout_mode = 2
+size_flags_horizontal = 3
+texture = ExtResource("3_lfsvn")
+expand_mode = 1
+
+[node name="Star3" type="TextureRect" parent="StarRows/4" unique_id=1682989384]
+visible = false
+layout_mode = 2
+size_flags_horizontal = 3
+texture = ExtResource("3_lfsvn")
+expand_mode = 1
+
+[node name="Star4" type="TextureRect" parent="StarRows/4" unique_id=622063442]
+visible = false
+layout_mode = 2
+size_flags_horizontal = 3
+texture = ExtResource("3_lfsvn")
+expand_mode = 1
+
+[node name="Star5" type="TextureRect" parent="StarRows/4" unique_id=1056869329]
+visible = false
+layout_mode = 2
+size_flags_horizontal = 3
+texture = ExtResource("3_lfsvn")
+expand_mode = 1
+
+[node name="Star6" type="TextureRect" parent="StarRows/4" unique_id=1433335372]
+visible = false
+layout_mode = 2
+size_flags_horizontal = 3
+texture = ExtResource("3_lfsvn")
+expand_mode = 1
+
+[node name="Star7" type="TextureRect" parent="StarRows/4" unique_id=125384131]
+visible = false
+layout_mode = 2
+size_flags_horizontal = 3
+texture = ExtResource("3_lfsvn")
+expand_mode = 1
+
+[node name="Star8" type="TextureRect" parent="StarRows/4" unique_id=696778938]
+visible = false
+layout_mode = 2
+size_flags_horizontal = 3
+texture = ExtResource("3_lfsvn")
+expand_mode = 1
+
+[node name="Star9" type="TextureRect" parent="StarRows/4" unique_id=1905774353]
+visible = false
+layout_mode = 2
+size_flags_horizontal = 3
+texture = ExtResource("3_lfsvn")
+expand_mode = 1
+
+[node name="Star10" type="TextureRect" parent="StarRows/4" unique_id=1202508016]
+visible = false
+layout_mode = 2
+size_flags_horizontal = 3
+texture = ExtResource("3_lfsvn")
+expand_mode = 1
