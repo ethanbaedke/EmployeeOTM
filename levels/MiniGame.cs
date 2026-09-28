@@ -1,6 +1,7 @@
 using Godot;
 using Godot.Collections;
 using System;
+using System.Linq;
 
 public abstract partial class MiniGame : Node2D
 {
@@ -31,9 +32,6 @@ public abstract partial class MiniGame : Node2D
         OTMLogger.Instance.Info(this, "MiniGame is ready!");
     }
 
-    // Called once when the mini-game is ending to set the amount of points each employee should get.
-    protected abstract void AwardMiniGamePoints();
-
     protected void EndMiniGame()
     {
         AwardMiniGamePoints();
@@ -46,6 +44,16 @@ public abstract partial class MiniGame : Node2D
         effect.SetNumPoints(numPoints);
         effect.SetColor(scientist.HeldEmployeeData.EmployeeColor);
         scientist.AddChild(effect);
+    }
+
+    // Called once when the mini-game is ending to set the amount of points each employee should get.
+    private void AwardMiniGamePoints()
+    {
+        Scientist[] finishOrder = new Array<Scientist>(_scientists).OrderBy(p => p.HeldEmployeeData.MiniGamePointTracker).ThenByDescending(p => p.HeldEmployeeData.TotalPoints).ToArray();
+        for (int i = 0; i < 4; i++)
+        {
+            finishOrder[i].HeldEmployeeData.PointsToAwardFromLastMiniGame = i;
+        }
     }
 
     // A debug option to take control of a scientist with the keyboard.
