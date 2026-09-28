@@ -8,6 +8,7 @@ public partial class MatchManager : Node2D
     [Export] private MiniGameSelection _miniGameSelection;
     [Export] private MiniGamePlacement _miniGamePlacement;
     [Export] private StarSheet _starSheet;
+    [Export] private AnimationPlayer _matchFlowAnimPlayer;
 
     public static Color[] ScientistColors =
     {
@@ -35,19 +36,41 @@ public partial class MatchManager : Node2D
         // Match loop.
         while (true)
         {
-            // Play a mini-game.
-            PackedScene miniGameScene = await SelectMiniGame();
+            // Select a mini-game.
+            _matchFlowAnimPlayer.Play("mini_game_selection_in");
+            await ToSignal(_matchFlowAnimPlayer, AnimationPlayer.SignalName.AnimationFinished);
+            PackedScene miniGameScene = await _miniGameSelection.SelectMiniGame();
+
+            // Go to mini-game.
+            _matchFlowAnimPlayer.Play("black_panel_in");
+            await ToSignal(_matchFlowAnimPlayer, AnimationPlayer.SignalName.AnimationFinished);
+            _miniGamePlacement.Visible = false;
+            _miniGameSelection.Visible = false;
             MiniGame miniGameInstance = miniGameScene.Instantiate<MiniGame>();
             this.AddChild(miniGameInstance);
             miniGameInstance.InitializeMiniGame(_employees);
+            _matchFlowAnimPlayer.Play("black_panel_out");
+
+            // Play mini-game.
             await ToSignal(miniGameInstance, "GameFinished");
+
+            // Clean up mini-game.
+            _matchFlowAnimPlayer.Play("black_panel_in");
+            await ToSignal(_matchFlowAnimPlayer, AnimationPlayer.SignalName.AnimationFinished);
             miniGameInstance.QueueFree();
+            _matchFlowAnimPlayer.Play("black_panel_out");
 
             // Show mini-game results.
+            _miniGamePlacement.Visible = true;
             await _miniGamePlacement.ShowPlacement(_employees);
 
             // Award stars.
-            Array<EmployeeData> matchWinners = await _starSheet.PlaceStars(_employees);
+            _starSheet.PlaceExistingStars(_employees);
+            _matchFlowAnimPlayer.Play("star_sheet_in");
+            await ToSignal(_matchFlowAnimPlayer, AnimationPlayer.SignalName.AnimationFinished);
+            Array<EmployeeData> matchWinners = await _starSheet.PlaceNewStars(_employees);
+            _matchFlowAnimPlayer.Play("star_sheet_out");
+            await ToSignal(_matchFlowAnimPlayer, AnimationPlayer.SignalName.AnimationFinished);
 
             // Match over.
             if (matchWinners.Count > 0)
@@ -63,14 +86,5 @@ public partial class MatchManager : Node2D
                 data.MiniGamePointTracker = 0;
             }
         }
-    }
-
-    private async Task<PackedScene> SelectMiniGame()
-    {
-        _miniGameSelection.Visible = true;
-        PackedScene miniGameScene = await _miniGameSelection.SelectMiniGame();
-        await ToSignal(GetTree().CreateTimer(1.0f), SceneTreeTimer.SignalName.Timeout);
-        _miniGameSelection.Visible = false;
-        return miniGameScene;
     }
 }

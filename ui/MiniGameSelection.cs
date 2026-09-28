@@ -40,6 +40,7 @@ public partial class MiniGameSelection : Control
         // Select the actual mini-game.
         OTMLogger.Instance.Info(this, $"{GetMiniGameNameFromScene(_miniGames[miniGameIndex])} selected.");
         SelectedHighlightMiniGame(miniGameIndex);
+        await ToSignal(GetTree().CreateTimer(1.0f), SceneTreeTimer.SignalName.Timeout);
         return _miniGames[miniGameIndex];
     }
 

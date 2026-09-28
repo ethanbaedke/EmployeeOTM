@@ -7,12 +7,8 @@ public partial class StarSheet : Control
 	[Export] private VBoxContainer _nameContainer;
     [Export] private VBoxContainer _starRows;
 
-    public async Task<Array<EmployeeData>> PlaceStars(EmployeeData[] employeeData)
+    public void PlaceExistingStars(EmployeeData[] employeeData)
     {
-        OTMLogger.Instance.Info(this, "Awarding stars.");
-        this.Visible = true;
-
-        // Place existing stars.
         for (int i = 0; i < 4; i++)
         {
             int numStars = employeeData[i].TotalPoints;
@@ -26,6 +22,11 @@ public partial class StarSheet : Control
                 starRow.GetChild<TextureRect>(h).Modulate = Colors.Transparent;
             }
         }
+    }
+
+    public async Task<Array<EmployeeData>> PlaceNewStars(EmployeeData[] employeeData)
+    {
+        OTMLogger.Instance.Info(this, "Awarding stars.");
 
         // Add new stars by column.
         int starNum = 0;
@@ -61,8 +62,7 @@ public partial class StarSheet : Control
             }
         }
 
-        await ToSignal(GetTree().CreateTimer(2.0f), SceneTreeTimer.SignalName.Timeout);
-        this.Visible = false;
+        await ToSignal(GetTree().CreateTimer(1.0f), SceneTreeTimer.SignalName.Timeout);
 
         // TODO: Handle ties vs single winner.
         if (winners.Count > 0)
