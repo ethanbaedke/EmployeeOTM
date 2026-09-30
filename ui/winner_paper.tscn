@@ -1,0 +1,157 @@
+[gd_scene format=3 uid="uid://tojlilnglxyw"]
+
+[ext_resource type="Texture2D" uid="uid://bkx3lngsb5b6v" path="res://ui/winner_paper.svg" id="1_fn350"]
+[ext_resource type="Theme" uid="uid://t5tockmdbb05" path="res://ui/winner_paper.tres" id="1_pd8br"]
+[ext_resource type="Script" uid="uid://gf5pulat3gif" path="res://ui/WinnerPaper.cs" id="2_7n1pa"]
+[ext_resource type="Texture2D" uid="uid://chey6hp3g6q6a" path="res://entities/scientist/scientist.svg" id="3_fyj2y"]
+[ext_resource type="Shader" uid="uid://dob2o3tdoe4tc" path="res://effects/outline.gdshader" id="4_74qvt"]
+
+[sub_resource type="ShaderMaterial" id="ShaderMaterial_7n1pa"]
+shader = ExtResource("4_74qvt")
+shader_parameter/outline_color = Color(0, 0, 0, 1)
+shader_parameter/outline_width = 20.0
+shader_parameter/outline_enabled = true
+
+[sub_resource type="ShaderMaterial" id="ShaderMaterial_74qvt"]
+shader = ExtResource("4_74qvt")
+shader_parameter/outline_color = Color(0, 0, 0, 1)
+shader_parameter/outline_width = 20.0
+shader_parameter/outline_enabled = true
+
+[sub_resource type="ShaderMaterial" id="ShaderMaterial_b6o73"]
+shader = ExtResource("4_74qvt")
+shader_parameter/outline_color = Color(0, 0, 0, 1)
+shader_parameter/outline_width = 20.0
+shader_parameter/outline_enabled = true
+
+[sub_resource type="ShaderMaterial" id="ShaderMaterial_hjeu2"]
+shader = ExtResource("4_74qvt")
+shader_parameter/outline_color = Color(0, 0, 0, 1)
+shader_parameter/outline_width = 20.0
+shader_parameter/outline_enabled = true
+
+[node name="WinnerPaper" type="Control" unique_id=1934367138 node_paths=PackedStringArray("_placeLabels", "_employeeStands", "_employeeTextures")]
+layout_mode = 3
+anchors_preset = 15
+anchor_right = 1.0
+anchor_bottom = 1.0
+grow_horizontal = 2
+grow_vertical = 2
+theme = ExtResource("1_pd8br")
+script = ExtResource("2_7n1pa")
+_placeLabels = [NodePath("1st"), NodePath("2nd"), NodePath("3rd"), NodePath("4th")]
+_employeeStands = [NodePath("P1Stand"), NodePath("P2Stand"), NodePath("P3Stand"), NodePath("P4Stand")]
+_employeeTextures = [NodePath("P1"), NodePath("P2"), NodePath("P3"), NodePath("P4")]
+
+[node name="TextureRect" type="TextureRect" parent="." unique_id=1974749359]
+layout_mode = 1
+anchors_preset = 15
+anchor_right = 1.0
+anchor_bottom = 1.0
+grow_horizontal = 2
+grow_vertical = 2
+texture = ExtResource("1_fn350")
+
+[node name="4th" type="Label" parent="." unique_id=934282404]
+layout_mode = 0
+offset_left = 54.0
+offset_top = 754.0
+offset_right = 200.0
+offset_bottom = 850.0
+text = "4th"
+vertical_alignment = 2
+
+[node name="3rd" type="Label" parent="." unique_id=1036600893]
+layout_mode = 0
+offset_left = 54.0
+offset_top = 554.0
+offset_right = 200.0
+offset_bottom = 650.0
+text = "3rd"
+vertical_alignment = 2
+
+[node name="2nd" type="Label" parent="." unique_id=1268379213]
+layout_mode = 0
+offset_left = 54.0
+offset_top = 354.0
+offset_right = 200.0
+offset_bottom = 450.0
+text = "2nd"
+vertical_alignment = 2
+
+[node name="1st" type="Label" parent="." unique_id=782692213]
+layout_mode = 0
+offset_left = 54.0
+offset_top = 154.0
+offset_right = 200.0
+offset_bottom = 250.0
+text = "1st"
+vertical_alignment = 2
+
+[node name="P1Stand" type="Panel" parent="." unique_id=1933357875]
+layout_mode = 0
+offset_left = 354.0
+offset_top = 1054.0
+offset_right = 450.0
+offset_bottom = 1080.0
+
+[node name="P2Stand" type="Panel" parent="." unique_id=740161524]
+layout_mode = 0
+offset_left = 754.0
+offset_top = 1054.0
+offset_right = 850.0
+offset_bottom = 1080.0
+
+[node name="P3Stand" type="Panel" parent="." unique_id=1206748903]
+layout_mode = 0
+offset_left = 1154.0
+offset_top = 1054.0
+offset_right = 1250.0
+offset_bottom = 1080.0
+
+[node name="P4Stand" type="Panel" parent="." unique_id=983701771]
+layout_mode = 0
+offset_left = 1554.0
+offset_top = 1054.0
+offset_right = 1650.0
+offset_bottom = 1080.0
+
+[node name="P1" type="TextureRect" parent="." unique_id=1074232809]
+material = SubResource("ShaderMaterial_7n1pa")
+layout_mode = 0
+offset_left = 354.0
+offset_top = 964.0
+offset_right = 450.0
+offset_bottom = 1060.0
+texture = ExtResource("3_fyj2y")
+expand_mode = 1
+
+[node name="P2" type="TextureRect" parent="." unique_id=963224391]
+material = SubResource("ShaderMaterial_74qvt")
+layout_mode = 0
+offset_left = 754.0
+offset_top = 964.0
+offset_right = 850.0
+offset_bottom = 1060.0
+texture = ExtResource("3_fyj2y")
+expand_mode = 1
+
+[node name="P3" type="TextureRect" parent="." unique_id=1045897814]
+material = SubResource("ShaderMaterial_b6o73")
+layout_mode = 0
+offset_left = 1154.0
+offset_top = 964.0
+offset_right = 1250.0
+offset_bottom = 1060.0
+texture = ExtResource("3_fyj2y")
+expand_mode = 1
+
+[node name="P4" type="TextureRect" parent="." unique_id=1646642205]
+material = SubResource("ShaderMaterial_hjeu2")
+layout_mode = 0
+offset_left = 1554.0
+offset_top = 964.0
+offset_right = 1650.0
+offset_bottom = 1060.0
+texture = ExtResource("3_fyj2y")
+expand_mode = 1

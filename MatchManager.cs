@@ -8,6 +8,7 @@ public partial class MatchManager : Node2D
     [Export] private MiniGameSelection _miniGameSelection;
     [Export] private MiniGamePlacement _miniGamePlacement;
     [Export] private StarSheet _starSheet;
+    [Export] private WinnerPaper _winnerPaper;
     [Export] private AnimationPlayer _matchFlowAnimPlayer;
 
     public static Color[] ScientistColors =
@@ -69,14 +70,30 @@ public partial class MatchManager : Node2D
             _matchFlowAnimPlayer.Play("star_sheet_in");
             await ToSignal(_matchFlowAnimPlayer, AnimationPlayer.SignalName.AnimationFinished);
             Array<EmployeeData> matchWinners = await _starSheet.PlaceNewStars(_employees);
-            _matchFlowAnimPlayer.Play("star_sheet_out");
-            await ToSignal(_matchFlowAnimPlayer, AnimationPlayer.SignalName.AnimationFinished);
 
             // Match over.
             if (matchWinners.Count > 0)
             {
                 OTMLogger.Instance.Info(this, "Match finished.");
+
+                _matchFlowAnimPlayer.Play("black_panel_in");
+                await ToSignal(_matchFlowAnimPlayer, AnimationPlayer.SignalName.AnimationFinished);
+                _miniGamePlacement.Visible = false;
+                _starSheet.Visible = false;
+                _winnerPaper.Visible = true;
+                _winnerPaper.InitializeWinnerPaper(_employees);
+                _matchFlowAnimPlayer.Play("black_panel_out");
+                await _winnerPaper.PlayWinnerAnimation();
+                _winnerPaper.Visible = false;
+
                 return;
+            }
+            // Match continuing.
+            else
+            {
+                // Get rid of the star sheet and continue.
+                _matchFlowAnimPlayer.Play("star_sheet_out");
+                await ToSignal(_matchFlowAnimPlayer, AnimationPlayer.SignalName.AnimationFinished);
             }
 
             // Reset point tracking.
