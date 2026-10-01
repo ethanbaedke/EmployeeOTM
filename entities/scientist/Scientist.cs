@@ -4,7 +4,12 @@ using System;
 
 public partial class Scientist : CharacterBody2D
 {
-	[Export]
+
+    [Signal]
+    public delegate void ScientistCollidedEventHandler(Scientist otherScientist);
+
+
+    [Export]
 	private Sprite2D _sprite;
 
 	const double MAX_GROUND_SPEED = 750.0f;
@@ -158,6 +163,7 @@ public partial class Scientist : CharacterBody2D
 
 				if (Mathf.Abs(normal.X) > Mathf.Abs(normal.Y))
 				{
+                    EmitSignal(SignalName.ScientistCollided, otherScientist);
 					CalculateCollision(otherScientist);
 				}
 			}
