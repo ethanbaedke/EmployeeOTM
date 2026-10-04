@@ -2,6 +2,7 @@ using Godot;
 using System;
 using Godot.Collections;
 using System.Linq;
+using System.Reflection.Metadata;
 
 public partial class FridayLayoffs : MiniGame, INameProvider
 {
@@ -9,12 +10,15 @@ public partial class FridayLayoffs : MiniGame, INameProvider
 
     // Amount of time until the player holding the pink slip is fired.
     private const double FIRE_TIME = 7.5;
+    private const double HAND_OFF_COOLDOWN = 0.25;
 
     private PackedScene _pinkSlipScene = GD.Load<PackedScene>("res://entities/pink_slip.tscn");
     private Array<Scientist> _remainingScientists;
     private Node2D _pinkSlip = null;
     private Scientist _pinkSlipHolder = null;
     private double _fireTimer = FIRE_TIME;
+    private Scientist _pinkSlipHandoffTarget = null;
+    private double _handoffCooldown = HAND_OFF_COOLDOWN;
 
     private void GiveNewScientistPinkSlip()
     {
@@ -67,6 +71,18 @@ public partial class FridayLayoffs : MiniGame, INameProvider
         }
     }
 
+    private void HandleScientistCollision(Scientist s1, Scientist s2)
+    {
+        if (s1 == _pinkSlipHolder)
+        {
+            _pinkSlipHandoffTarget = s2;
+        }
+        else if (s2 == _pinkSlipHolder)
+        {
+            _pinkSlipHandoffTarget = s1;
+        }
+    }
+
     public static string OTMGetName()
     {
         return "Friday Layoffs";
@@ -80,7 +96,10 @@ public partial class FridayLayoffs : MiniGame, INameProvider
         // TODO: Listen for collisions between scientists.
         foreach (Scientist scientist in _remainingScientists)
         {
-            
+            scientist.ScientistCollided += (Scientist other) =>
+            {
+                HandleScientistCollision(scientist, other);
+            };
         }
         GiveNewScientistPinkSlip();
 
@@ -90,6 +109,19 @@ public partial class FridayLayoffs : MiniGame, INameProvider
     public override void _Process(double delta)
     {
         base._Process(delta);
+
+        // Handoff if necessary.
+        _handoffCooldown -= delta;
+        if (_pinkSlipHandoffTarget != null)
+        {
+            if (_handoffCooldown <= 0.0)
+            {
+                _pinkSlip.Reparent(_pinkSlipHandoffTarget, false);
+                _pinkSlipHolder = _pinkSlipHandoffTarget;
+                _handoffCooldown = HAND_OFF_COOLDOWN;
+            }
+            _pinkSlipHandoffTarget = null;
+        }
 
         if (_fireTimer > 0.0)
         {
