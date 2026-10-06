@@ -18,6 +18,11 @@ public partial class WinnerPaper : Control
         276.0f,
     };
 
+    private const float EMPLOYEE_RAISE_SEPERATION_TIME = 0.25f;
+    private const float EMPLOYEE_RAISE_TIME = 1.0f;
+    private const Tween.EaseType EMPLOYEE_RAISE_EASE_TYPE = Tween.EaseType.Out;
+    private const Tween.TransitionType EMPLOYEE_RAISE_TRANSITION_TYPE = Tween.TransitionType.Spring;
+
     private EmployeeData[] _employeeData;
 
     public void InitializeWinnerPaper(EmployeeData[] employeeData)
@@ -40,6 +45,12 @@ public partial class WinnerPaper : Control
             _employeeTextures[i].Position = new Vector2(_employeeTextures[i].Position.X, 964.0f);
             _employeeStands[i].Size = new Vector2(96.0f, 26.0f);
             _employeeStands[i].Position = new Vector2(_employeeStands[i].Position.X, 1054.0f);
+
+            // Reset placement label colors.
+            foreach (Label label in _placeLabels)
+            {
+                label.RemoveThemeColorOverride("font_color");
+            }
         }
     }
 
@@ -54,13 +65,13 @@ public partial class WinnerPaper : Control
         }
 
         Array<EmployeeData> orderedEmployees = new Array<EmployeeData>(_employeeData.OrderByDescending(p => p.TotalPoints).ToArray());
-        for (int i = 0; i < 4; i++)
+        for (int i = 3; i >= 0; i--)
         {
-            await RaiseEmployee(i, orderedEmployees.IndexOf(_employeeData[i]) + 1);
-            await ToSignal(GetTree().CreateTimer(1.0f), SceneTreeTimer.SignalName.Timeout);
+            RaiseEmployee(orderedEmployees.IndexOf(_employeeData[i]), i + 1);
+            await ToSignal(GetTree().CreateTimer(EMPLOYEE_RAISE_SEPERATION_TIME), SceneTreeTimer.SignalName.Timeout);
         }
 
-        await ToSignal(GetTree().CreateTimer(1.0f), SceneTreeTimer.SignalName.Timeout);
+        await ToSignal(GetTree().CreateTimer(EMPLOYEE_RAISE_TIME + 2.0f), SceneTreeTimer.SignalName.Timeout);
     }
 
     // Place is 1-4 (1st-4th).
@@ -79,9 +90,18 @@ public partial class WinnerPaper : Control
         Panel employeeStand = _employeeStands[index];
         float height = PLACEMENT_HEIGHTS[place - 1];
 
-        employeeTexture.Position = new Vector2(employeeTexture.Position.X, 1080.0f - height - 90.0f);
-        employeeStand.Size = new Vector2(employeeStand.Size.X, height);
-        employeeStand.Position = new Vector2(employeeStand.Position.X, 1080.0f - height);
+        Tween employeePosTween = CreateTween();
+        employeePosTween.TweenProperty(employeeTexture, "position", new Vector2(employeeTexture.Position.X, 1080.0f - height - 90.0f), EMPLOYEE_RAISE_TIME)
+            .SetEase(EMPLOYEE_RAISE_EASE_TYPE)
+            .SetTrans(EMPLOYEE_RAISE_TRANSITION_TYPE);
+        Tween standSizeTween = CreateTween();
+        standSizeTween.TweenProperty(employeeStand, "size", new Vector2(employeeStand.Size.X, height), EMPLOYEE_RAISE_TIME)
+            .SetEase(EMPLOYEE_RAISE_EASE_TYPE)
+            .SetTrans(EMPLOYEE_RAISE_TRANSITION_TYPE);
+        Tween standPosTween = CreateTween();
+        standPosTween.TweenProperty(employeeStand, "position", new Vector2(employeeStand.Position.X, 1080.0f - height), EMPLOYEE_RAISE_TIME)
+            .SetEase(EMPLOYEE_RAISE_EASE_TYPE)
+            .SetTrans(EMPLOYEE_RAISE_TRANSITION_TYPE);
 
         Label placeLabel = _placeLabels[place - 1];
         placeLabel.AddThemeColorOverride("font_color", _employeeData[index].EmployeeColor);
