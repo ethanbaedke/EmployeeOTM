@@ -9,6 +9,7 @@ public partial class MatchManager : Node2D
     [Export] private MiniGamePlacement _miniGamePlacement;
     [Export] private StarSheet _starSheet;
     [Export] private WinnerPaper _winnerPaper;
+    [Export] private SingleWinnerDisplay _singleWinnerDisplay;
     [Export] private AnimationPlayer _matchFlowAnimPlayer;
 
     public static Color[] ScientistColors =
@@ -33,6 +34,9 @@ public partial class MatchManager : Node2D
         }
         // TEMP: Give the first employee keyboard controls.
         _employees[0].inputDevice = -1;
+
+        _matchFlowAnimPlayer.Play("black_panel_out");
+        await ToSignal(_matchFlowAnimPlayer, AnimationPlayer.SignalName.AnimationFinished);
 
         // Match loop.
         while (true)
@@ -74,18 +78,7 @@ public partial class MatchManager : Node2D
             // Match over.
             if (matchWinners.Count > 0)
             {
-                OTMLogger.Instance.Info(this, "Match finished.");
-
-                _matchFlowAnimPlayer.Play("black_panel_in");
-                await ToSignal(_matchFlowAnimPlayer, AnimationPlayer.SignalName.AnimationFinished);
-                _miniGamePlacement.Visible = false;
-                _starSheet.Visible = false;
-                _winnerPaper.Visible = true;
-                _winnerPaper.InitializeWinnerPaper(_employees);
-                _matchFlowAnimPlayer.Play("black_panel_out");
-                await _winnerPaper.PlayWinnerAnimation();
-                _winnerPaper.Visible = false;
-
+                await HandleMatchOver(matchWinners);
                 return;
             }
             // Match continuing.
@@ -103,5 +96,37 @@ public partial class MatchManager : Node2D
                 data.MiniGamePointTracker = 0;
             }
         }
+    }
+
+    // Match winners must always have at least one entry when this function is called.
+    private async Task HandleMatchOver(Array<EmployeeData> matchWinners)
+    {
+        OTMLogger.Instance.Info(this, "Match finished.");
+
+        // TODO: Tiebreak in case of multiple winners here.
+
+        // Show winner paper.
+        _matchFlowAnimPlayer.Play("black_panel_in");
+        await ToSignal(_matchFlowAnimPlayer, AnimationPlayer.SignalName.AnimationFinished);
+        _miniGamePlacement.Visible = false;
+        _starSheet.Visible = false;
+        _winnerPaper.Visible = true;
+        _winnerPaper.InitializeWinnerPaper(_employees);
+        _matchFlowAnimPlayer.Play("black_panel_out");
+        await _winnerPaper.PlayWinnerAnimation();
+        _matchFlowAnimPlayer.Play("black_panel_in");
+        await ToSignal(_matchFlowAnimPlayer, AnimationPlayer.SignalName.AnimationFinished);
+        _winnerPaper.Visible = false;
+
+        // Show single winner.
+        _singleWinnerDisplay.SetWinner(matchWinners[0]);
+        _singleWinnerDisplay.Visible = true;
+        _matchFlowAnimPlayer.Play("black_panel_out");
+        await ToSignal(GetTree().CreateTimer(3.0f), SceneTreeTimer.SignalName.Timeout);
+        _matchFlowAnimPlayer.Play("black_panel_in");
+        await ToSignal(_matchFlowAnimPlayer, AnimationPlayer.SignalName.AnimationFinished);
+        _singleWinnerDisplay.Visible = false;
+
+        return;
     }
 }

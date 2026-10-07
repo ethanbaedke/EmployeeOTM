@@ -7,6 +7,7 @@
 [ext_resource type="PackedScene" uid="uid://dhug5h2y0ce7e" path="res://mini_game_placement.tscn" id="4_xfb0p"]
 [ext_resource type="PackedScene" uid="uid://bvqw7lc1tcsrt" path="res://levels/friday_layoffs.tscn" id="5_vw4lq"]
 [ext_resource type="PackedScene" uid="uid://tojlilnglxyw" path="res://ui/winner_paper.tscn" id="7_4lc7o"]
+[ext_resource type="PackedScene" uid="uid://dcxxyk4umcrw7" path="res://ui/single_winner_display.tscn" id="8_8kas3"]
 
 [sub_resource type="StyleBoxFlat" id="StyleBoxFlat_vw4lq"]
 bg_color = Color(0, 0, 0, 1)
@@ -291,12 +292,13 @@ _data = {
 &"star_sheet_out": SubResource("Animation_8kas3")
 }
 
-[node name="MatchManager" type="Node2D" unique_id=1381656787 node_paths=PackedStringArray("_miniGameSelection", "_miniGamePlacement", "_starSheet", "_winnerPaper", "_matchFlowAnimPlayer")]
+[node name="MatchManager" type="Node2D" unique_id=1381656787 node_paths=PackedStringArray("_miniGameSelection", "_miniGamePlacement", "_starSheet", "_winnerPaper", "_singleWinnerDisplay", "_matchFlowAnimPlayer")]
 script = ExtResource("1_5j2v8")
 _miniGameSelection = NodePath("CanvasLayer/MiniGameSelection")
 _miniGamePlacement = NodePath("MiniGamePlacement")
 _starSheet = NodePath("CanvasLayer/StarSheet")
 _winnerPaper = NodePath("CanvasLayer/WinnerPaper")
+_singleWinnerDisplay = NodePath("CanvasLayer/SingleWinnerDisplay")
 _matchFlowAnimPlayer = NodePath("MatchFlowAnimationPlayer")
 
 [node name="MiniGamePlacement" parent="." unique_id=573806813 instance=ExtResource("4_xfb0p")]
@@ -313,6 +315,9 @@ offset_top = 1080.0
 offset_bottom = 1080.0
 
 [node name="WinnerPaper" parent="CanvasLayer" unique_id=1934367138 instance=ExtResource("7_4lc7o")]
+visible = false
+
+[node name="SingleWinnerDisplay" parent="CanvasLayer" unique_id=1501374277 instance=ExtResource("8_8kas3")]
 visible = false
 
 [node name="BlackPanel" type="Panel" parent="CanvasLayer" unique_id=1597759366]

@@ -1,0 +1,117 @@
+[gd_scene format=3 uid="uid://dcxxyk4umcrw7"]
+
+[ext_resource type="Script" uid="uid://dnj31gwquvfpo" path="res://ui/SingleWinnerDisplay.cs" id="1_4nbt5"]
+[ext_resource type="Texture2D" uid="uid://d4ajcdicpxe8b" path="res://ui/winner_circle.svg" id="2_nh3i7"]
+[ext_resource type="Texture2D" uid="uid://chey6hp3g6q6a" path="res://entities/scientist/scientist.svg" id="3_nh3i7"]
+
+[sub_resource type="Animation" id="Animation_nh3i7"]
+length = 0.001
+tracks/0/type = "bezier"
+tracks/0/imported = false
+tracks/0/enabled = true
+tracks/0/path = NodePath("Employee:position:x")
+tracks/0/interp = 1
+tracks/0/loop_wrap = true
+tracks/0/keys = {
+"handle_modes": PackedInt32Array(0),
+"points": PackedFloat32Array(416, -0.25, 0, 0.25, 0),
+"times": PackedFloat32Array(0)
+}
+tracks/1/type = "bezier"
+tracks/1/imported = false
+tracks/1/enabled = true
+tracks/1/path = NodePath("Employee:position:y")
+tracks/1/interp = 1
+tracks/1/loop_wrap = true
+tracks/1/keys = {
+"handle_modes": PackedInt32Array(0),
+"points": PackedFloat32Array(352, -0.25, 0, 0.25, 0),
+"times": PackedFloat32Array(0)
+}
+tracks/2/type = "bezier"
+tracks/2/imported = false
+tracks/2/enabled = true
+tracks/2/path = NodePath("Employee:rotation")
+tracks/2/interp = 1
+tracks/2/loop_wrap = true
+tracks/2/keys = {
+"handle_modes": PackedInt32Array(0),
+"points": PackedFloat32Array(-0.17278759, -0.25, 0, 0.25, 0),
+"times": PackedFloat32Array(0)
+}
+
+[sub_resource type="Animation" id="Animation_qfc2p"]
+resource_name = "winner_bounce"
+length = 0.6
+loop_mode = 2
+tracks/0/type = "bezier"
+tracks/0/imported = false
+tracks/0/enabled = true
+tracks/0/path = NodePath("Employee:position:x")
+tracks/0/interp = 1
+tracks/0/loop_wrap = true
+tracks/0/keys = {
+"handle_modes": PackedInt32Array(0, 0),
+"points": PackedFloat32Array(416, -0.25, 0, 0.16666667, 91.11215, 741, -0.16666669, -90.52112, 0, 0),
+"times": PackedFloat32Array(0, 0.6)
+}
+tracks/1/type = "bezier"
+tracks/1/imported = false
+tracks/1/enabled = true
+tracks/1/path = NodePath("Employee:position:y")
+tracks/1/interp = 1
+tracks/1/loop_wrap = true
+tracks/1/keys = {
+"handle_modes": PackedInt32Array(0, 0),
+"points": PackedFloat32Array(352, -0.25, 0, 0.16666667, -84.94382, 206, -0.16666669, -18.962479, 0, 0),
+"times": PackedFloat32Array(0, 0.6)
+}
+tracks/2/type = "bezier"
+tracks/2/imported = false
+tracks/2/enabled = true
+tracks/2/path = NodePath("Employee:rotation")
+tracks/2/interp = 1
+tracks/2/loop_wrap = true
+tracks/2/keys = {
+"handle_modes": PackedInt32Array(0, 0),
+"points": PackedFloat32Array(-0.17278759, 0, 0, 0.25, 0.1, 0.17278759, -0.25, -0.1, 0, 0),
+"times": PackedFloat32Array(0, 0.6)
+}
+
+[sub_resource type="AnimationLibrary" id="AnimationLibrary_oxk0u"]
+_data = {
+&"RESET": SubResource("Animation_nh3i7"),
+&"winner_bounce": SubResource("Animation_qfc2p")
+}
+
+[node name="SingleWinnerDisplay" type="Control" unique_id=1501374277 node_paths=PackedStringArray("_winnerCircle")]
+layout_mode = 3
+anchors_preset = 15
+anchor_right = 1.0
+anchor_bottom = 1.0
+grow_horizontal = 2
+grow_vertical = 2
+script = ExtResource("1_4nbt5")
+_winnerCircle = NodePath("WinnerCircle")
+
+[node name="WinnerCircle" type="TextureRect" parent="." unique_id=1896831854]
+layout_mode = 1
+anchors_preset = 15
+anchor_right = 1.0
+anchor_bottom = 1.0
+grow_horizontal = 2
+grow_vertical = 2
+texture = ExtResource("2_nh3i7")
+
+[node name="Employee" type="TextureRect" parent="." unique_id=515711631]
+layout_mode = 0
+offset_left = 416.0
+offset_top = 352.0
+offset_right = 1186.0085
+offset_bottom = 1122.0131
+rotation = -0.17278759
+texture = ExtResource("3_nh3i7")
+
+[node name="AnimationPlayer" type="AnimationPlayer" parent="." unique_id=485800506]
+libraries/ = SubResource("AnimationLibrary_oxk0u")
+autoplay = &"winner_bounce"
