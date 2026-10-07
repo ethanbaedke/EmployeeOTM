@@ -23,11 +23,11 @@ public partial class WinnerPaper : Control
     private const Tween.EaseType EMPLOYEE_RAISE_EASE_TYPE = Tween.EaseType.Out;
     private const Tween.TransitionType EMPLOYEE_RAISE_TRANSITION_TYPE = Tween.TransitionType.Spring;
 
-    private EmployeeData[] _employeeData;
+    private Array<EmployeeData> _employeeData;
 
     public void InitializeWinnerPaper(EmployeeData[] employeeData)
     {
-        _employeeData = employeeData;
+        _employeeData = new Array<EmployeeData>(employeeData);
 
         for (int i = 0; i < 4; i++)
         {
@@ -58,16 +58,16 @@ public partial class WinnerPaper : Control
     {
         await ToSignal(GetTree().CreateTimer(1.0f), SceneTreeTimer.SignalName.Timeout);
 
-        if (_employeeData == null || _employeeData.Length != 4)
+        if (_employeeData == null || _employeeData.Count != 4)
         {
             OTMLogger.Instance.Error(this, "Winner paper must be initialized with employee data of size 4 before winner animation is played.");
             return;
         }
 
-        Array<EmployeeData> orderedEmployees = new Array<EmployeeData>(_employeeData.OrderByDescending(p => p.TotalPoints).ToArray());
+        EmployeeData[] orderedEmployees = _employeeData.OrderByDescending(p => p.TotalPoints).ToArray();
         for (int i = 3; i >= 0; i--)
         {
-            RaiseEmployee(orderedEmployees.IndexOf(_employeeData[i]), i + 1);
+            RaiseEmployee(_employeeData.IndexOf(orderedEmployees[i]), i + 1);
             await ToSignal(GetTree().CreateTimer(EMPLOYEE_RAISE_SEPERATION_TIME), SceneTreeTimer.SignalName.Timeout);
         }
 
