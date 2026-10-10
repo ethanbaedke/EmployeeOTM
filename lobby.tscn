@@ -1,0 +1,70 @@
+[gd_scene format=3 uid="uid://bl4pbjfr3wpaf"]
+
+[ext_resource type="Script" uid="uid://d3am4nm60aoe2" path="res://Lobby.cs" id="1_2wvic"]
+[ext_resource type="PackedScene" uid="uid://bpulko32timg0" path="res://entities/dirt_platform.tscn" id="1_ll2xe"]
+[ext_resource type="PackedScene" uid="uid://cc4033tn2565x" path="res://entities/elevator.tscn" id="2_xrgmn"]
+
+[sub_resource type="RectangleShape2D" id="RectangleShape2D_xrgmn"]
+size = Vector2(100, 1080)
+
+[node name="Lobby" type="Node2D" unique_id=1361497438 node_paths=PackedStringArray("_playerJoinElevatorAnimPlayer", "_playerJoinElevatorContentParent", "_joiningPlayerSpawnPosition")]
+script = ExtResource("1_2wvic")
+_playerJoinElevatorAnimPlayer = NodePath("Elevator/AnimationPlayer")
+_playerJoinElevatorContentParent = NodePath("Elevator/Back/ContentParent")
+_joiningPlayerSpawnPosition = NodePath("JoiningPlayerSpawnPosition")
+
+[node name="JoiningPlayerSpawnPosition" type="Node2D" parent="." unique_id=1955663673]
+position = Vector2(98, 1011)
+
+[node name="Elevator" parent="." unique_id=1081053051 instance=ExtResource("2_xrgmn")]
+position = Vector2(0, -3)
+
+[node name="DirtPlatform12" parent="." unique_id=680107740 instance=ExtResource("1_ll2xe")]
+position = Vector2(40, -3)
+
+[node name="DirtPlatform13" parent="." unique_id=1412761017 instance=ExtResource("1_ll2xe")]
+position = Vector2(408, -3)
+
+[node name="DirtPlatform14" parent="." unique_id=753190907 instance=ExtResource("1_ll2xe")]
+position = Vector2(776, -3)
+
+[node name="DirtPlatform15" parent="." unique_id=1019040931 instance=ExtResource("1_ll2xe")]
+position = Vector2(1145, -3)
+
+[node name="DirtPlatform16" parent="." unique_id=1806892231 instance=ExtResource("1_ll2xe")]
+position = Vector2(1513, -3)
+
+[node name="DirtPlatform17" parent="." unique_id=72039984 instance=ExtResource("1_ll2xe")]
+position = Vector2(1881, -3)
+
+[node name="DirtPlatform18" parent="." unique_id=343303974 instance=ExtResource("1_ll2xe")]
+position = Vector2(40, 1077)
+
+[node name="DirtPlatform19" parent="." unique_id=459327012 instance=ExtResource("1_ll2xe")]
+position = Vector2(408, 1077)
+
+[node name="DirtPlatform20" parent="." unique_id=1411613688 instance=ExtResource("1_ll2xe")]
+position = Vector2(776, 1077)
+
+[node name="DirtPlatform21" parent="." unique_id=1529268808 instance=ExtResource("1_ll2xe")]
+position = Vector2(1145, 1077)
+
+[node name="DirtPlatform22" parent="." unique_id=2104262824 instance=ExtResource("1_ll2xe")]
+position = Vector2(1513, 1077)
+
+[node name="DirtPlatform23" parent="." unique_id=1248404286 instance=ExtResource("1_ll2xe")]
+position = Vector2(1881, 1077)
+
+[node name="StaticBody2D" type="StaticBody2D" parent="." unique_id=1758710770]
+position = Vector2(-52, 526)
+
+[node name="CollisionShape2D" type="CollisionShape2D" parent="StaticBody2D" unique_id=1384594478]
+shape = SubResource("RectangleShape2D_xrgmn")
+
+[node name="StaticBody2D2" type="StaticBody2D" parent="." unique_id=2078053831]
+position = Vector2(1972, 532)
+
+[node name="CollisionShape2D" type="CollisionShape2D" parent="StaticBody2D2" unique_id=615908291]
+shape = SubResource("RectangleShape2D_xrgmn")
+
+[editable path="Elevator"]

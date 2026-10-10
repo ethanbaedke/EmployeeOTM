@@ -1,0 +1,304 @@
+[gd_scene format=3 uid="uid://cc4033tn2565x"]
+
+[sub_resource type="Gradient" id="Gradient_7ym4h"]
+colors = PackedColorArray(0.15, 0.15, 0.15, 1, 0.15, 0.15, 0.15, 1)
+
+[sub_resource type="GradientTexture1D" id="GradientTexture1D_5ll6n"]
+gradient = SubResource("Gradient_7ym4h")
+
+[sub_resource type="Gradient" id="Gradient_7jdj0"]
+colors = PackedColorArray(0.3, 0.3, 0.3, 1, 0.3, 0.3, 0.3, 1)
+
+[sub_resource type="GradientTexture1D" id="GradientTexture1D_4o8jc"]
+gradient = SubResource("Gradient_7jdj0")
+width = 1
+
+[sub_resource type="Gradient" id="Gradient_efvm4"]
+colors = PackedColorArray(0.6, 0.6, 0.6, 1, 0.75, 0.75, 0.75, 1)
+
+[sub_resource type="GradientTexture1D" id="GradientTexture1D_7ym4h"]
+gradient = SubResource("Gradient_efvm4")
+width = 1
+
+[sub_resource type="Gradient" id="Gradient_75hbl"]
+colors = PackedColorArray(0.45, 0.45, 0.45, 1, 0.45, 0.45, 0.45, 1)
+
+[sub_resource type="GradientTexture1D" id="GradientTexture1D_1l4d5"]
+gradient = SubResource("Gradient_75hbl")
+width = 1
+
+[sub_resource type="Animation" id="Animation_7jdj0"]
+length = 0.001
+tracks/0/type = "bezier"
+tracks/0/imported = false
+tracks/0/enabled = true
+tracks/0/path = NodePath("Back:position:x")
+tracks/0/interp = 1
+tracks/0/loop_wrap = true
+tracks/0/keys = {
+"handle_modes": PackedInt32Array(0),
+"points": PackedFloat32Array(98, -0.25, 0, 0.25, 0),
+"times": PackedFloat32Array(0)
+}
+tracks/1/type = "bezier"
+tracks/1/imported = false
+tracks/1/enabled = true
+tracks/1/path = NodePath("Back:position:y")
+tracks/1/interp = 1
+tracks/1/loop_wrap = true
+tracks/1/keys = {
+"handle_modes": PackedInt32Array(0),
+"points": PackedFloat32Array(920, -0.25, 0, 0.25, 0),
+"times": PackedFloat32Array(0)
+}
+tracks/2/type = "bezier"
+tracks/2/imported = false
+tracks/2/enabled = true
+tracks/2/path = NodePath("Back/LeftDoor:position:x")
+tracks/2/interp = 1
+tracks/2/loop_wrap = true
+tracks/2/keys = {
+"handle_modes": PackedInt32Array(0),
+"points": PackedFloat32Array(-0.22448987, -0.25, 0, 0.25, 0),
+"times": PackedFloat32Array(0)
+}
+tracks/3/type = "bezier"
+tracks/3/imported = false
+tracks/3/enabled = true
+tracks/3/path = NodePath("Back/LeftDoor:position:y")
+tracks/3/interp = 1
+tracks/3/loop_wrap = true
+tracks/3/keys = {
+"handle_modes": PackedInt32Array(0),
+"points": PackedFloat32Array(0.01953125, -0.25, 0, 0.25, 0),
+"times": PackedFloat32Array(0)
+}
+tracks/4/type = "bezier"
+tracks/4/imported = false
+tracks/4/enabled = true
+tracks/4/path = NodePath("Back/RightDoor:position:x")
+tracks/4/interp = 1
+tracks/4/loop_wrap = true
+tracks/4/keys = {
+"handle_modes": PackedInt32Array(0),
+"points": PackedFloat32Array(0.22448963, -0.25, 0, 0.25, 0),
+"times": PackedFloat32Array(0)
+}
+tracks/5/type = "bezier"
+tracks/5/imported = false
+tracks/5/enabled = true
+tracks/5/path = NodePath("Back/RightDoor:position:y")
+tracks/5/interp = 1
+tracks/5/loop_wrap = true
+tracks/5/keys = {
+"handle_modes": PackedInt32Array(0),
+"points": PackedFloat32Array(0.01953125, -0.25, 0, 0.25, 0),
+"times": PackedFloat32Array(0)
+}
+
+[sub_resource type="Animation" id="Animation_1l4d5"]
+resource_name = "close_doors"
+tracks/0/type = "bezier"
+tracks/0/imported = false
+tracks/0/enabled = true
+tracks/0/path = NodePath("Back/LeftDoor:position:x")
+tracks/0/interp = 1
+tracks/0/loop_wrap = true
+tracks/0/keys = {
+"handle_modes": PackedInt32Array(0, 0),
+"points": PackedFloat32Array(-0.57142866, 0, 0, 0.2, 0.25, -0.22448987, -0.5, 0, 0, 0),
+"times": PackedFloat32Array(0, 1)
+}
+tracks/1/type = "bezier"
+tracks/1/imported = false
+tracks/1/enabled = true
+tracks/1/path = NodePath("Back/LeftDoor:position:y")
+tracks/1/interp = 1
+tracks/1/loop_wrap = true
+tracks/1/keys = {
+"handle_modes": PackedInt32Array(0, 0),
+"points": PackedFloat32Array(0.01953125, -0.16666667, 0, 0, 0, 0.01953125, -0.25, 0, 0.25, 0),
+"times": PackedFloat32Array(0, 1)
+}
+tracks/2/type = "bezier"
+tracks/2/imported = false
+tracks/2/enabled = true
+tracks/2/path = NodePath("Back/RightDoor:position:x")
+tracks/2/interp = 1
+tracks/2/loop_wrap = true
+tracks/2/keys = {
+"handle_modes": PackedInt32Array(0, 0),
+"points": PackedFloat32Array(0.5714284, 0, 0, 0.2, -0.25, 0.22448963, -0.5, 0, 0, 0),
+"times": PackedFloat32Array(0, 1)
+}
+tracks/3/type = "bezier"
+tracks/3/imported = false
+tracks/3/enabled = true
+tracks/3/path = NodePath("Back/RightDoor:position:y")
+tracks/3/interp = 1
+tracks/3/loop_wrap = true
+tracks/3/keys = {
+"handle_modes": PackedInt32Array(0, 0),
+"points": PackedFloat32Array(0.01953125, -0.16666667, 0, 0, 0, 0.01953125, -0.25, 0, 0.25, 0),
+"times": PackedFloat32Array(0, 1)
+}
+
+[sub_resource type="Animation" id="Animation_75hbl"]
+resource_name = "open_doors"
+tracks/0/type = "bezier"
+tracks/0/imported = false
+tracks/0/enabled = true
+tracks/0/path = NodePath("Back/LeftDoor:position:x")
+tracks/0/interp = 1
+tracks/0/loop_wrap = true
+tracks/0/keys = {
+"handle_modes": PackedInt32Array(0, 2),
+"points": PackedFloat32Array(-0.22448987, 0, 0, 0.2, -0.25, -0.57142866, -0.5, 0, 0, 0),
+"times": PackedFloat32Array(0, 1)
+}
+tracks/1/type = "bezier"
+tracks/1/imported = false
+tracks/1/enabled = true
+tracks/1/path = NodePath("Back/LeftDoor:position:y")
+tracks/1/interp = 1
+tracks/1/loop_wrap = true
+tracks/1/keys = {
+"handle_modes": PackedInt32Array(0, 2),
+"points": PackedFloat32Array(0.01953125, -0.25, 0, 0.25, 0, 0.01953125, -0.16666667, 0, 0, 0),
+"times": PackedFloat32Array(0, 1)
+}
+tracks/2/type = "bezier"
+tracks/2/imported = false
+tracks/2/enabled = true
+tracks/2/path = NodePath("Back/RightDoor:position:x")
+tracks/2/interp = 1
+tracks/2/loop_wrap = true
+tracks/2/keys = {
+"handle_modes": PackedInt32Array(0, 2),
+"points": PackedFloat32Array(0.22448963, 0, 0, 0.2, 0.25, 0.5714284, -0.5, 0, 0, 0),
+"times": PackedFloat32Array(0, 1)
+}
+tracks/3/type = "bezier"
+tracks/3/imported = false
+tracks/3/enabled = true
+tracks/3/path = NodePath("Back/RightDoor:position:y")
+tracks/3/interp = 1
+tracks/3/loop_wrap = true
+tracks/3/keys = {
+"handle_modes": PackedInt32Array(0, 2),
+"points": PackedFloat32Array(0.01953125, -0.25, 0, 0.25, 0, 0.01953125, -0.16666667, 0, 0, 0),
+"times": PackedFloat32Array(0, 1)
+}
+
+[sub_resource type="Animation" id="Animation_efvm4"]
+resource_name = "take_down"
+tracks/0/type = "bezier"
+tracks/0/imported = false
+tracks/0/enabled = true
+tracks/0/path = NodePath("Back:position:x")
+tracks/0/interp = 1
+tracks/0/loop_wrap = true
+tracks/0/keys = {
+"handle_modes": PackedInt32Array(2, 0),
+"points": PackedFloat32Array(98, 0, 0, 0.16666667, 0, 98, -0.25, 0, 0.25, 0),
+"times": PackedFloat32Array(0, 1)
+}
+tracks/1/type = "bezier"
+tracks/1/imported = false
+tracks/1/enabled = true
+tracks/1/path = NodePath("Back:position:y")
+tracks/1/interp = 1
+tracks/1/loop_wrap = true
+tracks/1/keys = {
+"handle_modes": PackedInt32Array(2, 0),
+"points": PackedFloat32Array(-128, 0, 0, 0.2, 600, 920, -0.5, 0, 0, 0),
+"times": PackedFloat32Array(0, 1)
+}
+
+[sub_resource type="Animation" id="Animation_7ym4h"]
+resource_name = "take_up"
+tracks/0/type = "bezier"
+tracks/0/imported = false
+tracks/0/enabled = true
+tracks/0/path = NodePath("Back:position:x")
+tracks/0/interp = 1
+tracks/0/loop_wrap = true
+tracks/0/keys = {
+"handle_modes": PackedInt32Array(0, 0),
+"points": PackedFloat32Array(98, -0.25, 0, 0.25, 0, 98, 0, 0, 0.16666667, 0),
+"times": PackedFloat32Array(0, 1)
+}
+tracks/1/type = "bezier"
+tracks/1/imported = false
+tracks/1/enabled = true
+tracks/1/path = NodePath("Back:position:y")
+tracks/1/interp = 1
+tracks/1/loop_wrap = true
+tracks/1/keys = {
+"handle_modes": PackedInt32Array(0, 0),
+"points": PackedFloat32Array(920, 0, 0, 0.5, 0, -128, -0.2, 600, 0, 0),
+"times": PackedFloat32Array(0, 1)
+}
+
+[sub_resource type="AnimationLibrary" id="AnimationLibrary_75hbl"]
+_data = {
+&"RESET": SubResource("Animation_7jdj0"),
+&"close_doors": SubResource("Animation_1l4d5"),
+&"open_doors": SubResource("Animation_75hbl"),
+&"take_down": SubResource("Animation_efvm4"),
+&"take_up": SubResource("Animation_7ym4h")
+}
+
+[node name="Elevator" type="Node2D" unique_id=1081053051]
+
+[node name="Shaft" type="Sprite2D" parent="." unique_id=343751863]
+position = Vector2(98, 524.00006)
+scale = Vector2(0.76562506, 1048)
+texture = SubResource("GradientTexture1D_5ll6n")
+
+[node name="Back" type="Sprite2D" parent="." unique_id=1702390870]
+clip_children = 2
+position = Vector2(98, 920)
+scale = Vector2(196, 256)
+texture = SubResource("GradientTexture1D_4o8jc")
+
+[node name="ContentParent" type="Node2D" parent="Back" unique_id=1123592458]
+scale = Vector2(0.005, 0.004)
+
+[node name="LeftDoor" type="Sprite2D" parent="Back" unique_id=115061761]
+position = Vector2(-0.22448987, 0.01953125)
+scale = Vector2(0.44897974, 0.96093744)
+texture = SubResource("GradientTexture1D_7ym4h")
+
+[node name="DoorBar" type="Sprite2D" parent="Back/LeftDoor" unique_id=2115133807]
+position = Vector2(0.47159073, 0)
+scale = Vector2(0.056817513, 1.0000001)
+texture = SubResource("GradientTexture1D_1l4d5")
+
+[node name="RightDoor" type="Sprite2D" parent="Back" unique_id=835281409]
+position = Vector2(0.22448963, 0.01953125)
+scale = Vector2(0.44897974, 0.96093744)
+texture = SubResource("GradientTexture1D_7ym4h")
+
+[node name="DoorBar" type="Sprite2D" parent="Back/RightDoor" unique_id=1570375608]
+position = Vector2(-0.47159058, 0)
+scale = Vector2(0.056817513, 1.0000001)
+texture = SubResource("GradientTexture1D_1l4d5")
+
+[node name="LeftBorder" type="Sprite2D" parent="Back" unique_id=927745392]
+position = Vector2(-0.47448984, 0.01953125)
+scale = Vector2(0.051020406, 0.9609375)
+texture = SubResource("GradientTexture1D_1l4d5")
+
+[node name="RightBorder" type="Sprite2D" parent="Back" unique_id=1622902010]
+position = Vector2(0.47448978, 0.01953125)
+scale = Vector2(0.051020406, 0.9609375)
+texture = SubResource("GradientTexture1D_1l4d5")
+
+[node name="TopBorder" type="Sprite2D" parent="Back" unique_id=1751446427]
+position = Vector2(1.946274e-08, -0.4804687)
+scale = Vector2(1, 0.0390625)
+texture = SubResource("GradientTexture1D_1l4d5")
+
+[node name="AnimationPlayer" type="AnimationPlayer" parent="." unique_id=1345471427]
+libraries/ = SubResource("AnimationLibrary_75hbl")
