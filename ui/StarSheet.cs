@@ -7,6 +7,16 @@ public partial class StarSheet : Control
 	[Export] private VBoxContainer _nameContainer;
     [Export] private VBoxContainer _starRows;
 
+    public void InitializeStarSheet(EmployeeData[] data)
+    {
+        for (int i = 0; i < 4; i++)
+        {
+            Color color = data[i].EmployeeColor;
+            color.S = 0.5f; 
+            _nameContainer.GetChild<Label>(i).AddThemeColorOverride("font_outline_color", color);
+        }
+    }
+
     public void PlaceExistingStars(EmployeeData[] employeeData)
     {
         for (int i = 0; i < 4; i++)
@@ -78,17 +88,5 @@ public partial class StarSheet : Control
     private async Task PlaceStar(TextureRect star)
     {
         star.Modulate = Colors.White;
-    }
-
-    public override void _Ready()
-    {
-        base._Ready();
-        
-        for (int i = 0; i < 4; i++)
-        {
-            Color color = MatchManager.ScientistColors[i];
-            color.S = 0.5f; 
-            _nameContainer.GetChild<Label>(i).AddThemeColorOverride("font_outline_color", color);
-        }
     }
 }

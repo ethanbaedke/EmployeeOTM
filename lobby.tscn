@@ -2,69 +2,590 @@
 
 [ext_resource type="Script" uid="uid://d3am4nm60aoe2" path="res://Lobby.cs" id="1_2wvic"]
 [ext_resource type="PackedScene" uid="uid://bpulko32timg0" path="res://entities/dirt_platform.tscn" id="1_ll2xe"]
-[ext_resource type="PackedScene" uid="uid://cc4033tn2565x" path="res://entities/elevator.tscn" id="2_xrgmn"]
+
+[sub_resource type="Gradient" id="Gradient_xrgmn"]
+colors = PackedColorArray(0.15, 0.15, 0.15, 1, 0.15, 0.15, 0.15, 1)
+
+[sub_resource type="GradientTexture1D" id="GradientTexture1D_5ll6n"]
+gradient = SubResource("Gradient_xrgmn")
+
+[sub_resource type="Gradient" id="Gradient_2wvic"]
+colors = PackedColorArray(0.3, 0.3, 0.3, 1, 0.3, 0.3, 0.3, 1)
+
+[sub_resource type="GradientTexture1D" id="GradientTexture1D_4o8jc"]
+gradient = SubResource("Gradient_2wvic")
+width = 1
+
+[sub_resource type="Gradient" id="Gradient_tftiq"]
+colors = PackedColorArray(0.6, 0.6, 0.6, 1, 0.75, 0.75, 0.75, 1)
+
+[sub_resource type="GradientTexture1D" id="GradientTexture1D_7ym4h"]
+gradient = SubResource("Gradient_tftiq")
+width = 1
+
+[sub_resource type="Gradient" id="Gradient_1gg6n"]
+colors = PackedColorArray(0.45, 0.45, 0.45, 1, 0.45, 0.45, 0.45, 1)
+
+[sub_resource type="GradientTexture1D" id="GradientTexture1D_1l4d5"]
+gradient = SubResource("Gradient_1gg6n")
+width = 1
+
+[sub_resource type="Animation" id="Animation_7jdj0"]
+length = 0.001
+tracks/0/type = "bezier"
+tracks/0/imported = false
+tracks/0/enabled = true
+tracks/0/path = NodePath("Back:position:x")
+tracks/0/interp = 1
+tracks/0/loop_wrap = true
+tracks/0/keys = {
+"handle_modes": PackedInt32Array(0),
+"points": PackedFloat32Array(68, -0.25, 0, 0.25, 0),
+"times": PackedFloat32Array(0)
+}
+tracks/1/type = "bezier"
+tracks/1/imported = false
+tracks/1/enabled = true
+tracks/1/path = NodePath("Back:position:y")
+tracks/1/interp = 1
+tracks/1/loop_wrap = true
+tracks/1/keys = {
+"handle_modes": PackedInt32Array(0),
+"points": PackedFloat32Array(-128, -0.25, 0, 0.25, 0),
+"times": PackedFloat32Array(0)
+}
+tracks/2/type = "bezier"
+tracks/2/imported = false
+tracks/2/enabled = true
+tracks/2/path = NodePath("Back/LeftDoor:position:x")
+tracks/2/interp = 1
+tracks/2/loop_wrap = true
+tracks/2/keys = {
+"handle_modes": PackedInt32Array(0),
+"points": PackedFloat32Array(-0.22448987, -0.25, 0, 0.25, 0),
+"times": PackedFloat32Array(0)
+}
+tracks/3/type = "bezier"
+tracks/3/imported = false
+tracks/3/enabled = true
+tracks/3/path = NodePath("Back/LeftDoor:position:y")
+tracks/3/interp = 1
+tracks/3/loop_wrap = true
+tracks/3/keys = {
+"handle_modes": PackedInt32Array(0),
+"points": PackedFloat32Array(0.01953125, -0.25, 0, 0.25, 0),
+"times": PackedFloat32Array(0)
+}
+tracks/4/type = "bezier"
+tracks/4/imported = false
+tracks/4/enabled = true
+tracks/4/path = NodePath("Back/RightDoor:position:x")
+tracks/4/interp = 1
+tracks/4/loop_wrap = true
+tracks/4/keys = {
+"handle_modes": PackedInt32Array(0),
+"points": PackedFloat32Array(0.22448963, -0.25, 0, 0.25, 0),
+"times": PackedFloat32Array(0)
+}
+tracks/5/type = "bezier"
+tracks/5/imported = false
+tracks/5/enabled = true
+tracks/5/path = NodePath("Back/RightDoor:position:y")
+tracks/5/interp = 1
+tracks/5/loop_wrap = true
+tracks/5/keys = {
+"handle_modes": PackedInt32Array(0),
+"points": PackedFloat32Array(0.01953125, -0.25, 0, 0.25, 0),
+"times": PackedFloat32Array(0)
+}
+
+[sub_resource type="Animation" id="Animation_1l4d5"]
+resource_name = "close_doors"
+tracks/0/type = "bezier"
+tracks/0/imported = false
+tracks/0/enabled = true
+tracks/0/path = NodePath("Back/LeftDoor:position:x")
+tracks/0/interp = 1
+tracks/0/loop_wrap = true
+tracks/0/keys = {
+"handle_modes": PackedInt32Array(0, 0),
+"points": PackedFloat32Array(-0.57142866, 0, 0, 0.2, 0.25, -0.22448987, -0.5, 0, 0, 0),
+"times": PackedFloat32Array(0, 1)
+}
+tracks/1/type = "bezier"
+tracks/1/imported = false
+tracks/1/enabled = true
+tracks/1/path = NodePath("Back/LeftDoor:position:y")
+tracks/1/interp = 1
+tracks/1/loop_wrap = true
+tracks/1/keys = {
+"handle_modes": PackedInt32Array(0, 0),
+"points": PackedFloat32Array(0.01953125, -0.16666667, 0, 0, 0, 0.01953125, -0.25, 0, 0.25, 0),
+"times": PackedFloat32Array(0, 1)
+}
+tracks/2/type = "bezier"
+tracks/2/imported = false
+tracks/2/enabled = true
+tracks/2/path = NodePath("Back/RightDoor:position:x")
+tracks/2/interp = 1
+tracks/2/loop_wrap = true
+tracks/2/keys = {
+"handle_modes": PackedInt32Array(0, 0),
+"points": PackedFloat32Array(0.5714284, 0, 0, 0.2, -0.25, 0.22448963, -0.5, 0, 0, 0),
+"times": PackedFloat32Array(0, 1)
+}
+tracks/3/type = "bezier"
+tracks/3/imported = false
+tracks/3/enabled = true
+tracks/3/path = NodePath("Back/RightDoor:position:y")
+tracks/3/interp = 1
+tracks/3/loop_wrap = true
+tracks/3/keys = {
+"handle_modes": PackedInt32Array(0, 0),
+"points": PackedFloat32Array(0.01953125, -0.16666667, 0, 0, 0, 0.01953125, -0.25, 0, 0.25, 0),
+"times": PackedFloat32Array(0, 1)
+}
+
+[sub_resource type="Animation" id="Animation_75hbl"]
+resource_name = "open_doors"
+tracks/0/type = "bezier"
+tracks/0/imported = false
+tracks/0/enabled = true
+tracks/0/path = NodePath("Back/LeftDoor:position:x")
+tracks/0/interp = 1
+tracks/0/loop_wrap = true
+tracks/0/keys = {
+"handle_modes": PackedInt32Array(0, 2),
+"points": PackedFloat32Array(-0.22448987, 0, 0, 0.2, -0.25, -0.57142866, -0.5, 0, 0, 0),
+"times": PackedFloat32Array(0, 1)
+}
+tracks/1/type = "bezier"
+tracks/1/imported = false
+tracks/1/enabled = true
+tracks/1/path = NodePath("Back/LeftDoor:position:y")
+tracks/1/interp = 1
+tracks/1/loop_wrap = true
+tracks/1/keys = {
+"handle_modes": PackedInt32Array(0, 2),
+"points": PackedFloat32Array(0.01953125, -0.25, 0, 0.25, 0, 0.01953125, -0.16666667, 0, 0, 0),
+"times": PackedFloat32Array(0, 1)
+}
+tracks/2/type = "bezier"
+tracks/2/imported = false
+tracks/2/enabled = true
+tracks/2/path = NodePath("Back/RightDoor:position:x")
+tracks/2/interp = 1
+tracks/2/loop_wrap = true
+tracks/2/keys = {
+"handle_modes": PackedInt32Array(0, 2),
+"points": PackedFloat32Array(0.22448963, 0, 0, 0.2, 0.25, 0.5714284, -0.5, 0, 0, 0),
+"times": PackedFloat32Array(0, 1)
+}
+tracks/3/type = "bezier"
+tracks/3/imported = false
+tracks/3/enabled = true
+tracks/3/path = NodePath("Back/RightDoor:position:y")
+tracks/3/interp = 1
+tracks/3/loop_wrap = true
+tracks/3/keys = {
+"handle_modes": PackedInt32Array(0, 2),
+"points": PackedFloat32Array(0.01953125, -0.25, 0, 0.25, 0, 0.01953125, -0.16666667, 0, 0, 0),
+"times": PackedFloat32Array(0, 1)
+}
+
+[sub_resource type="Animation" id="Animation_efvm4"]
+resource_name = "take_down"
+tracks/0/type = "bezier"
+tracks/0/imported = false
+tracks/0/enabled = true
+tracks/0/path = NodePath("Back:position:x")
+tracks/0/interp = 1
+tracks/0/loop_wrap = true
+tracks/0/keys = {
+"handle_modes": PackedInt32Array(2, 0),
+"points": PackedFloat32Array(68, 0, 0, 0.16666667, 0, 68, -0.25, 0, 0.25, 0),
+"times": PackedFloat32Array(0, 1)
+}
+tracks/1/type = "bezier"
+tracks/1/imported = false
+tracks/1/enabled = true
+tracks/1/path = NodePath("Back:position:y")
+tracks/1/interp = 1
+tracks/1/loop_wrap = true
+tracks/1/keys = {
+"handle_modes": PackedInt32Array(2, 0),
+"points": PackedFloat32Array(-128, 0, 0, 0.2, 600, 920, -0.5, 0, 0, 0),
+"times": PackedFloat32Array(0, 1)
+}
+
+[sub_resource type="Animation" id="Animation_7ym4h"]
+resource_name = "take_up"
+tracks/0/type = "bezier"
+tracks/0/imported = false
+tracks/0/enabled = true
+tracks/0/path = NodePath("Back:position:x")
+tracks/0/interp = 1
+tracks/0/loop_wrap = true
+tracks/0/keys = {
+"handle_modes": PackedInt32Array(0, 0),
+"points": PackedFloat32Array(68, -0.25, 0, 0.25, 0, 68, 0, 0, 0.16666667, 0),
+"times": PackedFloat32Array(0, 1)
+}
+tracks/1/type = "bezier"
+tracks/1/imported = false
+tracks/1/enabled = true
+tracks/1/path = NodePath("Back:position:y")
+tracks/1/interp = 1
+tracks/1/loop_wrap = true
+tracks/1/keys = {
+"handle_modes": PackedInt32Array(0, 0),
+"points": PackedFloat32Array(920, 0, 0, 0.5, 0, -128, -0.2, 600, 0, 0),
+"times": PackedFloat32Array(0, 1)
+}
+
+[sub_resource type="AnimationLibrary" id="AnimationLibrary_75hbl"]
+_data = {
+&"RESET": SubResource("Animation_7jdj0"),
+&"close_doors": SubResource("Animation_1l4d5"),
+&"open_doors": SubResource("Animation_75hbl"),
+&"take_down": SubResource("Animation_efvm4"),
+&"take_up": SubResource("Animation_7ym4h")
+}
+
+[sub_resource type="RectangleShape2D" id="RectangleShape2D_2wvic"]
+size = Vector2(256, 256)
+
+[sub_resource type="Animation" id="Animation_1gg6n"]
+length = 0.001
+tracks/0/type = "bezier"
+tracks/0/imported = false
+tracks/0/enabled = true
+tracks/0/path = NodePath("Back/LeftDoor:position:x")
+tracks/0/interp = 1
+tracks/0/loop_wrap = true
+tracks/0/keys = {
+"handle_modes": PackedInt32Array(0),
+"points": PackedFloat32Array(-0.22448987, -0.25, 0, 0.25, 0),
+"times": PackedFloat32Array(0)
+}
+tracks/1/type = "bezier"
+tracks/1/imported = false
+tracks/1/enabled = true
+tracks/1/path = NodePath("Back/LeftDoor:position:y")
+tracks/1/interp = 1
+tracks/1/loop_wrap = true
+tracks/1/keys = {
+"handle_modes": PackedInt32Array(0),
+"points": PackedFloat32Array(0.01953125, -0.25, 0, 0.25, 0),
+"times": PackedFloat32Array(0)
+}
+tracks/2/type = "bezier"
+tracks/2/imported = false
+tracks/2/enabled = true
+tracks/2/path = NodePath("Back/RightDoor:position:x")
+tracks/2/interp = 1
+tracks/2/loop_wrap = true
+tracks/2/keys = {
+"handle_modes": PackedInt32Array(0),
+"points": PackedFloat32Array(0.22448963, -0.25, 0, 0.25, 0),
+"times": PackedFloat32Array(0)
+}
+tracks/3/type = "bezier"
+tracks/3/imported = false
+tracks/3/enabled = true
+tracks/3/path = NodePath("Back/RightDoor:position:y")
+tracks/3/interp = 1
+tracks/3/loop_wrap = true
+tracks/3/keys = {
+"handle_modes": PackedInt32Array(0),
+"points": PackedFloat32Array(0.01953125, -0.25, 0, 0.25, 0),
+"times": PackedFloat32Array(0)
+}
+
+[sub_resource type="Animation" id="Animation_2wvic"]
+resource_name = "close_doors"
+tracks/0/type = "bezier"
+tracks/0/imported = false
+tracks/0/enabled = true
+tracks/0/path = NodePath("Back/LeftDoor:position:x")
+tracks/0/interp = 1
+tracks/0/loop_wrap = true
+tracks/0/keys = {
+"handle_modes": PackedInt32Array(0, 0),
+"points": PackedFloat32Array(-0.5663252, 0, 0, 0.2, 0.25, -0.22448987, -0.5, 0, 0, 0),
+"times": PackedFloat32Array(0, 1)
+}
+tracks/1/type = "bezier"
+tracks/1/imported = false
+tracks/1/enabled = true
+tracks/1/path = NodePath("Back/LeftDoor:position:y")
+tracks/1/interp = 1
+tracks/1/loop_wrap = true
+tracks/1/keys = {
+"handle_modes": PackedInt32Array(0, 0),
+"points": PackedFloat32Array(0.01953125, -0.25, 0, 0.25, 0, 0.01953125, -0.25, 0, 0.25, 0),
+"times": PackedFloat32Array(0, 1)
+}
+tracks/2/type = "bezier"
+tracks/2/imported = false
+tracks/2/enabled = true
+tracks/2/path = NodePath("Back/RightDoor:position:x")
+tracks/2/interp = 1
+tracks/2/loop_wrap = true
+tracks/2/keys = {
+"handle_modes": PackedInt32Array(0, 0),
+"points": PackedFloat32Array(0.56632614, 0, 0, 0.2, -0.25, 0.22448963, -0.5, 0, 0, 0),
+"times": PackedFloat32Array(0, 1)
+}
+tracks/3/type = "bezier"
+tracks/3/imported = false
+tracks/3/enabled = true
+tracks/3/path = NodePath("Back/RightDoor:position:y")
+tracks/3/interp = 1
+tracks/3/loop_wrap = true
+tracks/3/keys = {
+"handle_modes": PackedInt32Array(0, 0),
+"points": PackedFloat32Array(0.01953125, -0.25, 0, 0.25, 0, 0.01953125, -0.25, 0, 0.25, 0),
+"times": PackedFloat32Array(0, 1)
+}
+
+[sub_resource type="Animation" id="Animation_tftiq"]
+resource_name = "open_doors"
+tracks/0/type = "bezier"
+tracks/0/imported = false
+tracks/0/enabled = true
+tracks/0/path = NodePath("Back/LeftDoor:position:x")
+tracks/0/interp = 1
+tracks/0/loop_wrap = true
+tracks/0/keys = {
+"handle_modes": PackedInt32Array(0, 2),
+"points": PackedFloat32Array(-0.22448987, 0, 0, 0.2, -0.25, -0.5663252, -0.5, 0, 0, 0),
+"times": PackedFloat32Array(0, 1)
+}
+tracks/1/type = "bezier"
+tracks/1/imported = false
+tracks/1/enabled = true
+tracks/1/path = NodePath("Back/LeftDoor:position:y")
+tracks/1/interp = 1
+tracks/1/loop_wrap = true
+tracks/1/keys = {
+"handle_modes": PackedInt32Array(0, 2),
+"points": PackedFloat32Array(0.01953125, -0.25, 0, 0.25, 0, 0.01953125, -0.16666667, 0, 0, 0),
+"times": PackedFloat32Array(0, 1)
+}
+tracks/2/type = "bezier"
+tracks/2/imported = false
+tracks/2/enabled = true
+tracks/2/path = NodePath("Back/RightDoor:position:x")
+tracks/2/interp = 1
+tracks/2/loop_wrap = true
+tracks/2/keys = {
+"handle_modes": PackedInt32Array(0, 2),
+"points": PackedFloat32Array(0.22448963, 0, 0, 0.2, 0.25, 0.56632614, -0.5, 0, 0, 0),
+"times": PackedFloat32Array(0, 1)
+}
+tracks/3/type = "bezier"
+tracks/3/imported = false
+tracks/3/enabled = true
+tracks/3/path = NodePath("Back/RightDoor:position:y")
+tracks/3/interp = 1
+tracks/3/loop_wrap = true
+tracks/3/keys = {
+"handle_modes": PackedInt32Array(0, 2),
+"points": PackedFloat32Array(0.01953125, -0.25, 0, 0.25, 0, 0.01953125, -0.16666667, 0, 0, 0),
+"times": PackedFloat32Array(0, 1)
+}
+
+[sub_resource type="AnimationLibrary" id="AnimationLibrary_1gg6n"]
+_data = {
+&"RESET": SubResource("Animation_1gg6n"),
+&"close_doors": SubResource("Animation_2wvic"),
+&"open_doors": SubResource("Animation_tftiq")
+}
 
 [sub_resource type="RectangleShape2D" id="RectangleShape2D_xrgmn"]
 size = Vector2(100, 1080)
 
-[node name="Lobby" type="Node2D" unique_id=1361497438 node_paths=PackedStringArray("_playerJoinElevatorAnimPlayer", "_playerJoinElevatorContentParent", "_joiningPlayerSpawnPosition")]
+[node name="Lobby" type="Node2D" unique_id=1361497438 node_paths=PackedStringArray("_joinDoorsAnimPlayer", "_joinParent", "_elevatorAnimPlayer", "_startArea", "_startAreaShape", "_elevatorPositions", "_elevatorPlayerParent")]
 script = ExtResource("1_2wvic")
-_playerJoinElevatorAnimPlayer = NodePath("Elevator/AnimationPlayer")
-_playerJoinElevatorContentParent = NodePath("Elevator/Back/ContentParent")
-_joiningPlayerSpawnPosition = NodePath("JoiningPlayerSpawnPosition")
+_joinDoorsAnimPlayer = NodePath("JoinDoor/AnimationPlayer")
+_joinParent = NodePath("JoinDoor/Back/SpawnParent")
+_elevatorAnimPlayer = NodePath("Elevator/AnimationPlayer")
+_startArea = NodePath("Elevator/Area2D")
+_startAreaShape = NodePath("Elevator/Area2D/CollisionShape2D")
+_elevatorPositions = [NodePath("Elevator/PlayerPos1"), NodePath("Elevator/PlayerPos2"), NodePath("Elevator/PlayerPos3"), NodePath("Elevator/PlayerPos4")]
+_elevatorPlayerParent = NodePath("Elevator/Back/PlayerParent")
 
-[node name="JoiningPlayerSpawnPosition" type="Node2D" parent="." unique_id=1955663673]
-position = Vector2(98, 1011)
+[node name="Elevator" type="Node2D" parent="." unique_id=1081053051]
+position = Vector2(1724, -3)
 
-[node name="Elevator" parent="." unique_id=1081053051 instance=ExtResource("2_xrgmn")]
-position = Vector2(0, -3)
+[node name="Shaft" type="Sprite2D" parent="Elevator" unique_id=343751863]
+position = Vector2(68, 524.00006)
+scale = Vector2(1, 1048)
+texture = SubResource("GradientTexture1D_5ll6n")
 
-[node name="DirtPlatform12" parent="." unique_id=680107740 instance=ExtResource("1_ll2xe")]
+[node name="Back" type="Sprite2D" parent="Elevator" unique_id=1702390870]
+clip_children = 2
+position = Vector2(68, -128)
+scale = Vector2(256, 256)
+texture = SubResource("GradientTexture1D_4o8jc")
+
+[node name="PlayerParent" type="Node2D" parent="Elevator/Back" unique_id=1123592458]
+scale = Vector2(0.005, 0.004)
+
+[node name="LeftDoor" type="Sprite2D" parent="Elevator/Back" unique_id=115061761]
+position = Vector2(-0.22448987, 0.01953125)
+scale = Vector2(0.44897974, 0.96093744)
+texture = SubResource("GradientTexture1D_7ym4h")
+
+[node name="DoorBar" type="Sprite2D" parent="Elevator/Back/LeftDoor" unique_id=2115133807]
+position = Vector2(0.47159073, 0)
+scale = Vector2(0.056817513, 1.0000001)
+texture = SubResource("GradientTexture1D_1l4d5")
+
+[node name="RightDoor" type="Sprite2D" parent="Elevator/Back" unique_id=835281409]
+position = Vector2(0.22448963, 0.01953125)
+scale = Vector2(0.44897974, 0.96093744)
+texture = SubResource("GradientTexture1D_7ym4h")
+
+[node name="DoorBar" type="Sprite2D" parent="Elevator/Back/RightDoor" unique_id=1570375608]
+position = Vector2(-0.47159058, 0)
+scale = Vector2(0.056817513, 1.0000001)
+texture = SubResource("GradientTexture1D_1l4d5")
+
+[node name="LeftBorder" type="Sprite2D" parent="Elevator/Back" unique_id=927745392]
+position = Vector2(-0.47448984, 0.01953125)
+scale = Vector2(0.051020406, 0.9609375)
+texture = SubResource("GradientTexture1D_1l4d5")
+
+[node name="RightBorder" type="Sprite2D" parent="Elevator/Back" unique_id=1622902010]
+position = Vector2(0.47448978, 0.01953125)
+scale = Vector2(0.051020406, 0.9609375)
+texture = SubResource("GradientTexture1D_1l4d5")
+
+[node name="TopBorder" type="Sprite2D" parent="Elevator/Back" unique_id=1751446427]
+position = Vector2(1.946274e-08, -0.4804687)
+scale = Vector2(1, 0.0390625)
+texture = SubResource("GradientTexture1D_1l4d5")
+
+[node name="AnimationPlayer" type="AnimationPlayer" parent="Elevator" unique_id=1345471427]
+libraries/ = SubResource("AnimationLibrary_75hbl")
+
+[node name="Area2D" type="Area2D" parent="Elevator" unique_id=1007104907]
+position = Vector2(68, 920)
+
+[node name="CollisionShape2D" type="CollisionShape2D" parent="Elevator/Area2D" unique_id=1622237300]
+shape = SubResource("RectangleShape2D_2wvic")
+disabled = true
+
+[node name="PlayerPos1" type="Node2D" parent="Elevator" unique_id=808549825]
+position = Vector2(-3, 1016)
+
+[node name="PlayerPos2" type="Node2D" parent="Elevator" unique_id=452019738]
+position = Vector2(45, 1016)
+
+[node name="PlayerPos3" type="Node2D" parent="Elevator" unique_id=1034108702]
+position = Vector2(93, 1016)
+
+[node name="PlayerPos4" type="Node2D" parent="Elevator" unique_id=1822069604]
+position = Vector2(141, 1016)
+
+[node name="JoinDoor" type="Node2D" parent="." unique_id=1528450666]
+position = Vector2(1145, 917)
+
+[node name="Back" type="Sprite2D" parent="JoinDoor" unique_id=594810741]
+clip_children = 2
+scale = Vector2(196, 256)
+texture = SubResource("GradientTexture1D_4o8jc")
+
+[node name="SpawnParent" type="Node2D" parent="JoinDoor/Back" unique_id=1955663673]
+position = Vector2(0.020408163, 0.375)
+scale = Vector2(0.0051020407, 0.00390625)
+
+[node name="LeftDoor" type="Sprite2D" parent="JoinDoor/Back" unique_id=275848695]
+position = Vector2(-0.22448987, 0.01953125)
+scale = Vector2(0.44897974, 0.96093744)
+texture = SubResource("GradientTexture1D_7ym4h")
+
+[node name="DoorBar" type="Sprite2D" parent="JoinDoor/Back/LeftDoor" unique_id=598067572]
+position = Vector2(0.47159073, 0)
+scale = Vector2(0.056817513, 1.0000001)
+texture = SubResource("GradientTexture1D_1l4d5")
+
+[node name="RightDoor" type="Sprite2D" parent="JoinDoor/Back" unique_id=754158396]
+position = Vector2(0.22448963, 0.01953125)
+scale = Vector2(0.44897974, 0.96093744)
+texture = SubResource("GradientTexture1D_7ym4h")
+
+[node name="DoorBar" type="Sprite2D" parent="JoinDoor/Back/RightDoor" unique_id=1549786765]
+position = Vector2(-0.47159058, 0)
+scale = Vector2(0.056817513, 1.0000001)
+texture = SubResource("GradientTexture1D_1l4d5")
+
+[node name="LeftBorder" type="Sprite2D" parent="JoinDoor/Back" unique_id=293667641]
+position = Vector2(-0.47448984, 0.01953125)
+scale = Vector2(0.051020406, 0.9609375)
+texture = SubResource("GradientTexture1D_1l4d5")
+
+[node name="RightBorder" type="Sprite2D" parent="JoinDoor/Back" unique_id=48105276]
+position = Vector2(0.47448978, 0.01953125)
+scale = Vector2(0.051020406, 0.9609375)
+texture = SubResource("GradientTexture1D_1l4d5")
+
+[node name="TopBorder" type="Sprite2D" parent="JoinDoor/Back" unique_id=2016258727]
+position = Vector2(1.946274e-08, -0.4804687)
+scale = Vector2(1, 0.0390625)
+texture = SubResource("GradientTexture1D_1l4d5")
+
+[node name="AnimationPlayer" type="AnimationPlayer" parent="JoinDoor" unique_id=1023917874]
+libraries/ = SubResource("AnimationLibrary_1gg6n")
+
+[node name="Borders" type="Node2D" parent="." unique_id=1602256485]
+
+[node name="DirtPlatform12" parent="Borders" unique_id=680107740 instance=ExtResource("1_ll2xe")]
 position = Vector2(40, -3)
 
-[node name="DirtPlatform13" parent="." unique_id=1412761017 instance=ExtResource("1_ll2xe")]
+[node name="DirtPlatform13" parent="Borders" unique_id=1412761017 instance=ExtResource("1_ll2xe")]
 position = Vector2(408, -3)
 
-[node name="DirtPlatform14" parent="." unique_id=753190907 instance=ExtResource("1_ll2xe")]
+[node name="DirtPlatform14" parent="Borders" unique_id=753190907 instance=ExtResource("1_ll2xe")]
 position = Vector2(776, -3)
 
-[node name="DirtPlatform15" parent="." unique_id=1019040931 instance=ExtResource("1_ll2xe")]
+[node name="DirtPlatform15" parent="Borders" unique_id=1019040931 instance=ExtResource("1_ll2xe")]
 position = Vector2(1145, -3)
 
-[node name="DirtPlatform16" parent="." unique_id=1806892231 instance=ExtResource("1_ll2xe")]
+[node name="DirtPlatform16" parent="Borders" unique_id=1806892231 instance=ExtResource("1_ll2xe")]
 position = Vector2(1513, -3)
 
-[node name="DirtPlatform17" parent="." unique_id=72039984 instance=ExtResource("1_ll2xe")]
+[node name="DirtPlatform17" parent="Borders" unique_id=72039984 instance=ExtResource("1_ll2xe")]
 position = Vector2(1881, -3)
 
-[node name="DirtPlatform18" parent="." unique_id=343303974 instance=ExtResource("1_ll2xe")]
+[node name="DirtPlatform18" parent="Borders" unique_id=343303974 instance=ExtResource("1_ll2xe")]
 position = Vector2(40, 1077)
 
-[node name="DirtPlatform19" parent="." unique_id=459327012 instance=ExtResource("1_ll2xe")]
+[node name="DirtPlatform19" parent="Borders" unique_id=459327012 instance=ExtResource("1_ll2xe")]
 position = Vector2(408, 1077)
 
-[node name="DirtPlatform20" parent="." unique_id=1411613688 instance=ExtResource("1_ll2xe")]
+[node name="DirtPlatform20" parent="Borders" unique_id=1411613688 instance=ExtResource("1_ll2xe")]
 position = Vector2(776, 1077)
 
-[node name="DirtPlatform21" parent="." unique_id=1529268808 instance=ExtResource("1_ll2xe")]
+[node name="DirtPlatform21" parent="Borders" unique_id=1529268808 instance=ExtResource("1_ll2xe")]
 position = Vector2(1145, 1077)
 
-[node name="DirtPlatform22" parent="." unique_id=2104262824 instance=ExtResource("1_ll2xe")]
+[node name="DirtPlatform22" parent="Borders" unique_id=2104262824 instance=ExtResource("1_ll2xe")]
 position = Vector2(1513, 1077)
 
-[node name="DirtPlatform23" parent="." unique_id=1248404286 instance=ExtResource("1_ll2xe")]
+[node name="DirtPlatform23" parent="Borders" unique_id=1248404286 instance=ExtResource("1_ll2xe")]
 position = Vector2(1881, 1077)
 
-[node name="StaticBody2D" type="StaticBody2D" parent="." unique_id=1758710770]
+[node name="StaticBody2D" type="StaticBody2D" parent="Borders" unique_id=1758710770]
 position = Vector2(-52, 526)
 
-[node name="CollisionShape2D" type="CollisionShape2D" parent="StaticBody2D" unique_id=1384594478]
+[node name="CollisionShape2D" type="CollisionShape2D" parent="Borders/StaticBody2D" unique_id=1384594478]
 shape = SubResource("RectangleShape2D_xrgmn")
 
-[node name="StaticBody2D2" type="StaticBody2D" parent="." unique_id=2078053831]
+[node name="StaticBody2D2" type="StaticBody2D" parent="Borders" unique_id=2078053831]
 position = Vector2(1972, 532)
 
-[node name="CollisionShape2D" type="CollisionShape2D" parent="StaticBody2D2" unique_id=615908291]
+[node name="CollisionShape2D" type="CollisionShape2D" parent="Borders/StaticBody2D2" unique_id=615908291]
 shape = SubResource("RectangleShape2D_xrgmn")
-
-[editable path="Elevator"]

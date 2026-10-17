@@ -12,28 +12,14 @@ public partial class MatchManager : Node2D
     [Export] private SingleWinnerDisplay _singleWinnerDisplay;
     [Export] private AnimationPlayer _matchFlowAnimPlayer;
 
-    public static Color[] ScientistColors =
-    {
-        Colors.Red,
-        Colors.Green,
-        Colors.Blue,
-        Colors.Yellow,
-    };
-
     private EmployeeData[] _employees;
 
-    public async Task StartMatchLoop()
+    public async Task StartMatchLoop(EmployeeData[] employeeData)
     {
         OTMLogger.Instance.Info(this, "Starting match loop.");
+        _employees = employeeData;
 
-        // Create employee data.
-        _employees = new EmployeeData[4];
-        for (int i = 0; i < 4; i++)
-        {
-            _employees[i] = new EmployeeData(ScientistColors[i]);
-        }
-        // TEMP: Give the first employee keyboard controls.
-        _employees[0].inputDevice = -1;
+        _starSheet.InitializeStarSheet(employeeData);
 
         _matchFlowAnimPlayer.Play("black_panel_out");
         await ToSignal(_matchFlowAnimPlayer, AnimationPlayer.SignalName.AnimationFinished);
@@ -96,6 +82,18 @@ public partial class MatchManager : Node2D
                 data.MiniGamePointTracker = 0;
             }
         }
+    }
+
+    // Used when the game manager needs a black panel for a loading screen while a match isn't going on.
+    public async Task BlackPanelInExternal()
+    {
+        _matchFlowAnimPlayer.Play("black_panel_in");
+        await ToSignal(_matchFlowAnimPlayer, "animation_finished");
+    }
+    public async Task BlackPanelOutExternal()
+    {
+        _matchFlowAnimPlayer.Play("black_panel_out");
+        await ToSignal(_matchFlowAnimPlayer, "animation_finished");
     }
 
     // Match winners must always have at least one entry when this function is called.

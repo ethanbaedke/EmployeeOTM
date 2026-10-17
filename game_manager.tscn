@@ -2,9 +2,11 @@
 
 [ext_resource type="Script" uid="uid://l0n8vboqork1" path="res://GameManager.cs" id="1_70yv6"]
 [ext_resource type="PackedScene" uid="uid://cpgb6caqng3qx" path="res://match_manager.tscn" id="2_smx3j"]
+[ext_resource type="PackedScene" uid="uid://bl4pbjfr3wpaf" path="res://lobby.tscn" id="3_o2178"]
 
 [node name="GameManager" type="Node2D" unique_id=2034387908 node_paths=PackedStringArray("_matchManager")]
 script = ExtResource("1_70yv6")
 _matchManager = NodePath("MatchManager")
+_lobbyScene = ExtResource("3_o2178")
 
 [node name="MatchManager" parent="." unique_id=1381656787 instance=ExtResource("2_smx3j")]
