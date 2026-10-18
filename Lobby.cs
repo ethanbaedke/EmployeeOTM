@@ -1,7 +1,8 @@
 using Godot;
 using System;
-using System.Collections.Generic;
 using Godot.Collections;
+using System.Threading.Tasks;
+using System.Threading;
 
 public partial class Lobby : Node2D
 {
@@ -21,7 +22,11 @@ public partial class Lobby : Node2D
     [Export]
     private Node2D[] _elevatorPositions = new Node2D[4];
     [Export]
-    private Node2D _elevatorPlayerParent;
+    private Area2D _colorChangeArea;
+    [Export]
+    private Node2D _colorChangeParent;
+    [Export]
+    private ColorSelector _colorSelector;
 
     public static Color[] ScientistColors =
     {
@@ -32,10 +37,12 @@ public partial class Lobby : Node2D
     };
 
 	private PackedScene _scientistScene = GD.Load<PackedScene>("res://entities/scientist/scientist.tscn");
-    private HashSet<int> _registeredDevices = new HashSet<int>();
+    private Array<int> _registeredDevices = new Array<int>();
     private bool _deliveringNewPlayer = false;
     private Array<Scientist> _playersReadyToStart = new Array<Scientist>();
     private bool _elevatorGoingUp = false;
+    private Scientist _colorChangingScientist = null;
+    private bool _colorChangeInputEnabled = false;
 
     private async void TakeElevatorUp()
     {
@@ -51,7 +58,7 @@ public partial class Lobby : Node2D
         // Put players in the elevator.
         for (int i = 0; i < _playersReadyToStart.Count; i++)
         {
-            MovePlayerIntoElevator(_playersReadyToStart[i], i);
+            AttachToParent(_playersReadyToStart[i], _elevatorPositions[i]);
             await ToSignal(GetTree().CreateTimer(0.25f), SceneTreeTimer.SignalName.Timeout);
         }
         await ToSignal(GetTree().CreateTimer(0.75f), SceneTreeTimer.SignalName.Timeout);
@@ -67,21 +74,6 @@ public partial class Lobby : Node2D
             data.Add(scientist.HeldEmployeeData);
         }
         EmitSignal("PlayersReady", data);
-    }
-
-    private async void MovePlayerIntoElevator(Scientist player, int positionIndex)
-    {
-        Tween positionTween = CreateTween();
-        positionTween.TweenProperty(player, "position", _elevatorPositions[positionIndex].GlobalPosition, 0.5f)
-        .SetEase(Tween.EaseType.Out)
-        .SetTrans(Tween.TransitionType.Cubic);
-        await ToSignal(positionTween, "finished");
-
-        Tween modulateTween = CreateTween();
-        modulateTween.TweenProperty(player, "modulate:v", 0.5f, 0.5f);
-        
-        await ToSignal(GetTree().CreateTimer(0.25f), SceneTreeTimer.SignalName.Timeout);
-        player.Reparent(_elevatorPlayerParent);
     }
 
     private async void DeliverNewPlayer(int inputDevice)
@@ -107,11 +99,7 @@ public partial class Lobby : Node2D
         // Release new player into lobby.
         _joinDoorsAnimPlayer.Play("open_doors");
         await ToSignal(_joinDoorsAnimPlayer, "animation_finished");
-        Tween fadeForwardTween = CreateTween();
-        fadeForwardTween.TweenProperty(newPlayer, "modulate:v", 1.0f, 0.5f);
-        await ToSignal(fadeForwardTween, "finished");
-        newPlayer.Reparent(this);
-        newPlayer.ProcessMode = ProcessModeEnum.Inherit;
+        await ReleaseFromParent(newPlayer);
         _joinDoorsAnimPlayer.Play("close_doors");
         await ToSignal(_joinDoorsAnimPlayer, "animation_finished");
 
@@ -125,6 +113,45 @@ public partial class Lobby : Node2D
             _elevatorAnimPlayer.Play("open_doors");
             await ToSignal(_elevatorAnimPlayer, "animation_finished");
             _startAreaShape.Disabled = false;
+        }
+    }
+
+    private async Task AttachToParent(Scientist scientist, Node2D parent)
+    {
+        scientist.ProcessMode = ProcessModeEnum.Disabled;
+
+        Tween positionTween = CreateTween();
+        positionTween.TweenProperty(scientist, "position", parent.GlobalPosition, 0.5f)
+        .SetEase(Tween.EaseType.Out)
+        .SetTrans(Tween.TransitionType.Cubic);
+        await ToSignal(positionTween, "finished");
+
+        Tween modulateTween = CreateTween();
+        modulateTween.TweenProperty(scientist, "modulate:v", 0.5f, 0.5f);
+        
+        await ToSignal(GetTree().CreateTimer(0.25f), SceneTreeTimer.SignalName.Timeout);
+        scientist.Reparent(parent);
+        await ToSignal(GetTree().CreateTimer(0.25f), SceneTreeTimer.SignalName.Timeout);
+    }
+
+    private async Task ReleaseFromParent(Scientist scientist)
+    {
+        Tween fadeForwardTween = CreateTween();
+        fadeForwardTween.TweenProperty(scientist, "modulate:v", 1.0f, 0.5f);
+        await ToSignal(fadeForwardTween, "finished");
+        scientist.Reparent(this);
+
+        scientist.ProcessMode = ProcessModeEnum.Inherit;
+
+        // The below fixes movement or input being held from when the process mode was last paused.
+        scientist.Velocity = Vector2.Zero;
+        scientist.SetMovementDirection(0.0f);
+        foreach (Node2D child in scientist.GetChildren())
+        {
+            if (child is PlayerController playerController)
+            {
+                playerController.ClearActionStates();
+            }
         }
     }
 
@@ -156,7 +183,28 @@ public partial class Lobby : Node2D
         if (body is Scientist scientist && _playersReadyToStart.Contains(scientist))
         {
             _playersReadyToStart.Remove(scientist);
-            
+        }
+    }
+
+    private async void OnColorChangeAreaBodyEntered(Node2D body)
+    {
+        if (body is Scientist scientist)
+        {
+            if (_colorChangingScientist == null)
+            {
+                _colorChangingScientist = scientist;
+
+                AttachToParent(scientist, _colorChangeParent);
+                await ToSignal(GetTree().CreateTimer(0.5f), SceneTreeTimer.SignalName.Timeout);
+                Tween colorSelectScaleTween = CreateTween();
+                colorSelectScaleTween.TweenProperty(_colorSelector, "scale", Vector2.One, 0.25);
+                await ToSignal(colorSelectScaleTween, "finished");
+                _colorChangeInputEnabled = true;
+            }
+            else if (_colorChangingScientist == scientist)
+            {
+                _colorChangingScientist = null;
+            }
         }
     }
 
@@ -166,8 +214,11 @@ public partial class Lobby : Node2D
 
         _startArea.BodyEntered += OnStartAreaBodyEntered;
         _startArea.BodyExited += OnStartAreaBodyExited;
+
+        _colorChangeArea.BodyEntered += OnColorChangeAreaBodyEntered;
     }
 
+    private Dictionary<int, bool> _deviceJoypadAxisActive = new Dictionary<int, bool>();
     public override void _Input(InputEvent @event)
     {
         base._Input(@event);
@@ -184,18 +235,80 @@ public partial class Lobby : Node2D
             return;
         }
 
-        // Get the device.
+        // Get the device and the action pressed.
         int device = @event.Device;
+        Settings.InputAction action = Settings.InputAction.NONE;
         if (@event is InputEventKey keyEvent)
         {
             device = -1;
+            action = OTMSaveData.Instance.Settings.GetActionFromKey(keyEvent.Keycode);
+        }
+        else if (@event is InputEventJoypadButton buttonEvent)
+        {
+            action = OTMSaveData.Instance.Settings.GetActionFromButton(buttonEvent.ButtonIndex);
+        }
+        else if (@event is InputEventJoypadMotion motionEvent)
+        {
+            action = OTMSaveData.Instance.Settings.GetActionFromAxis(motionEvent.Axis);
         }
 
-        // If the device isn't already being used, add a new player with that device.
-        if (_registeredDevices.Contains(device) == false && _deliveringNewPlayer == false)
+        if (action == Settings.InputAction.JUMP)
         {
-            _registeredDevices.Add(device);
-            DeliverNewPlayer(device);
+            // If the device isn't already being used, add a new player with that device.
+            if (_registeredDevices.Contains(device) == false && _deliveringNewPlayer == false)
+            {
+                _registeredDevices.Add(device);
+                DeliverNewPlayer(device);
+
+                if (device != -1)
+                {
+                    _deviceJoypadAxisActive[device] = false;
+                }
+                return;
+            }
+        }
+
+        // Color selection.
+        if (_colorChangeInputEnabled && _colorChangingScientist.HeldEmployeeData.inputDevice == device)
+        {
+            if (action == Settings.InputAction.MOVE_LEFT)
+            {
+                _colorSelector.ScrollRight();
+            }
+            else if (action == Settings.InputAction.MOVE_RIGHT)
+            {
+                _colorSelector.ScrollLeft();
+            }
+            else if (action == Settings.InputAction.MOVE_AXIS)
+            {
+                InputEventJoypadMotion motionEvent = @event as InputEventJoypadMotion;
+                OTMLogger.Instance.Info(this, motionEvent.AxisValue.ToString());
+                if (_deviceJoypadAxisActive[device] == false && Mathf.Abs(motionEvent.AxisValue) >= 0.8f)
+                {
+                    float dir = motionEvent.AxisValue;
+                    if (Mathf.Sign(dir) == -1)
+                    {
+                        _colorSelector.ScrollRight();
+                    }
+                    else
+                    {
+                        _colorSelector.ScrollLeft();
+                    }
+                    _deviceJoypadAxisActive[device] = true;
+                }
+                else if (Mathf.Abs(motionEvent.AxisValue) <= 0.7f)
+                {
+                    _deviceJoypadAxisActive[device] = false;
+                }
+            }
+            else if (action == Settings.InputAction.JUMP)
+            {
+                _colorChangingScientist.UpdateColor(_colorSelector.GetSelectedColor());
+                ReleaseFromParent(_colorChangingScientist);
+                _colorChangeInputEnabled = false;
+                Tween colorSelectScaleTween = CreateTween();
+                colorSelectScaleTween.TweenProperty(_colorSelector, "scale", Vector2.Zero, 0.25);
+            }
         }
     }
 

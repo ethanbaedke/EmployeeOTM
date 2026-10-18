@@ -54,6 +54,15 @@ public partial class Scientist : CharacterBody2D
 		}
 	}
 
+    public void UpdateColor(Color color)
+    {
+        HeldEmployeeData.EmployeeColor = color;
+
+        // Set outline color.
+		ShaderMaterial shaderMat = _sprite.Material as ShaderMaterial;
+		shaderMat.SetShaderParameter("outline_color", HeldEmployeeData.EmployeeColor);
+    }
+
 	// Expects a direciton between (-1.0, 1.0).
 	public void SetMovementDirection(float dir)
 	{
@@ -91,8 +100,6 @@ public partial class Scientist : CharacterBody2D
 	public override void _Ready()
 	{
 		base._Ready();
-
-
 	}
 
 	public override void _PhysicsProcess(double delta)
