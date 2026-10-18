@@ -144,11 +144,54 @@ public partial class Lobby : Node2D
 
     private async Task ReleaseFromParent(Scientist scientist)
     {
+        // We can assume this will always work.
+        CollisionShape2D scientistShape = null;
+        foreach (Node2D child in scientist.GetChildren())
+        {
+            if (child is CollisionShape2D colShape)
+            {
+                scientistShape = colShape;
+            }
+        }
+
+        // Ensure nothing is blocking our releasing player.
+        PhysicsShapeQueryParameters2D query = new PhysicsShapeQueryParameters2D
+        {
+            Shape = scientistShape.Shape,
+            Transform = scientistShape.GlobalTransform,
+            CollideWithAreas = false,
+            CollideWithBodies = true,
+        };
+        Array<Dictionary> hits = GetWorld2D().DirectSpaceState.IntersectShape(query);
+        int playerHitCount = 0;
+        foreach (Dictionary hitDict in hits)
+        {
+            if (hitDict["collider"].As<PhysicsBody2D>() is Scientist)
+            {
+                playerHitCount++;
+            }
+        }
+        while (playerHitCount > 0)
+        {
+            await ToSignal(GetTree().CreateTimer(0.1f), SceneTreeTimer.SignalName.Timeout);
+
+            hits = GetWorld2D().DirectSpaceState.IntersectShape(query);
+            playerHitCount = 0;
+            foreach (Dictionary hitDict in hits)
+            {
+                if (hitDict["collider"].As<PhysicsBody2D>() is Scientist)
+                {
+                    playerHitCount++;
+                }
+            }
+        }
+
         Tween fadeForwardTween = CreateTween();
         fadeForwardTween.TweenProperty(scientist, "modulate:v", 1.0f, 0.5f);
-        await ToSignal(fadeForwardTween, "finished");
+        // We do not wait for the fade to be complete, since as soon as there is space to come out we want our collider to be active.
+        // We only wait a frame so the player doesn't jump if releasing from the parent was a result of selection.
+        await ToSignal(GetTree(), "process_frame");
         scientist.Reparent(this);
-
         scientist.ProcessMode = ProcessModeEnum.Inherit;
 
         // The below fixes movement or input being held from when the process mode was last paused.
@@ -334,11 +377,11 @@ public partial class Lobby : Node2D
             }
             else if (action == Settings.InputAction.JUMP)
             {
-                _colorChangingScientist.UpdateColor(_colorSelector.GetSelectedColor());
-                ReleaseFromParent(_colorChangingScientist);
                 _colorChangeInputEnabled = false;
+                _colorChangingScientist.UpdateColor(_colorSelector.GetSelectedColor());
                 Tween colorSelectScaleTween = CreateTween();
                 colorSelectScaleTween.TweenProperty(_colorSelector, "scale", Vector2.Zero, 0.25);
+                ReleaseFromParent(_colorChangingScientist);
             }
         }
 
@@ -377,11 +420,11 @@ public partial class Lobby : Node2D
             }
             else if (action == Settings.InputAction.JUMP)
             {
-                _spriteChangingScientist.UpdateSprite(_spriteSelector.GetSelectedTexture());
-                ReleaseFromParent(_spriteChangingScientist);
                 _spriteChangeInputEnabled = false;
+                _spriteChangingScientist.UpdateSprite(_spriteSelector.GetSelectedTexture());
                 Tween spriteSelectScaleTween = CreateTween();
                 spriteSelectScaleTween.TweenProperty(_spriteSelector, "scale", Vector2.Zero, 0.25);
+                ReleaseFromParent(_spriteChangingScientist);
             }
         }
     }
