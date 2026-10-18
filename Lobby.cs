@@ -27,6 +27,12 @@ public partial class Lobby : Node2D
     private Node2D _colorChangeParent;
     [Export]
     private ColorSelector _colorSelector;
+    [Export]
+    private Area2D _spriteChangeArea;
+    [Export]
+    private Node2D _spriteChangeParent;
+    [Export]
+    private SpriteSelector _spriteSelector;
 
     public static Color[] ScientistColors =
     {
@@ -43,6 +49,8 @@ public partial class Lobby : Node2D
     private bool _elevatorGoingUp = false;
     private Scientist _colorChangingScientist = null;
     private bool _colorChangeInputEnabled = false;
+    private Scientist _spriteChangingScientist = null;
+    private bool _spriteChangeInputEnabled = false;
 
     private async void TakeElevatorUp()
     {
@@ -208,6 +216,28 @@ public partial class Lobby : Node2D
         }
     }
 
+    private async void OnSpriteChangeAreaBodyEntered(Node2D body)
+    {
+        if (body is Scientist scientist)
+        {
+            if (_spriteChangingScientist == null)
+            {
+                _spriteChangingScientist = scientist;
+
+                AttachToParent(scientist, _spriteChangeParent);
+                await ToSignal(GetTree().CreateTimer(0.5f), SceneTreeTimer.SignalName.Timeout);
+                Tween spriteSelectScaleTween = CreateTween();
+                spriteSelectScaleTween.TweenProperty(_spriteSelector, "scale", Vector2.One, 0.25);
+                await ToSignal(spriteSelectScaleTween, "finished");
+                _spriteChangeInputEnabled = true;
+            }
+            else if (_spriteChangingScientist == scientist)
+            {
+                _spriteChangingScientist = null;
+            }
+        }
+    }
+
     public override void _Ready()
     {
         base._Ready();
@@ -216,6 +246,7 @@ public partial class Lobby : Node2D
         _startArea.BodyExited += OnStartAreaBodyExited;
 
         _colorChangeArea.BodyEntered += OnColorChangeAreaBodyEntered;
+        _spriteChangeArea.BodyEntered += OnSpriteChangeAreaBodyEntered;
     }
 
     private Dictionary<int, bool> _deviceJoypadAxisActive = new Dictionary<int, bool>();
@@ -308,6 +339,49 @@ public partial class Lobby : Node2D
                 _colorChangeInputEnabled = false;
                 Tween colorSelectScaleTween = CreateTween();
                 colorSelectScaleTween.TweenProperty(_colorSelector, "scale", Vector2.Zero, 0.25);
+            }
+        }
+
+        // Sprite selection
+        if (_spriteChangeInputEnabled && _spriteChangingScientist.HeldEmployeeData.inputDevice == device)
+        {
+            if (action == Settings.InputAction.MOVE_LEFT)
+            {
+                _spriteSelector.ScrollRight();
+            }
+            else if (action == Settings.InputAction.MOVE_RIGHT)
+            {
+                _spriteSelector.ScrollLeft();
+            }
+            else if (action == Settings.InputAction.MOVE_AXIS)
+            {
+                InputEventJoypadMotion motionEvent = @event as InputEventJoypadMotion;
+                OTMLogger.Instance.Info(this, motionEvent.AxisValue.ToString());
+                if (_deviceJoypadAxisActive[device] == false && Mathf.Abs(motionEvent.AxisValue) >= 0.8f)
+                {
+                    float dir = motionEvent.AxisValue;
+                    if (Mathf.Sign(dir) == -1)
+                    {
+                        _spriteSelector.ScrollRight();
+                    }
+                    else
+                    {
+                        _spriteSelector.ScrollLeft();
+                    }
+                    _deviceJoypadAxisActive[device] = true;
+                }
+                else if (Mathf.Abs(motionEvent.AxisValue) <= 0.7f)
+                {
+                    _deviceJoypadAxisActive[device] = false;
+                }
+            }
+            else if (action == Settings.InputAction.JUMP)
+            {
+                _spriteChangingScientist.UpdateSprite(_spriteSelector.GetSelectedTexture());
+                ReleaseFromParent(_spriteChangingScientist);
+                _spriteChangeInputEnabled = false;
+                Tween spriteSelectScaleTween = CreateTween();
+                spriteSelectScaleTween.TweenProperty(_spriteSelector, "scale", Vector2.Zero, 0.25);
             }
         }
     }

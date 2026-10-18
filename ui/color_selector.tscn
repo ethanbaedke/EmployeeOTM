@@ -427,7 +427,7 @@ _data = {
 &"scroll_right": SubResource("Animation_3ijvl")
 }
 
-[node name="Color" type="Node2D" unique_id=487824245 node_paths=PackedStringArray("_animPlayer", "_backLeft", "_left", "_backRight", "_right", "_center")]
+[node name="ColorSelector" type="Node2D" unique_id=487824245 node_paths=PackedStringArray("_animPlayer", "_backLeft", "_left", "_backRight", "_right", "_center")]
 script = ExtResource("1_hj23f")
 _animPlayer = NodePath("AnimationPlayer")
 _colors = PackedColorArray(1, 0, 0, 1, 0, 1, 0, 1, 0, 0, 1, 1, 1, 1, 0, 1, 1, 0, 1, 1, 0, 1, 1, 1)

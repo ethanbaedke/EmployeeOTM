@@ -4,6 +4,7 @@ using System;
 public partial class EmployeeData : GodotObject
 {
     public Color EmployeeColor = Colors.White;
+    public Texture2D EmployeeTexture = GD.Load<CompressedTexture2D>("res://entities/scientist/scientist.svg");
     // The number of points this employee has accrued this match.
     public int TotalPoints = 0;
     // The number of points this employee should be awarded from the last mini-game.

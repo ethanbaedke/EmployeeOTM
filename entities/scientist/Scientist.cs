@@ -40,6 +40,9 @@ public partial class Scientist : CharacterBody2D
 		ShaderMaterial shaderMat = _sprite.Material as ShaderMaterial;
 		shaderMat.SetShaderParameter("outline_color", employeeData.EmployeeColor);
 
+        // Set texture.
+        _sprite.Texture = HeldEmployeeData.EmployeeTexture;
+
 		// Create controller.
 		if (employeeData.inputDevice == -2)
 		{
@@ -61,6 +64,13 @@ public partial class Scientist : CharacterBody2D
         // Set outline color.
 		ShaderMaterial shaderMat = _sprite.Material as ShaderMaterial;
 		shaderMat.SetShaderParameter("outline_color", HeldEmployeeData.EmployeeColor);
+    }
+
+    public void UpdateSprite(CompressedTexture2D texture)
+    {
+        HeldEmployeeData.EmployeeTexture = texture;
+
+        _sprite.Texture = HeldEmployeeData.EmployeeTexture;
     }
 
 	// Expects a direciton between (-1.0, 1.0).

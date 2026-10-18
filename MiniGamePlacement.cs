@@ -31,6 +31,7 @@ public partial class MiniGamePlacement : Node2D
         for (int i = 0; i < 4; i++)
         {
             Sprite2D sprite = _placementNode.GetChild<Sprite2D>(i);
+            sprite.Texture = orderedData[3 - i].EmployeeTexture;
             ShaderMaterial shaderMat = sprite.Material as ShaderMaterial;
             shaderMat.SetShaderParameter("outline_color", orderedData[3 - i].EmployeeColor);
         }

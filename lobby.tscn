@@ -3,6 +3,7 @@
 [ext_resource type="Script" uid="uid://d3am4nm60aoe2" path="res://Lobby.cs" id="1_2wvic"]
 [ext_resource type="PackedScene" uid="uid://bpulko32timg0" path="res://entities/dirt_platform.tscn" id="1_ll2xe"]
 [ext_resource type="PackedScene" uid="uid://crtjetvxkwxpi" path="res://ui/color_selector.tscn" id="2_2wvic"]
+[ext_resource type="PackedScene" uid="uid://j3xevbmsvxst" path="res://ui/sprite_selector.tscn" id="3_tftiq"]
 
 [sub_resource type="Gradient" id="Gradient_xrgmn"]
 colors = PackedColorArray(0.15, 0.15, 0.15, 1, 0.15, 0.15, 0.15, 1)
@@ -410,7 +411,7 @@ size = Vector2(196, 256)
 [sub_resource type="RectangleShape2D" id="RectangleShape2D_xrgmn"]
 size = Vector2(100, 1080)
 
-[node name="Lobby" type="Node2D" unique_id=1361497438 node_paths=PackedStringArray("_joinDoorsAnimPlayer", "_joinParent", "_elevatorAnimPlayer", "_startArea", "_startAreaShape", "_elevatorPositions", "_colorChangeArea", "_colorChangeParent", "_colorSelector")]
+[node name="Lobby" type="Node2D" unique_id=1361497438 node_paths=PackedStringArray("_joinDoorsAnimPlayer", "_joinParent", "_elevatorAnimPlayer", "_startArea", "_startAreaShape", "_elevatorPositions", "_colorChangeArea", "_colorChangeParent", "_colorSelector", "_spriteChangeArea", "_spriteChangeParent", "_spriteSelector")]
 script = ExtResource("1_2wvic")
 _joinDoorsAnimPlayer = NodePath("JoinDoor/AnimationPlayer")
 _joinParent = NodePath("JoinDoor/Back/SpawnParent")
@@ -421,6 +422,9 @@ _elevatorPositions = [NodePath("Elevator/Back/PlayerPos1"), NodePath("Elevator/B
 _colorChangeArea = NodePath("ColorChangeStation/Area2D")
 _colorChangeParent = NodePath("ColorChangeStation/Back/ChangeParent")
 _colorSelector = NodePath("ColorChangeStation/ColorSelector")
+_spriteChangeArea = NodePath("SpriteChangeStation/Area2D")
+_spriteChangeParent = NodePath("SpriteChangeStation/Back/ChangeParent")
+_spriteSelector = NodePath("SpriteChangeStation/SpriteSelector")
 
 [node name="Elevator" type="Node2D" parent="." unique_id=1081053051]
 position = Vector2(1724, -3)
@@ -580,6 +584,42 @@ texture = SubResource("GradientTexture1D_1l4d5")
 shape = SubResource("RectangleShape2D_tftiq")
 
 [node name="ColorSelector" parent="ColorChangeStation" unique_id=487824245 instance=ExtResource("2_2wvic")]
+position = Vector2(0, -64)
+scale = Vector2(1e-05, 1e-05)
+
+[node name="SpriteChangeStation" type="Node2D" parent="." unique_id=1875471083]
+position = Vector2(1146, 349)
+
+[node name="Back" type="Sprite2D" parent="SpriteChangeStation" unique_id=1810938289]
+clip_children = 2
+scale = Vector2(196, 256)
+texture = SubResource("GradientTexture1D_4o8jc")
+
+[node name="ChangeParent" type="Node2D" parent="SpriteChangeStation/Back" unique_id=1749797160]
+position = Vector2(0, 0.375)
+scale = Vector2(2.6030819e-05, 1.5258789e-05)
+
+[node name="LeftBorder" type="Sprite2D" parent="SpriteChangeStation/Back" unique_id=1773932370]
+position = Vector2(-0.47448984, 0.01953125)
+scale = Vector2(0.051020406, 0.9609375)
+texture = SubResource("GradientTexture1D_1l4d5")
+
+[node name="RightBorder" type="Sprite2D" parent="SpriteChangeStation/Back" unique_id=407406035]
+position = Vector2(0.47448978, 0.01953125)
+scale = Vector2(0.051020406, 0.9609375)
+texture = SubResource("GradientTexture1D_1l4d5")
+
+[node name="TopBorder" type="Sprite2D" parent="SpriteChangeStation/Back" unique_id=320858550]
+position = Vector2(1.946274e-08, -0.4804687)
+scale = Vector2(1, 0.0390625)
+texture = SubResource("GradientTexture1D_1l4d5")
+
+[node name="Area2D" type="Area2D" parent="SpriteChangeStation" unique_id=851346715]
+
+[node name="CollisionShape2D" type="CollisionShape2D" parent="SpriteChangeStation/Area2D" unique_id=1512937472]
+shape = SubResource("RectangleShape2D_tftiq")
+
+[node name="SpriteSelector" parent="SpriteChangeStation" unique_id=750747855 instance=ExtResource("3_tftiq")]
 position = Vector2(0, -64)
 scale = Vector2(1e-05, 1e-05)
 

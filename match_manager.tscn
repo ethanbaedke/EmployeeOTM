@@ -302,6 +302,7 @@ _singleWinnerDisplay = NodePath("CanvasLayer/SingleWinnerDisplay")
 _matchFlowAnimPlayer = NodePath("MatchFlowAnimationPlayer")
 
 [node name="MiniGamePlacement" parent="." unique_id=573806813 instance=ExtResource("4_xfb0p")]
+visible = false
 
 [node name="CanvasLayer" type="CanvasLayer" parent="." unique_id=839881482]
 
