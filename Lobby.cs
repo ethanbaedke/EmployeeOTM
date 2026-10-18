@@ -151,16 +151,9 @@ public partial class Lobby : Node2D
 
         scientist.ProcessMode = ProcessModeEnum.Inherit;
 
-        // The below fixes movement or input being held from when the process mode was last paused.
+        // Clear out any movement that was being done when process mode was disabled.
         scientist.Velocity = Vector2.Zero;
         scientist.SetMovementDirection(0.0f);
-        foreach (Node2D child in scientist.GetChildren())
-        {
-            if (child is PlayerController playerController)
-            {
-                playerController.ClearActionStates();
-            }
-        }
     }
 
     private void OnStartAreaBodyEntered(Node2D body)

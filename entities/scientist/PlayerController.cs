@@ -9,14 +9,6 @@ public partial class PlayerController : ScientistController
 
     private Dictionary<Settings.InputAction, bool> actionStates = new Dictionary<Settings.InputAction, bool>();
 
-    public void ClearActionStates()
-    {
-        foreach (Settings.InputAction action in actionStates.Keys)
-        {
-            actionStates[action] = false;
-        }
-    }
-
     public override void _Process(double delta)
     {
         base._Process(delta);
