@@ -2,16 +2,19 @@
 
 [ext_resource type="Script" uid="uid://dvuyqy0fsrtt3" path="res://levels/FridayLayoffs.cs" id="1_xemdx"]
 [ext_resource type="PackedScene" uid="uid://ddsuppc5mxr32" path="res://entities/scientist/scientist.tscn" id="2_cdpv0"]
+[ext_resource type="PackedScene" uid="uid://c1w2ibs5t4v4b" path="res://ui/MiniGameTutorial.tscn" id="5_jh7wy"]
 [ext_resource type="PackedScene" uid="uid://bpulko32timg0" path="res://entities/dirt_platform.tscn" id="5_kwhk1"]
 [ext_resource type="PackedScene" uid="uid://km4o30h8u3rt" path="res://ui/center_screen_countdown.tscn" id="7_k6j0r"]
 
 [sub_resource type="RectangleShape2D" id="RectangleShape2D_o3a2j"]
 size = Vector2(100, 1080)
 
-[node name="FridayLayoffs" type="Node2D" unique_id=739882208 node_paths=PackedStringArray("_centerScreenCountdown", "_scientists")]
+[node name="FridayLayoffs" type="Node2D" unique_id=739882208 node_paths=PackedStringArray("_centerScreenCountdown", "_scientists", "_tutorial")]
 script = ExtResource("1_xemdx")
 _centerScreenCountdown = NodePath("CanvasLayer/CenterScreenCountdown")
 _scientists = [NodePath("Scientist"), NodePath("Scientist2"), NodePath("Scientist3"), NodePath("Scientist4")]
+_tutorial = NodePath("CanvasLayer/MiniGameTutorial")
+_miniGameDescription = "Don't end up with the pink slip when time runs out!"
 
 [node name="Scientist" parent="." unique_id=1174776970 instance=ExtResource("2_cdpv0")]
 position = Vector2(102, 1011)
@@ -100,3 +103,5 @@ position = Vector2(1511, 276.99982)
 [node name="CanvasLayer" type="CanvasLayer" parent="." unique_id=743391810]
 
 [node name="CenterScreenCountdown" parent="CanvasLayer" unique_id=1320922543 instance=ExtResource("7_k6j0r")]
+
+[node name="MiniGameTutorial" parent="CanvasLayer" unique_id=858250490 instance=ExtResource("5_jh7wy")]

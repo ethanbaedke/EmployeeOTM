@@ -110,6 +110,11 @@ public partial class FridayLayoffs : MiniGame, INameProvider
     {
         base._Process(delta);
 
+        if (_miniGameStarted == false)
+        {
+            return;
+        }
+
         // Handoff if necessary.
         _handoffCooldown -= delta;
         if (_pinkSlipHandoffTarget != null)

@@ -63,6 +63,11 @@ public partial class KingOfTheHill : MiniGame, INameProvider
     {
         base._Process(delta);
 
+        if (_miniGameStarted == false)
+        {
+            return;
+        }
+
         // Tick game time.
         if (_timeRemaining > 0.0)
         {

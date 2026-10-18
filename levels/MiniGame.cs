@@ -2,13 +2,24 @@ using Godot;
 using Godot.Collections;
 using System;
 using System.Linq;
+using System.Reflection;
+using System.Threading.Tasks;
 
 public abstract partial class MiniGame : Node2D
 {
-    [Export] protected Scientist[] _scientists = new Scientist[4];
+    [Export]
+    protected Scientist[] _scientists = new Scientist[4];
+    [Export]
+    private MiniGameTutorial _tutorial;
+    [Export(PropertyHint.MultilineText)]
+    private string _miniGameDescription;
+    [Export]
+    private VideoStreamTheora _tutorialVideo;
 
     [Signal]
     public delegate void GameFinishedEventHandler();
+
+    protected bool _miniGameStarted = false;
 
     private PackedScene _playerControllerScene = GD.Load<PackedScene>("res://entities/scientist/PlayerController.tscn");
     private PackedScene _aiControllerScene = GD.Load<PackedScene>("res://entities/scientist/AIController.tscn");
@@ -17,6 +28,8 @@ public abstract partial class MiniGame : Node2D
 
     public void InitializeMiniGame(EmployeeData[] employeeData)
     {
+        OTMLogger.Instance.Info(this, "Initializing mini-game.");
+
         if (employeeData.Length != 4)
         {
             OTMLogger.Instance.Fatal(this, "Mini-game must be initialized with employee data array of size 4.");
@@ -27,9 +40,31 @@ public abstract partial class MiniGame : Node2D
         for (int i = 0; i < 4; i++)
         {
             _scientists[i].InitializeScientist(employeeData[i]);
+            _scientists[i].ProcessMode = ProcessModeEnum.Disabled;
         }
+    }
 
-        OTMLogger.Instance.Info(this, "MiniGame is ready!");
+    public async Task PlayTutorial()
+    {
+        // Show the tutorial.
+        string miniGameName = "";
+        Type miniGameType = this.GetType();
+        if (miniGameType.IsAssignableTo(typeof(INameProvider)))
+        {
+            miniGameName = miniGameType.GetMethod("OTMGetName", BindingFlags.Public | BindingFlags.Static).Invoke(null, null) as string;
+        }
+        await _tutorial.ShowTutorial(miniGameName, _miniGameDescription, _tutorialVideo);
+    }
+
+    public virtual void StartMiniGame()
+    {
+        OTMLogger.Instance.Info(this, "Starting mini-game.");
+
+        for (int i = 0; i < 4; i++)
+        {
+            _scientists[i].ProcessMode = ProcessModeEnum.Inherit;
+        }
+        _miniGameStarted = true;
     }
 
     protected void EndMiniGame()

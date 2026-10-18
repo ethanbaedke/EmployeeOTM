@@ -3,17 +3,20 @@
 [ext_resource type="Script" uid="uid://lemngjmh4jp0" path="res://levels/KingOfTheHill.cs" id="1_mu6ct"]
 [ext_resource type="PackedScene" uid="uid://ddsuppc5mxr32" path="res://entities/scientist/scientist.tscn" id="2_8thry"]
 [ext_resource type="PackedScene" uid="uid://bpulko32timg0" path="res://entities/dirt_platform.tscn" id="5_pfrlf"]
+[ext_resource type="PackedScene" uid="uid://c1w2ibs5t4v4b" path="res://ui/MiniGameTutorial.tscn" id="6_6v4r3"]
 [ext_resource type="PackedScene" uid="uid://cs3rdyu7wyyg7" path="res://entities/capture_area.tscn" id="6_l53ne"]
 [ext_resource type="PackedScene" uid="uid://km4o30h8u3rt" path="res://ui/center_screen_countdown.tscn" id="7_6v4r3"]
 
 [sub_resource type="RectangleShape2D" id="RectangleShape2D_o3a2j"]
 size = Vector2(100, 1080)
 
-[node name="KingOfTheHill" type="Node2D" unique_id=739882208 node_paths=PackedStringArray("_captureAreas", "_centerScreenCountdown", "_scientists")]
+[node name="KingOfTheHill" type="Node2D" unique_id=739882208 node_paths=PackedStringArray("_captureAreas", "_centerScreenCountdown", "_scientists", "_tutorial")]
 script = ExtResource("1_mu6ct")
 _captureAreas = [NodePath("CaptureArea2"), NodePath("CaptureArea4"), NodePath("CaptureArea6")]
 _centerScreenCountdown = NodePath("CanvasLayer/CenterScreenCountdown")
 _scientists = [NodePath("Scientist"), NodePath("Scientist2"), NodePath("Scientist3"), NodePath("Scientist4")]
+_tutorial = NodePath("CanvasLayer/MiniGameTutorial")
+_miniGameDescription = "Capture microwaves to heat your lunch!"
 
 [node name="Scientist" parent="." unique_id=1174776970 instance=ExtResource("2_8thry")]
 position = Vector2(102, 1011)
@@ -114,3 +117,5 @@ scale = Vector2(365, 200)
 [node name="CanvasLayer" type="CanvasLayer" parent="." unique_id=743391810]
 
 [node name="CenterScreenCountdown" parent="CanvasLayer" unique_id=1320922543 instance=ExtResource("7_6v4r3")]
+
+[node name="MiniGameTutorial" parent="CanvasLayer" unique_id=858250490 instance=ExtResource("6_6v4r3")]

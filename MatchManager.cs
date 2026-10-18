@@ -41,6 +41,8 @@ public partial class MatchManager : Node2D
             this.AddChild(miniGameInstance);
             miniGameInstance.InitializeMiniGame(_employees);
             _matchFlowAnimPlayer.Play("black_panel_out");
+            await miniGameInstance.PlayTutorial();
+            miniGameInstance.StartMiniGame();
 
             // Play mini-game.
             await ToSignal(miniGameInstance, "GameFinished");
