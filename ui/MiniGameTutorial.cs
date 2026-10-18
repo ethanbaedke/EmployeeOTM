@@ -20,6 +20,10 @@ public partial class MiniGameTutorial : Control
         _nameLabel.Text = name;
         _descriptionLabel.Text = description;
         _videoPlayer.Stream = video;
+        if (_videoPlayer.Stream != null)
+        {
+            _videoPlayer.Play();
+        }
 
         _animPlayer.Play("base");
         await ToSignal(_animPlayer, "animation_finished");

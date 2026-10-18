@@ -4,6 +4,11 @@
 
 [sub_resource type="StyleBoxFlat" id="StyleBoxFlat_wyug6"]
 bg_color = Color(0.2, 0.2, 0.2, 1)
+border_width_left = 10
+border_width_top = 10
+border_width_right = 10
+border_width_bottom = 10
+border_color = Color(0.1, 0.1, 0.1, 1)
 
 [sub_resource type="Animation" id="Animation_llygf"]
 length = 0.001
@@ -110,7 +115,7 @@ anchor_bottom = 0.5
 offset_left = -480.0
 offset_top = -135.0
 offset_right = 480.0
-offset_bottom = 135.01257
+offset_bottom = 135.01282
 grow_horizontal = 2
 grow_vertical = 2
 theme_override_styles/panel = SubResource("StyleBoxFlat_wyug6")
@@ -144,7 +149,6 @@ autowrap_mode = 3
 [node name="VideoStreamPlayer" type="VideoStreamPlayer" parent="PanelContainer/HBoxContainer" unique_id=1217112273]
 layout_mode = 2
 size_flags_horizontal = 3
-autoplay = true
 expand = true
 loop = true
 

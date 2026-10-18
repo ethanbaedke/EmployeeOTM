@@ -1,6 +1,7 @@
 [gd_scene format=3 uid="uid://bt4c44pnaed0s"]
 
 [ext_resource type="Script" uid="uid://lemngjmh4jp0" path="res://levels/KingOfTheHill.cs" id="1_mu6ct"]
+[ext_resource type="VideoStream" uid="uid://d3krjbo2bg53k" path="res://levels/king_of_the_hill_tutorial.ogv" id="2_6v4r3"]
 [ext_resource type="PackedScene" uid="uid://ddsuppc5mxr32" path="res://entities/scientist/scientist.tscn" id="2_8thry"]
 [ext_resource type="PackedScene" uid="uid://bpulko32timg0" path="res://entities/dirt_platform.tscn" id="5_pfrlf"]
 [ext_resource type="PackedScene" uid="uid://c1w2ibs5t4v4b" path="res://ui/MiniGameTutorial.tscn" id="6_6v4r3"]
@@ -17,6 +18,7 @@ _centerScreenCountdown = NodePath("CanvasLayer/CenterScreenCountdown")
 _scientists = [NodePath("Scientist"), NodePath("Scientist2"), NodePath("Scientist3"), NodePath("Scientist4")]
 _tutorial = NodePath("CanvasLayer/MiniGameTutorial")
 _miniGameDescription = "Capture microwaves to heat your lunch!"
+_tutorialVideo = ExtResource("2_6v4r3")
 
 [node name="Scientist" parent="." unique_id=1174776970 instance=ExtResource("2_8thry")]
 position = Vector2(102, 1011)
