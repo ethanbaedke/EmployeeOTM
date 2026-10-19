@@ -2,6 +2,7 @@
 
 [ext_resource type="Script" uid="uid://dcb310uu47ii7" path="res://MatchManager.cs" id="1_5j2v8"]
 [ext_resource type="PackedScene" uid="uid://r1fqj5c7yp72" path="res://ui/mini_game_selection.tscn" id="2_3tnfu"]
+[ext_resource type="PackedScene" uid="uid://d21xptkc4i083" path="res://introduction.tscn" id="2_hilxt"]
 [ext_resource type="PackedScene" uid="uid://5c2doc244jws" path="res://ui/star_sheet.tscn" id="2_sgbhi"]
 [ext_resource type="PackedScene" uid="uid://bt4c44pnaed0s" path="res://levels/king_of_the_hill.tscn" id="3_sgbhi"]
 [ext_resource type="PackedScene" uid="uid://dhug5h2y0ce7e" path="res://mini_game_placement.tscn" id="4_xfb0p"]
@@ -292,14 +293,18 @@ _data = {
 &"star_sheet_out": SubResource("Animation_8kas3")
 }
 
-[node name="MatchManager" type="Node2D" unique_id=1381656787 node_paths=PackedStringArray("_miniGameSelection", "_miniGamePlacement", "_starSheet", "_winnerPaper", "_singleWinnerDisplay", "_matchFlowAnimPlayer")]
+[node name="MatchManager" type="Node2D" unique_id=1381656787 node_paths=PackedStringArray("_miniGameSelection", "_miniGamePlacement", "_starSheet", "_winnerPaper", "_singleWinnerDisplay", "_introduction", "_matchFlowAnimPlayer")]
 script = ExtResource("1_5j2v8")
 _miniGameSelection = NodePath("CanvasLayer/MiniGameSelection")
 _miniGamePlacement = NodePath("MiniGamePlacement")
 _starSheet = NodePath("CanvasLayer/StarSheet")
 _winnerPaper = NodePath("CanvasLayer/WinnerPaper")
 _singleWinnerDisplay = NodePath("CanvasLayer/SingleWinnerDisplay")
+_introduction = NodePath("Introduction")
 _matchFlowAnimPlayer = NodePath("MatchFlowAnimationPlayer")
+
+[node name="Introduction" parent="." unique_id=510998399 instance=ExtResource("2_hilxt")]
+visible = false
 
 [node name="MiniGamePlacement" parent="." unique_id=573806813 instance=ExtResource("4_xfb0p")]
 visible = false

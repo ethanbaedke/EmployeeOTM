@@ -10,6 +10,7 @@ public partial class MatchManager : Node2D
     [Export] private StarSheet _starSheet;
     [Export] private WinnerPaper _winnerPaper;
     [Export] private SingleWinnerDisplay _singleWinnerDisplay;
+    [Export] private Introduction _introduction;
     [Export] private AnimationPlayer _matchFlowAnimPlayer;
 
     private EmployeeData[] _employees;
@@ -21,8 +22,10 @@ public partial class MatchManager : Node2D
 
         _starSheet.InitializeStarSheet(employeeData);
 
+        // Play intro.
+        _introduction.Visible = true;
         _matchFlowAnimPlayer.Play("black_panel_out");
-        await ToSignal(_matchFlowAnimPlayer, AnimationPlayer.SignalName.AnimationFinished);
+        await _introduction.PlayIntroduction(employeeData);
 
         // Match loop.
         while (true)
@@ -37,6 +40,7 @@ public partial class MatchManager : Node2D
             await ToSignal(_matchFlowAnimPlayer, AnimationPlayer.SignalName.AnimationFinished);
             _miniGamePlacement.Visible = false;
             _miniGameSelection.Visible = false;
+            _introduction.Visible = false;
             MiniGame miniGameInstance = miniGameScene.Instantiate<MiniGame>();
             this.AddChild(miniGameInstance);
             miniGameInstance.InitializeMiniGame(_employees);

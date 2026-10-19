@@ -1,0 +1,361 @@
+[gd_scene format=3 uid="uid://d21xptkc4i083"]
+
+[ext_resource type="Script" uid="uid://vf3gyrb37wda" path="res://Introduction.cs" id="1_f37s4"]
+[ext_resource type="Texture2D" uid="uid://gidsdiwgp53e" path="res://entities/curtain.svg" id="1_oqkmi"]
+[ext_resource type="Texture2D" uid="uid://chey6hp3g6q6a" path="res://entities/scientist/scientist.svg" id="2_qebxn"]
+
+[sub_resource type="Gradient" id="Gradient_ibnd7"]
+colors = PackedColorArray(0.1, 0.1, 0.1, 1, 1, 1, 1, 1)
+
+[sub_resource type="GradientTexture1D" id="GradientTexture1D_jsssl"]
+gradient = SubResource("Gradient_ibnd7")
+width = 1
+
+[sub_resource type="Shader" id="Shader_f37s4"]
+code = "shader_type canvas_item;
+
+uniform vec4 outline_color : source_color = vec4(1.0, 1.0, 1.0, 1.0);
+uniform float outline_width : hint_range(0.0, 20.0) = 1.0;
+uniform bool outline_enabled = true;
+
+void fragment() {
+    vec4 tex_color = texture(TEXTURE, UV);
+
+    if (outline_enabled) {
+        vec2 texel_size = outline_width / vec2(textureSize(TEXTURE, 0));
+
+        // Sample alpha in 4 directions (and optionally diagonals)
+        float alpha_up    = texture(TEXTURE, UV + vec2(0.0, -texel_size.y)).a;
+        float alpha_down  = texture(TEXTURE, UV + vec2(0.0, texel_size.y)).a;
+        float alpha_left  = texture(TEXTURE, UV + vec2(-texel_size.x, 0.0)).a;
+        float alpha_right = texture(TEXTURE, UV + vec2(texel_size.x, 0.0)).a;
+
+        float outline_alpha = clamp(alpha_up + alpha_down + alpha_left + alpha_right, 0.0, 1.0);
+
+        // If current pixel is transparent but a neighbor isn't, draw outline.
+        if (tex_color.a < 0.9 && outline_alpha > 0.0) {
+            COLOR = vec4(outline_color.rgb, outline_alpha * outline_color.a);
+        }
+    }
+}"
+
+[sub_resource type="ShaderMaterial" id="ShaderMaterial_kot8c"]
+shader = SubResource("Shader_f37s4")
+shader_parameter/outline_color = Color(1, 1, 1, 1)
+shader_parameter/outline_width = 20.0
+shader_parameter/outline_enabled = true
+
+[sub_resource type="Shader" id="Shader_p8k0u"]
+code = "shader_type canvas_item;
+
+uniform vec4 outline_color : source_color = vec4(1.0, 1.0, 1.0, 1.0);
+uniform float outline_width : hint_range(0.0, 20.0) = 1.0;
+uniform bool outline_enabled = true;
+
+void fragment() {
+    vec4 tex_color = texture(TEXTURE, UV);
+
+    if (outline_enabled) {
+        vec2 texel_size = outline_width / vec2(textureSize(TEXTURE, 0));
+
+        // Sample alpha in 4 directions (and optionally diagonals)
+        float alpha_up    = texture(TEXTURE, UV + vec2(0.0, -texel_size.y)).a;
+        float alpha_down  = texture(TEXTURE, UV + vec2(0.0, texel_size.y)).a;
+        float alpha_left  = texture(TEXTURE, UV + vec2(-texel_size.x, 0.0)).a;
+        float alpha_right = texture(TEXTURE, UV + vec2(texel_size.x, 0.0)).a;
+
+        float outline_alpha = clamp(alpha_up + alpha_down + alpha_left + alpha_right, 0.0, 1.0);
+
+        // If current pixel is transparent but a neighbor isn't, draw outline.
+        if (tex_color.a < 0.9 && outline_alpha > 0.0) {
+            COLOR = vec4(outline_color.rgb, outline_alpha * outline_color.a);
+        }
+    }
+}"
+
+[sub_resource type="ShaderMaterial" id="ShaderMaterial_k6y8d"]
+shader = SubResource("Shader_p8k0u")
+shader_parameter/outline_color = Color(1, 1, 1, 1)
+shader_parameter/outline_width = 20.0
+shader_parameter/outline_enabled = true
+
+[sub_resource type="Shader" id="Shader_12tcu"]
+code = "shader_type canvas_item;
+
+uniform vec4 outline_color : source_color = vec4(1.0, 1.0, 1.0, 1.0);
+uniform float outline_width : hint_range(0.0, 20.0) = 1.0;
+uniform bool outline_enabled = true;
+
+void fragment() {
+    vec4 tex_color = texture(TEXTURE, UV);
+
+    if (outline_enabled) {
+        vec2 texel_size = outline_width / vec2(textureSize(TEXTURE, 0));
+
+        // Sample alpha in 4 directions (and optionally diagonals)
+        float alpha_up    = texture(TEXTURE, UV + vec2(0.0, -texel_size.y)).a;
+        float alpha_down  = texture(TEXTURE, UV + vec2(0.0, texel_size.y)).a;
+        float alpha_left  = texture(TEXTURE, UV + vec2(-texel_size.x, 0.0)).a;
+        float alpha_right = texture(TEXTURE, UV + vec2(texel_size.x, 0.0)).a;
+
+        float outline_alpha = clamp(alpha_up + alpha_down + alpha_left + alpha_right, 0.0, 1.0);
+
+        // If current pixel is transparent but a neighbor isn't, draw outline.
+        if (tex_color.a < 0.9 && outline_alpha > 0.0) {
+            COLOR = vec4(outline_color.rgb, outline_alpha * outline_color.a);
+        }
+    }
+}"
+
+[sub_resource type="ShaderMaterial" id="ShaderMaterial_pf442"]
+shader = SubResource("Shader_12tcu")
+shader_parameter/outline_color = Color(1, 1, 1, 1)
+shader_parameter/outline_width = 20.0
+shader_parameter/outline_enabled = true
+
+[sub_resource type="Shader" id="Shader_4lc7o"]
+code = "shader_type canvas_item;
+
+uniform vec4 outline_color : source_color = vec4(1.0, 1.0, 1.0, 1.0);
+uniform float outline_width : hint_range(0.0, 20.0) = 1.0;
+uniform bool outline_enabled = true;
+
+void fragment() {
+    vec4 tex_color = texture(TEXTURE, UV);
+
+    if (outline_enabled) {
+        vec2 texel_size = outline_width / vec2(textureSize(TEXTURE, 0));
+
+        // Sample alpha in 4 directions (and optionally diagonals)
+        float alpha_up    = texture(TEXTURE, UV + vec2(0.0, -texel_size.y)).a;
+        float alpha_down  = texture(TEXTURE, UV + vec2(0.0, texel_size.y)).a;
+        float alpha_left  = texture(TEXTURE, UV + vec2(-texel_size.x, 0.0)).a;
+        float alpha_right = texture(TEXTURE, UV + vec2(texel_size.x, 0.0)).a;
+
+        float outline_alpha = clamp(alpha_up + alpha_down + alpha_left + alpha_right, 0.0, 1.0);
+
+        // If current pixel is transparent but a neighbor isn't, draw outline.
+        if (tex_color.a < 0.9 && outline_alpha > 0.0) {
+            COLOR = vec4(outline_color.rgb, outline_alpha * outline_color.a);
+        }
+    }
+}"
+
+[sub_resource type="ShaderMaterial" id="ShaderMaterial_8kas3"]
+shader = SubResource("Shader_4lc7o")
+shader_parameter/outline_color = Color(1, 1, 1, 1)
+shader_parameter/outline_width = 20.0
+shader_parameter/outline_enabled = true
+
+[sub_resource type="Animation" id="Animation_oqkmi"]
+length = 0.001
+tracks/0/type = "value"
+tracks/0/imported = false
+tracks/0/enabled = true
+tracks/0/path = NodePath("RightCurtain:position")
+tracks/0/interp = 1
+tracks/0/loop_wrap = true
+tracks/0/keys = {
+"times": PackedFloat32Array(0),
+"transitions": PackedFloat32Array(1),
+"update": 0,
+"values": [Vector2(1728, 470)]
+}
+tracks/1/type = "value"
+tracks/1/imported = false
+tracks/1/enabled = true
+tracks/1/path = NodePath("LeftCurtain:position")
+tracks/1/interp = 1
+tracks/1/loop_wrap = true
+tracks/1/keys = {
+"times": PackedFloat32Array(0),
+"transitions": PackedFloat32Array(1),
+"update": 0,
+"values": [Vector2(192, 469.99997)]
+}
+tracks/2/type = "value"
+tracks/2/imported = false
+tracks/2/enabled = true
+tracks/2/path = NodePath("P1:modulate")
+tracks/2/interp = 1
+tracks/2/loop_wrap = true
+tracks/2/keys = {
+"times": PackedFloat32Array(0),
+"transitions": PackedFloat32Array(1),
+"update": 0,
+"values": [Color(0.25, 0.25, 0.25, 1)]
+}
+tracks/3/type = "value"
+tracks/3/imported = false
+tracks/3/enabled = true
+tracks/3/path = NodePath("P2:modulate")
+tracks/3/interp = 1
+tracks/3/loop_wrap = true
+tracks/3/keys = {
+"times": PackedFloat32Array(0),
+"transitions": PackedFloat32Array(1),
+"update": 0,
+"values": [Color(0.25, 0.25, 0.25, 1)]
+}
+tracks/4/type = "value"
+tracks/4/imported = false
+tracks/4/enabled = true
+tracks/4/path = NodePath("P3:modulate")
+tracks/4/interp = 1
+tracks/4/loop_wrap = true
+tracks/4/keys = {
+"times": PackedFloat32Array(0),
+"transitions": PackedFloat32Array(1),
+"update": 0,
+"values": [Color(0.25, 0.25, 0.25, 1)]
+}
+tracks/5/type = "value"
+tracks/5/imported = false
+tracks/5/enabled = true
+tracks/5/path = NodePath("P4:modulate")
+tracks/5/interp = 1
+tracks/5/loop_wrap = true
+tracks/5/keys = {
+"times": PackedFloat32Array(0),
+"transitions": PackedFloat32Array(1),
+"update": 0,
+"values": [Color(0.25, 0.25, 0.25, 1)]
+}
+
+[sub_resource type="Animation" id="Animation_qebxn"]
+resource_name = "base"
+length = 6.0
+tracks/0/type = "value"
+tracks/0/imported = false
+tracks/0/enabled = true
+tracks/0/path = NodePath("RightCurtain:position")
+tracks/0/interp = 2
+tracks/0/loop_wrap = true
+tracks/0/keys = {
+"times": PackedFloat32Array(0, 2),
+"transitions": PackedFloat32Array(1, 1),
+"update": 0,
+"values": [Vector2(1600, 470), Vector2(2624, 470)]
+}
+tracks/1/type = "value"
+tracks/1/imported = false
+tracks/1/enabled = true
+tracks/1/path = NodePath("LeftCurtain:position")
+tracks/1/interp = 2
+tracks/1/loop_wrap = true
+tracks/1/keys = {
+"times": PackedFloat32Array(0, 2),
+"transitions": PackedFloat32Array(1, 1),
+"update": 0,
+"values": [Vector2(320, 470), Vector2(-704, 470)]
+}
+tracks/2/type = "value"
+tracks/2/imported = false
+tracks/2/enabled = true
+tracks/2/path = NodePath("P1:modulate")
+tracks/2/interp = 1
+tracks/2/loop_wrap = true
+tracks/2/keys = {
+"times": PackedFloat32Array(2, 2.5),
+"transitions": PackedFloat32Array(1, 1),
+"update": 0,
+"values": [Color(0.25, 0.25, 0.25, 1), Color(1, 1, 1, 1)]
+}
+tracks/3/type = "value"
+tracks/3/imported = false
+tracks/3/enabled = true
+tracks/3/path = NodePath("P2:modulate")
+tracks/3/interp = 1
+tracks/3/loop_wrap = true
+tracks/3/keys = {
+"times": PackedFloat32Array(3, 3.5),
+"transitions": PackedFloat32Array(1, 1),
+"update": 0,
+"values": [Color(0.25, 0.25, 0.25, 1), Color(1, 1, 1, 1)]
+}
+tracks/4/type = "value"
+tracks/4/imported = false
+tracks/4/enabled = true
+tracks/4/path = NodePath("P3:modulate")
+tracks/4/interp = 1
+tracks/4/loop_wrap = true
+tracks/4/keys = {
+"times": PackedFloat32Array(4, 4.5),
+"transitions": PackedFloat32Array(1, 1),
+"update": 0,
+"values": [Color(0.25, 0.25, 0.25, 1), Color(1, 1, 1, 1)]
+}
+tracks/5/type = "value"
+tracks/5/imported = false
+tracks/5/enabled = true
+tracks/5/path = NodePath("P4:modulate")
+tracks/5/interp = 1
+tracks/5/loop_wrap = true
+tracks/5/keys = {
+"times": PackedFloat32Array(5, 5.5),
+"transitions": PackedFloat32Array(1, 1),
+"update": 0,
+"values": [Color(0.25, 0.25, 0.25, 1), Color(1, 1, 1, 1)]
+}
+
+[sub_resource type="AnimationLibrary" id="AnimationLibrary_f37s4"]
+_data = {
+&"RESET": SubResource("Animation_oqkmi"),
+&"base": SubResource("Animation_qebxn")
+}
+
+[node name="Introduction" type="Node2D" unique_id=510998399 node_paths=PackedStringArray("_animPlayer", "_employeeSprites")]
+script = ExtResource("1_f37s4")
+_animPlayer = NodePath("AnimationPlayer")
+_employeeSprites = [NodePath("P1"), NodePath("P2"), NodePath("P3"), NodePath("P4")]
+
+[node name="Stage" type="Sprite2D" parent="." unique_id=1340770418]
+position = Vector2(960.00006, 1010)
+scale = Vector2(1920, 139.99994)
+texture = SubResource("GradientTexture1D_jsssl")
+
+[node name="Ceiling" type="Sprite2D" parent="." unique_id=1075516699]
+position = Vector2(960.00006, 35.000072)
+scale = Vector2(1920, 70)
+texture = SubResource("GradientTexture1D_jsssl")
+
+[node name="P1" type="Sprite2D" parent="." unique_id=350315376]
+modulate = Color(0.25, 0.25, 0.25, 1)
+material = SubResource("ShaderMaterial_kot8c")
+position = Vector2(382, 884)
+scale = Vector2(0.25, 0.25)
+texture = ExtResource("2_qebxn")
+
+[node name="P2" type="Sprite2D" parent="." unique_id=1254771226]
+modulate = Color(0.25, 0.25, 0.25, 1)
+material = SubResource("ShaderMaterial_k6y8d")
+position = Vector2(767, 884)
+scale = Vector2(0.25, 0.25)
+texture = ExtResource("2_qebxn")
+
+[node name="P3" type="Sprite2D" parent="." unique_id=1990943645]
+modulate = Color(0.25, 0.25, 0.25, 1)
+material = SubResource("ShaderMaterial_pf442")
+position = Vector2(1152, 884)
+scale = Vector2(0.25, 0.25)
+texture = ExtResource("2_qebxn")
+
+[node name="P4" type="Sprite2D" parent="." unique_id=1845697651]
+modulate = Color(0.25, 0.25, 0.25, 1)
+material = SubResource("ShaderMaterial_8kas3")
+position = Vector2(1537, 884)
+scale = Vector2(0.25, 0.25)
+texture = ExtResource("2_qebxn")
+
+[node name="LeftCurtain" type="Sprite2D" parent="." unique_id=452120534]
+position = Vector2(192, 469.99997)
+scale = Vector2(-1, 0.87)
+texture = ExtResource("1_oqkmi")
+
+[node name="RightCurtain" type="Sprite2D" parent="." unique_id=1317395982]
+position = Vector2(1728, 470)
+scale = Vector2(1, 0.8703704)
+texture = ExtResource("1_oqkmi")
+
+[node name="AnimationPlayer" type="AnimationPlayer" parent="." unique_id=1138962759]
+libraries/ = SubResource("AnimationLibrary_f37s4")
