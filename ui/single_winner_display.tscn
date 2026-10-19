@@ -84,7 +84,7 @@ _data = {
 &"winner_bounce": SubResource("Animation_qfc2p")
 }
 
-[node name="SingleWinnerDisplay" type="Control" unique_id=1501374277 node_paths=PackedStringArray("_winnerCircle")]
+[node name="SingleWinnerDisplay" type="Control" unique_id=1501374277 node_paths=PackedStringArray("_winnerCircle", "_employeeTexture")]
 layout_mode = 3
 anchors_preset = 15
 anchor_right = 1.0
@@ -93,6 +93,7 @@ grow_horizontal = 2
 grow_vertical = 2
 script = ExtResource("1_4nbt5")
 _winnerCircle = NodePath("WinnerCircle")
+_employeeTexture = NodePath("Employee")
 
 [node name="WinnerCircle" type="TextureRect" parent="." unique_id=1896831854]
 layout_mode = 1

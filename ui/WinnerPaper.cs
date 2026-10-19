@@ -41,6 +41,9 @@ public partial class WinnerPaper : Control
             ShaderMaterial shaderMat = _employeeTextures[i].Material as ShaderMaterial;
             shaderMat.SetShaderParameter("outline_color", employeeData[i].EmployeeColor);
 
+            // Set employee texture.
+            _employeeTextures[i].Texture = employeeData[i].EmployeeTexture;
+
             // Reset employee and stand height.
             _employeeTextures[i].Position = new Vector2(_employeeTextures[i].Position.X, 964.0f);
             _employeeStands[i].Size = new Vector2(96.0f, 26.0f);
