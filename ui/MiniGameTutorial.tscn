@@ -1,6 +1,11 @@
 [gd_scene format=3 uid="uid://c1w2ibs5t4v4b"]
 
 [ext_resource type="Script" uid="uid://cl7gjp33rmyj6" path="res://ui/MiniGameTutorial.cs" id="1_rpkuw"]
+[ext_resource type="Shader" uid="uid://m8dcmu1l1row" path="res://effects/blur.gdshader" id="2_cdpvo"]
+
+[sub_resource type="ShaderMaterial" id="ShaderMaterial_cdpvo"]
+shader = ExtResource("2_cdpvo")
+shader_parameter/blur_amount = 1.0
 
 [sub_resource type="StyleBoxFlat" id="StyleBoxFlat_wyug6"]
 bg_color = Color(0.2, 0.2, 0.2, 1)
@@ -15,7 +20,7 @@ length = 0.001
 tracks/0/type = "value"
 tracks/0/imported = false
 tracks/0/enabled = true
-tracks/0/path = NodePath("PanelContainer:modulate")
+tracks/0/path = NodePath("CanvasLayer/PanelContainer:modulate")
 tracks/0/interp = 1
 tracks/0/loop_wrap = true
 tracks/0/keys = {
@@ -27,7 +32,7 @@ tracks/0/keys = {
 tracks/1/type = "bezier"
 tracks/1/imported = false
 tracks/1/enabled = true
-tracks/1/path = NodePath("PanelContainer:position:x")
+tracks/1/path = NodePath("CanvasLayer/PanelContainer:position:x")
 tracks/1/interp = 1
 tracks/1/loop_wrap = true
 tracks/1/keys = {
@@ -38,13 +43,25 @@ tracks/1/keys = {
 tracks/2/type = "bezier"
 tracks/2/imported = false
 tracks/2/enabled = true
-tracks/2/path = NodePath("PanelContainer:position:y")
+tracks/2/path = NodePath("CanvasLayer/PanelContainer:position:y")
 tracks/2/interp = 1
 tracks/2/loop_wrap = true
 tracks/2/keys = {
 "handle_modes": PackedInt32Array(0),
 "points": PackedFloat32Array(405, -0.25, 0, 0.25, 0),
 "times": PackedFloat32Array(0)
+}
+tracks/3/type = "value"
+tracks/3/imported = false
+tracks/3/enabled = true
+tracks/3/path = NodePath("CanvasLayer/ColorRect:material:shader_parameter/blur_amount")
+tracks/3/interp = 1
+tracks/3/loop_wrap = true
+tracks/3/keys = {
+"times": PackedFloat32Array(0),
+"transitions": PackedFloat32Array(1),
+"update": 0,
+"values": [1.0]
 }
 
 [sub_resource type="Animation" id="Animation_rpkuw"]
@@ -53,7 +70,7 @@ length = 3.6
 tracks/0/type = "value"
 tracks/0/imported = false
 tracks/0/enabled = true
-tracks/0/path = NodePath("PanelContainer:modulate")
+tracks/0/path = NodePath("CanvasLayer/PanelContainer:modulate")
 tracks/0/interp = 1
 tracks/0/loop_wrap = true
 tracks/0/keys = {
@@ -65,7 +82,7 @@ tracks/0/keys = {
 tracks/1/type = "bezier"
 tracks/1/imported = false
 tracks/1/enabled = true
-tracks/1/path = NodePath("PanelContainer:position:x")
+tracks/1/path = NodePath("CanvasLayer/PanelContainer:position:x")
 tracks/1/interp = 1
 tracks/1/loop_wrap = true
 tracks/1/keys = {
@@ -76,13 +93,25 @@ tracks/1/keys = {
 tracks/2/type = "bezier"
 tracks/2/imported = false
 tracks/2/enabled = true
-tracks/2/path = NodePath("PanelContainer:position:y")
+tracks/2/path = NodePath("CanvasLayer/PanelContainer:position:y")
 tracks/2/interp = 1
 tracks/2/loop_wrap = true
 tracks/2/keys = {
 "handle_modes": PackedInt32Array(0, 0),
 "points": PackedFloat32Array(705, -0.25, 0, 0, -500, 105, 0, 500, 0, 0),
 "times": PackedFloat32Array(0, 3.6)
+}
+tracks/3/type = "value"
+tracks/3/imported = false
+tracks/3/enabled = true
+tracks/3/path = NodePath("CanvasLayer/ColorRect:material:shader_parameter/blur_amount")
+tracks/3/interp = 1
+tracks/3/loop_wrap = true
+tracks/3/keys = {
+"times": PackedFloat32Array(0, 3.3, 3.6),
+"transitions": PackedFloat32Array(1, 1, 1),
+"update": 0,
+"values": [2.0, 2.0, 0.0]
 }
 
 [sub_resource type="AnimationLibrary" id="AnimationLibrary_cdpvo"]
@@ -100,13 +129,22 @@ grow_horizontal = 2
 grow_vertical = 2
 script = ExtResource("1_rpkuw")
 _animPlayer = NodePath("AnimationPlayer")
-_nameLabel = NodePath("PanelContainer/HBoxContainer/VBoxContainer/Label")
-_descriptionLabel = NodePath("PanelContainer/HBoxContainer/VBoxContainer/Label2")
-_videoPlayer = NodePath("PanelContainer/HBoxContainer/VideoStreamPlayer")
+_nameLabel = NodePath("CanvasLayer/PanelContainer/HBoxContainer/VBoxContainer/Label")
+_descriptionLabel = NodePath("CanvasLayer/PanelContainer/HBoxContainer/VBoxContainer/Label2")
+_videoPlayer = NodePath("CanvasLayer/PanelContainer/HBoxContainer/VideoStreamPlayer")
 
-[node name="PanelContainer" type="PanelContainer" parent="." unique_id=143486486]
+[node name="CanvasLayer" type="CanvasLayer" parent="." unique_id=1241703869]
+
+[node name="ColorRect" type="ColorRect" parent="CanvasLayer" unique_id=870043018]
+material = SubResource("ShaderMaterial_cdpvo")
+anchors_preset = 15
+anchor_right = 1.0
+anchor_bottom = 1.0
+grow_horizontal = 2
+grow_vertical = 2
+
+[node name="PanelContainer" type="PanelContainer" parent="CanvasLayer" unique_id=143486486]
 modulate = Color(1, 1, 1, 0)
-layout_mode = 1
 anchors_preset = 8
 anchor_left = 0.5
 anchor_top = 0.5
@@ -115,19 +153,19 @@ anchor_bottom = 0.5
 offset_left = -480.0
 offset_top = -135.0
 offset_right = 480.0
-offset_bottom = 135.01282
+offset_bottom = 135.01245
 grow_horizontal = 2
 grow_vertical = 2
 theme_override_styles/panel = SubResource("StyleBoxFlat_wyug6")
 
-[node name="HBoxContainer" type="HBoxContainer" parent="PanelContainer" unique_id=228260103]
+[node name="HBoxContainer" type="HBoxContainer" parent="CanvasLayer/PanelContainer" unique_id=228260103]
 layout_mode = 2
 
-[node name="VBoxContainer" type="VBoxContainer" parent="PanelContainer/HBoxContainer" unique_id=1977567962]
+[node name="VBoxContainer" type="VBoxContainer" parent="CanvasLayer/PanelContainer/HBoxContainer" unique_id=1977567962]
 layout_mode = 2
 size_flags_horizontal = 3
 
-[node name="Label" type="Label" parent="PanelContainer/HBoxContainer/VBoxContainer" unique_id=1955008213]
+[node name="Label" type="Label" parent="CanvasLayer/PanelContainer/HBoxContainer/VBoxContainer" unique_id=1955008213]
 layout_mode = 2
 size_flags_horizontal = 3
 size_flags_vertical = 3
@@ -136,7 +174,7 @@ text = "Mini-Game Title"
 horizontal_alignment = 1
 vertical_alignment = 1
 
-[node name="Label2" type="Label" parent="PanelContainer/HBoxContainer/VBoxContainer" unique_id=1991484314]
+[node name="Label2" type="Label" parent="CanvasLayer/PanelContainer/HBoxContainer/VBoxContainer" unique_id=1991484314]
 layout_mode = 2
 size_flags_horizontal = 3
 size_flags_vertical = 3
@@ -146,7 +184,7 @@ horizontal_alignment = 1
 vertical_alignment = 1
 autowrap_mode = 3
 
-[node name="VideoStreamPlayer" type="VideoStreamPlayer" parent="PanelContainer/HBoxContainer" unique_id=1217112273]
+[node name="VideoStreamPlayer" type="VideoStreamPlayer" parent="CanvasLayer/PanelContainer/HBoxContainer" unique_id=1217112273]
 layout_mode = 2
 size_flags_horizontal = 3
 expand = true
