@@ -2,16 +2,25 @@ using Godot;
 using System;
 using System.Threading.Tasks;
 using Godot.Collections;
+using FMOD.Studio;
+using FmodGodot;
 
 public partial class MatchManager : Node2D
 {
-    [Export] private MiniGameSelection _miniGameSelection;
-    [Export] private MiniGamePlacement _miniGamePlacement;
-    [Export] private StarSheet _starSheet;
-    [Export] private WinnerPaper _winnerPaper;
-    [Export] private SingleWinnerDisplay _singleWinnerDisplay;
-    [Export] private Introduction _introduction;
-    [Export] private AnimationPlayer _matchFlowAnimPlayer;
+    [Export]
+    private MiniGameSelection _miniGameSelection;
+    [Export]
+    private MiniGamePlacement _miniGamePlacement;
+    [Export]
+    private StarSheet _starSheet;
+    [Export]
+    private WinnerPaper _winnerPaper;
+    [Export]
+    private SingleWinnerDisplay _singleWinnerDisplay;
+    [Export]
+    private Introduction _introduction;
+    [Export]
+    private AnimationPlayer _matchFlowAnimPlayer;
 
     private EmployeeData[] _employees;
 

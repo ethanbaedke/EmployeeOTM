@@ -1,0 +1,7 @@
+[gd_scene format=3 uid="uid://deisvmwa6obr6"]
+
+[ext_resource type="Script" uid="uid://d3533svdpus77" path="res://utility/OtmAudioManager.cs" id="1_nmjym"]
+
+[node name="OtmAudioManager" type="Node2D" unique_id=67307457]
+script = ExtResource("1_nmjym")
+_matchMusicEvent = Vector4i(1993656079, 1185817314, -2010899779, -1353054274)

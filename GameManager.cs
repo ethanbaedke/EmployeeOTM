@@ -4,6 +4,8 @@ using System.Threading.Tasks;
 using Godot.Collections;
 using System.Linq;
 using System.Text.RegularExpressions;
+using FmodGodot;
+using FMOD.Studio;
 
 public partial class GameManager : Node2D
 {

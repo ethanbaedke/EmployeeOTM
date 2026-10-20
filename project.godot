@@ -19,6 +19,7 @@ config/icon="res://icon.svg"
 
 LoggerGlobal="*uid://8y3ypkmwi7io"
 OtmSaveData="*uid://ckrrv0dmeiiel"
+OtmAudioManager="*uid://deisvmwa6obr6"
 
 [display]
 
@@ -29,6 +30,12 @@ window/stretch/mode="canvas_items"
 [dotnet]
 
 project/assembly_name="EmployeeOTM"
+
+[fmod]
+
+banks/import/fmod_studio_path="C:/Users/ethan/EOTM/FMOD Studio 2.03.15/FMOD Studio.exe"
+banks/import/fmod_project_path="C:/Users/ethan/EOTM/FMOD Project/FMOD Project.fspro"
+banks/initialization/load_banks=2
 
 [physics]
 

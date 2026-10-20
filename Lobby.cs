@@ -71,6 +71,7 @@ public partial class Lobby : Node2D
         }
         await ToSignal(GetTree().CreateTimer(0.75f), SceneTreeTimer.SignalName.Timeout);
 
+        await OtmAudioManager.Instance.StartMatchBuildup();
         _elevatorAnimPlayer.Play("close_doors");
         await ToSignal(_elevatorAnimPlayer, "animation_finished");
         _elevatorAnimPlayer.Play("take_up");
@@ -283,6 +284,8 @@ public partial class Lobby : Node2D
 
         _colorChangeArea.BodyEntered += OnColorChangeAreaBodyEntered;
         _spriteChangeArea.BodyEntered += OnSpriteChangeAreaBodyEntered;
+
+        OtmAudioManager.Instance.PlayLobbyMusic();
     }
 
     private Dictionary<int, bool> _deviceJoypadAxisActive = new Dictionary<int, bool>();

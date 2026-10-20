@@ -24,6 +24,9 @@ public partial class MiniGameSelection : Control
     public async Task<PackedScene> SelectMiniGame()
     {
         OTMLogger.Instance.Info(this, "Selecting mini-game.");
+
+        await OtmAudioManager.Instance.ProgressMatchBuildup();
+
         int startInd = GD.RandRange(0, _miniGames.Count - 1);
 
         // Selection animation, excluding the final selection.

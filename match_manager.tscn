@@ -302,6 +302,7 @@ _winnerPaper = NodePath("CanvasLayer/WinnerPaper")
 _singleWinnerDisplay = NodePath("CanvasLayer/SingleWinnerDisplay")
 _introduction = NodePath("Introduction")
 _matchFlowAnimPlayer = NodePath("MatchFlowAnimationPlayer")
+_musicEvent = Vector4i(1993656079, 1185817314, -2010899779, -1353054274)
 
 [node name="Introduction" parent="." unique_id=510998399 instance=ExtResource("2_hilxt")]
 visible = false

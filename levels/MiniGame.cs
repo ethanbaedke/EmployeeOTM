@@ -60,6 +60,9 @@ public abstract partial class MiniGame : Node2D
     {
         OTMLogger.Instance.Info(this, "Starting mini-game.");
 
+        // TEMP
+        OtmAudioManager.Instance.StartMatchTheme();
+
         for (int i = 0; i < 4; i++)
         {
             _scientists[i].ProcessMode = ProcessModeEnum.Inherit;
@@ -69,6 +72,9 @@ public abstract partial class MiniGame : Node2D
 
     protected void EndMiniGame()
     {
+        // TEMP
+        OtmAudioManager.Instance.EndMatchTheme();
+
         AwardMiniGamePoints();
         EmitSignal("GameFinished");
     }

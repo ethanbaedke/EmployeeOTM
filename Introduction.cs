@@ -19,6 +19,8 @@ public partial class Introduction : Node2D
             return;
         }
 
+        await OtmAudioManager.Instance.ProgressMatchBuildup();
+
         for (int i = 0; i < 4; i++)
         {
             _employeeSprites[i].Texture = employeeData[i].EmployeeTexture;
