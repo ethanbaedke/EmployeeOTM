@@ -40,6 +40,7 @@ public partial class MatchManager : Node2D
         while (true)
         {
             // Select a mini-game.
+            await OtmAudioManager.Instance.ProgressMatchBuildup();
             _matchFlowAnimPlayer.Play("mini_game_selection_in");
             await ToSignal(_matchFlowAnimPlayer, AnimationPlayer.SignalName.AnimationFinished);
             PackedScene miniGameScene = await _miniGameSelection.SelectMiniGame();

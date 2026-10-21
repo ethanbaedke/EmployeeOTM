@@ -153,25 +153,25 @@ tracks/0/type = "value"
 tracks/0/imported = false
 tracks/0/enabled = true
 tracks/0/path = NodePath("RightCurtain:position")
-tracks/0/interp = 1
+tracks/0/interp = 2
 tracks/0/loop_wrap = true
 tracks/0/keys = {
 "times": PackedFloat32Array(0),
 "transitions": PackedFloat32Array(1),
 "update": 0,
-"values": [Vector2(1728, 470)]
+"values": [Vector2(1600, 470)]
 }
 tracks/1/type = "value"
 tracks/1/imported = false
 tracks/1/enabled = true
 tracks/1/path = NodePath("LeftCurtain:position")
-tracks/1/interp = 1
+tracks/1/interp = 2
 tracks/1/loop_wrap = true
 tracks/1/keys = {
 "times": PackedFloat32Array(0),
 "transitions": PackedFloat32Array(1),
 "update": 0,
-"values": [Vector2(192, 469.99997)]
+"values": [Vector2(320, 470)]
 }
 tracks/2/type = "value"
 tracks/2/imported = false
@@ -348,12 +348,12 @@ scale = Vector2(0.25, 0.25)
 texture = ExtResource("2_qebxn")
 
 [node name="LeftCurtain" type="Sprite2D" parent="." unique_id=452120534]
-position = Vector2(192, 469.99997)
+position = Vector2(320, 470)
 scale = Vector2(-1, 0.87)
 texture = ExtResource("1_oqkmi")
 
 [node name="RightCurtain" type="Sprite2D" parent="." unique_id=1317395982]
-position = Vector2(1728, 470)
+position = Vector2(1600, 470)
 scale = Vector2(1, 0.8703704)
 texture = ExtResource("1_oqkmi")
 

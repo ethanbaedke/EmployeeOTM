@@ -8,17 +8,49 @@ public partial class FridayLayoffs : MiniGame, INameProvider
 {
 	[Export] private CenterScreenCountdown _centerScreenCountdown;
 
-    // Amount of time until the player holding the pink slip is fired.
-    private const double FIRE_TIME = 7.5;
     private const double HAND_OFF_COOLDOWN = 0.25;
 
     private PackedScene _pinkSlipScene = GD.Load<PackedScene>("res://entities/pink_slip.tscn");
     private Array<Scientist> _remainingScientists;
     private Node2D _pinkSlip = null;
     private Scientist _pinkSlipHolder = null;
-    private double _fireTimer = FIRE_TIME;
     private Scientist _pinkSlipHandoffTarget = null;
     private double _handoffCooldown = HAND_OFF_COOLDOWN;
+    private bool _onFirstThemeLoop = true;
+
+    protected override void OnTheme()
+    {
+        OtmAudioManager.Instance.SetThemeRepeat(_onFirstThemeLoop);
+        _onFirstThemeLoop = false;
+    }
+
+    protected override void OnThemeCountdown()
+    {
+        HandleFiring();
+    }
+
+    private async void HandleFiring()
+    {
+        await ToSignal(GetTree().CreateTimer(3.692f / 2.0f), SceneTreeTimer.SignalName.Timeout);
+
+        FirePinkSlipHolder();
+
+        // Give points to remaining employees.
+        AwardPoints();
+        if (_remainingScientists.Count > 1)
+        {
+            OtmAudioManager.Instance.SetThemeRepeat(true);
+            _onFirstThemeLoop = true;
+            await ToSignal(GetTree().CreateTimer(3.692f / 2.0f), SceneTreeTimer.SignalName.Timeout);
+            GiveNewScientistPinkSlip();
+        }
+        else
+        {
+            OtmAudioManager.Instance.SetThemeRepeat(false);
+            await ToSignal(GetTree().CreateTimer(3.692f / 2.0f), SceneTreeTimer.SignalName.Timeout);
+            EndMiniGame();
+        }
+    }
 
     private void GiveNewScientistPinkSlip()
     {
@@ -127,29 +159,5 @@ public partial class FridayLayoffs : MiniGame, INameProvider
             }
             _pinkSlipHandoffTarget = null;
         }
-
-        if (_fireTimer > 0.0)
-        {
-            _fireTimer -= delta;
-            if (_fireTimer <= 0.0)
-            {
-                _fireTimer = 0.0;
-                FirePinkSlipHolder();
-                // Give points to remaining employees.
-                AwardPoints();
-                if (_remainingScientists.Count > 1)
-                {
-                    _fireTimer = FIRE_TIME;
-                    _centerScreenCountdown.ResetCountdown();
-                    GiveNewScientistPinkSlip();
-                }
-                else
-                {
-                    EndMiniGame();
-                }
-            }
-        }
-
-        _centerScreenCountdown.SetTimeRemaining(_fireTimer);
     }
 }

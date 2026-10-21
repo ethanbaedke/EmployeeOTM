@@ -56,12 +56,11 @@ public abstract partial class MiniGame : Node2D
         await _tutorial.ShowTutorial(miniGameName, _miniGameDescription, _tutorialVideo);
     }
 
-    public virtual void StartMiniGame()
+    public virtual async Task StartMiniGame()
     {
-        OTMLogger.Instance.Info(this, "Starting mini-game.");
+        await OtmAudioManager.Instance.StartMatchTheme();
 
-        // TEMP
-        OtmAudioManager.Instance.StartMatchTheme();
+        OTMLogger.Instance.Info(this, "Starting mini-game.");
 
         for (int i = 0; i < 4; i++)
         {
@@ -72,9 +71,6 @@ public abstract partial class MiniGame : Node2D
 
     protected void EndMiniGame()
     {
-        // TEMP
-        OtmAudioManager.Instance.EndMatchTheme();
-
         AwardMiniGamePoints();
         EmitSignal("GameFinished");
     }
@@ -86,6 +82,9 @@ public abstract partial class MiniGame : Node2D
         effect.SetColor(scientist.HeldEmployeeData.EmployeeColor);
         scientist.AddChild(effect);
     }
+
+    protected abstract void OnTheme();
+    protected abstract void OnThemeCountdown();
 
     // Called once when the mini-game is ending to set the amount of points each employee should get.
     private void AwardMiniGamePoints()
@@ -173,6 +172,22 @@ public abstract partial class MiniGame : Node2D
             }
         }
         _debugIsAIEnabled = enabled;
+    }
+
+    public override void _EnterTree()
+    {
+        base._EnterTree();
+
+        OtmAudioManager.Instance.Theme += OnTheme;
+        OtmAudioManager.Instance.ThemeCountdown += OnThemeCountdown;
+    }
+
+    public override void _ExitTree()
+    {
+        base._ExitTree();
+
+        OtmAudioManager.Instance.Theme -= OnTheme;
+        OtmAudioManager.Instance.ThemeCountdown -= OnThemeCountdown;
     }
 
     public override void _Input(InputEvent @event)

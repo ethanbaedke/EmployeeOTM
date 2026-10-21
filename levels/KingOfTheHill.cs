@@ -9,11 +9,30 @@ public partial class KingOfTheHill : MiniGame, INameProvider
     [Export] private CenterScreenCountdown _centerScreenCountdown;
 
     private const double POINT_AWARD_TIME = 1.0;
-    private const double GAME_LENGTH = 30.0;
-    private const int COUNTDOWN_START_TIME = 5;
+    private const double GAME_THEME_LOOPS = 4;
 
     private double _pointAwardTimer = 0.0;
-    private double _timeRemaining = GAME_LENGTH;
+    private double _themeLoopsRemaining = GAME_THEME_LOOPS;
+
+    protected override void OnTheme()
+    {
+        _themeLoopsRemaining--;
+        if (_themeLoopsRemaining == 0)
+        {
+            OtmAudioManager.Instance.SetThemeRepeat(false);
+        }
+    }
+
+    protected override void OnThemeCountdown()
+    {
+        HandleFinalCountdown();
+    }
+
+    private async void HandleFinalCountdown()
+    {
+        await ToSignal(GetTree().CreateTimer(3.692f), SceneTreeTimer.SignalName.Timeout);
+        EndMiniGame();
+    }
 
     // Called during the mini-game to award points for captured zones.
     private void AwardPoints()
@@ -53,10 +72,7 @@ public partial class KingOfTheHill : MiniGame, INameProvider
     {
         base._Ready();
 
-        // Initialize countdown timer.
-        _centerScreenCountdown.SetCountdownStartTime(COUNTDOWN_START_TIME);
-
-        OTMLogger.Instance.Info(this, "KingOfTheHill is ready!");
+        OtmAudioManager.Instance.SetThemeRepeat(true);
     }
 
     public override void _Process(double delta)
@@ -68,32 +84,15 @@ public partial class KingOfTheHill : MiniGame, INameProvider
             return;
         }
 
-        // Tick game time.
-        if (_timeRemaining > 0.0)
+        // Tick point awarding.
+        if (_pointAwardTimer < POINT_AWARD_TIME)
         {
-            _timeRemaining -= delta;
+            _pointAwardTimer += delta;
         }
         else
         {
-            _timeRemaining = 0.0;
-            EndMiniGame();
-        }
-
-        if (_timeRemaining > 0.0)
-        {
-            // Tick point awarding.
-            if (_pointAwardTimer < POINT_AWARD_TIME)
-            {
-                _pointAwardTimer += delta;
-            }
-            else
-            {
-                _pointAwardTimer = 0.0;
-                AwardPoints();
-            }
-
-            // Tick countdown.
-            _centerScreenCountdown.SetTimeRemaining(_timeRemaining);
+            _pointAwardTimer = 0.0;
+            AwardPoints();
         }
     }
 }

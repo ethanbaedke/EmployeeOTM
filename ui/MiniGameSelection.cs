@@ -25,8 +25,6 @@ public partial class MiniGameSelection : Control
     {
         OTMLogger.Instance.Info(this, "Selecting mini-game.");
 
-        await OtmAudioManager.Instance.ProgressMatchBuildup();
-
         int startInd = GD.RandRange(0, _miniGames.Count - 1);
 
         // Selection animation, excluding the final selection.
