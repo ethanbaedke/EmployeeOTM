@@ -11,11 +11,12 @@
 [sub_resource type="RectangleShape2D" id="RectangleShape2D_o3a2j"]
 size = Vector2(100, 1080)
 
-[node name="KingOfTheHill" type="Node2D" unique_id=739882208 node_paths=PackedStringArray("_captureAreas", "_centerScreenCountdown", "_scientists", "_tutorial")]
+[node name="KingOfTheHill" type="Node2D" unique_id=739882208 node_paths=PackedStringArray("_captureAreas", "_centerScreenCountdown", "_scientists", "_countdownUI", "_tutorial")]
 script = ExtResource("1_mu6ct")
 _captureAreas = [NodePath("CaptureArea2"), NodePath("CaptureArea4"), NodePath("CaptureArea6")]
 _centerScreenCountdown = NodePath("CanvasLayer/CenterScreenCountdown")
 _scientists = [NodePath("Scientist"), NodePath("Scientist2"), NodePath("Scientist3"), NodePath("Scientist4")]
+_countdownUI = NodePath("CanvasLayer/CenterScreenCountdown")
 _tutorial = NodePath("CanvasLayer/MiniGameTutorial")
 _miniGameDescription = "Capture microwaves to heat your lunch!"
 _tutorialVideo = ExtResource("2_6v4r3")

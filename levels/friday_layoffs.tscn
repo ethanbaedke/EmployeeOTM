@@ -10,10 +10,10 @@
 [sub_resource type="RectangleShape2D" id="RectangleShape2D_o3a2j"]
 size = Vector2(100, 1080)
 
-[node name="FridayLayoffs" type="Node2D" unique_id=739882208 node_paths=PackedStringArray("_centerScreenCountdown", "_scientists", "_tutorial")]
+[node name="FridayLayoffs" type="Node2D" unique_id=739882208 node_paths=PackedStringArray("_scientists", "_countdownUI", "_tutorial")]
 script = ExtResource("1_xemdx")
-_centerScreenCountdown = NodePath("CanvasLayer/CenterScreenCountdown")
 _scientists = [NodePath("Scientist"), NodePath("Scientist2"), NodePath("Scientist3"), NodePath("Scientist4")]
+_countdownUI = NodePath("CanvasLayer/CenterScreenCountdown")
 _tutorial = NodePath("CanvasLayer/MiniGameTutorial")
 _miniGameDescription = "Don't end up with the pink slip when time runs out!"
 _tutorialVideo = ExtResource("2_mb2uj")
@@ -105,6 +105,5 @@ position = Vector2(1511, 276.99982)
 [node name="CanvasLayer" type="CanvasLayer" parent="." unique_id=743391810]
 
 [node name="CenterScreenCountdown" parent="CanvasLayer" unique_id=1320922543 instance=ExtResource("7_k6j0r")]
-visible = false
 
 [node name="MiniGameTutorial" parent="CanvasLayer" unique_id=858250490 instance=ExtResource("5_jh7wy")]

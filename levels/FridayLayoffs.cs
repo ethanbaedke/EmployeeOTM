@@ -6,8 +6,6 @@ using System.Reflection.Metadata;
 
 public partial class FridayLayoffs : MiniGame, INameProvider
 {
-	[Export] private CenterScreenCountdown _centerScreenCountdown;
-
     private const double HAND_OFF_COOLDOWN = 0.25;
 
     private PackedScene _pinkSlipScene = GD.Load<PackedScene>("res://entities/pink_slip.tscn");
@@ -134,8 +132,6 @@ public partial class FridayLayoffs : MiniGame, INameProvider
             };
         }
         GiveNewScientistPinkSlip();
-
-        _centerScreenCountdown.SetCountdownStartTime(5);
     }
 
     public override void _Process(double delta)

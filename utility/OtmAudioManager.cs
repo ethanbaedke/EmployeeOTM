@@ -16,6 +16,8 @@ public partial class OtmAudioManager : Node2D
     public delegate void ThemeEventHandler();
     [Signal]
     public delegate void ThemeCountdownEventHandler();
+    [Signal]
+    public delegate void MatchCountdownEventHandler();
     
     [Signal]
     private delegate void NewSoundPlayedEventHandler();
@@ -29,7 +31,13 @@ public partial class OtmAudioManager : Node2D
     private bool _beatEventQueued = false;
     private bool _themeEventQueued = false;
     private bool _themeCountdownEventQueued = false;
+    private bool _matchCountdownEventQueued = false;
     private bool _newSoundPlayedEventQueued = false;
+
+    public float GetBeatTime()
+    {
+        return (120.0f / 130.0f) * 0.5f;
+    }
 
     public void PlayLobbyMusic()
     {
@@ -85,6 +93,10 @@ public partial class OtmAudioManager : Node2D
                 {
                     _themeCountdownEventQueued = true;
                 }
+                else if (markerName == "Countdown")
+                {
+                    _matchCountdownEventQueued = true;
+                }
                 break;
             case EVENT_CALLBACK_TYPE.SOUND_PLAYED:
                 _newSoundPlayedEventQueued = true;
@@ -124,6 +136,12 @@ public partial class OtmAudioManager : Node2D
             OTMLogger.Instance.Trace(this, "Firing theme countdown event.");
             _themeCountdownEventQueued = false;
             EmitSignal("ThemeCountdown");
+        }
+        if (_matchCountdownEventQueued)
+        {
+            OTMLogger.Instance.Trace(this, "Firing match countdown event.");
+            _matchCountdownEventQueued = false;
+            EmitSignal("MatchCountdown");
         }
         if (_newSoundPlayedEventQueued)
         {

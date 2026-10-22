@@ -3,12 +3,15 @@ using Godot.Collections;
 using System;
 using System.Linq;
 using System.Reflection;
+using System.Reflection.Metadata;
 using System.Threading.Tasks;
 
 public abstract partial class MiniGame : Node2D
 {
     [Export]
     protected Scientist[] _scientists = new Scientist[4];
+    [Export]
+    protected CenterScreenCountdown _countdownUI;
     [Export]
     private MiniGameTutorial _tutorial;
     [Export(PropertyHint.MultilineText)]
@@ -85,6 +88,21 @@ public abstract partial class MiniGame : Node2D
 
     protected abstract void OnTheme();
     protected abstract void OnThemeCountdown();
+
+    private void OnMatchCountdown()
+    {
+        HandleCountdown();
+    }
+
+    private async void HandleCountdown()
+    {
+        for (int i = 3; i > 0; i--)
+        {
+            _countdownUI.ShowText(i, OtmAudioManager.Instance.GetBeatTime());
+            await ToSignal(GetTree().CreateTimer(OtmAudioManager.Instance.GetBeatTime()), SceneTreeTimer.SignalName.Timeout);
+        }
+        _countdownUI.ShowText("GO!");
+    }
 
     // Called once when the mini-game is ending to set the amount of points each employee should get.
     private void AwardMiniGamePoints()
@@ -180,6 +198,7 @@ public abstract partial class MiniGame : Node2D
 
         OtmAudioManager.Instance.Theme += OnTheme;
         OtmAudioManager.Instance.ThemeCountdown += OnThemeCountdown;
+        OtmAudioManager.Instance.MatchCountdown += OnMatchCountdown;
     }
 
     public override void _ExitTree()
@@ -188,6 +207,7 @@ public abstract partial class MiniGame : Node2D
 
         OtmAudioManager.Instance.Theme -= OnTheme;
         OtmAudioManager.Instance.ThemeCountdown -= OnThemeCountdown;
+        OtmAudioManager.Instance.MatchCountdown -= OnMatchCountdown;
     }
 
     public override void _Input(InputEvent @event)

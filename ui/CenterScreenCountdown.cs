@@ -7,39 +7,23 @@ public partial class CenterScreenCountdown : Control
     [Export] private Curve _yPositionCurve;
     [Export] private Label _countdownLabel;
 
-    private const double EFFECT_LENGTH = 0.75;
-
     // Starts at 1.0 since the label is hidden at the end of the effect.
-    private double _effectPercent = 1.0;
-    private int _lastShownNumber = -1;
-    private int _countdownStartTime = 0;
+    private float _effectPercent = 1.0f;
+    private float _effectLength;
 
-    public void SetCountdownStartTime(int startTime)
+    public void ShowText(int num, float time)
     {
-        _countdownStartTime = startTime;
-        ResetCountdown();
+        _countdownLabel.Text = num.ToString();
+        // Resetting percent is how we trigger the effect.
+        _effectPercent = 0.0f;
+        _effectLength = time;
     }
 
-    public void ResetCountdown()
+    public void ShowText(string text)
     {
-        _lastShownNumber = _countdownStartTime + 1;
-    }
-
-    public void SetTimeRemaining(double timeRemaining)
-    {
-        if (_lastShownNumber == -1)
-        {
-            OTMLogger.Instance.Error(this, "Time remaining set before start time was initialized.");
-            return;
-        }
-
-        if (_lastShownNumber > 1 && timeRemaining <= _lastShownNumber - 1)
-        {
-            _lastShownNumber--;
-            _countdownLabel.Text = _lastShownNumber.ToString();
-            // Resetting percent is how we trigger the effect.
-            _effectPercent = 0.0;
-        }
+        _countdownLabel.Text = text;
+        // Resetting percent is how we trigger the effect.
+        _effectPercent = 0.0f;
     }
 
     public override void _Process(double delta)
@@ -48,11 +32,11 @@ public partial class CenterScreenCountdown : Control
 
         if (_effectPercent < 1.0)
         {
-            _effectPercent += delta / EFFECT_LENGTH;
+            _effectPercent += (float)delta / _effectLength;
         }
         else
         {
-            _effectPercent = 1.0;
+            _effectPercent = 1.0f;
         }
 
         double yPos = _yPositionCurve.Sample((float)_effectPercent);

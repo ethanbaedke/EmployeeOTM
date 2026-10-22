@@ -6,7 +6,6 @@ using System.Linq;
 public partial class KingOfTheHill : MiniGame, INameProvider
 {
     [Export] private CaptureArea[] _captureAreas;
-    [Export] private CenterScreenCountdown _centerScreenCountdown;
 
     private const double POINT_AWARD_TIME = 1.0;
     private const double GAME_THEME_LOOPS = 4;
@@ -30,7 +29,16 @@ public partial class KingOfTheHill : MiniGame, INameProvider
 
     private async void HandleFinalCountdown()
     {
-        await ToSignal(GetTree().CreateTimer(3.692f), SceneTreeTimer.SignalName.Timeout);
+        for (int i = 4; i > 2; i--)
+        {
+            _countdownUI.ShowText(i, OtmAudioManager.Instance.GetBeatTime() * 2.0f);
+            await ToSignal(GetTree().CreateTimer(OtmAudioManager.Instance.GetBeatTime() * 2.0f), SceneTreeTimer.SignalName.Timeout);
+        }
+        for (int i = 4; i > 0; i--)
+        {
+            _countdownUI.ShowText(i, OtmAudioManager.Instance.GetBeatTime());
+            await ToSignal(GetTree().CreateTimer(OtmAudioManager.Instance.GetBeatTime()), SceneTreeTimer.SignalName.Timeout);
+        }
         EndMiniGame();
     }
 
