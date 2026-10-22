@@ -5,6 +5,7 @@
 [ext_resource type="PackedScene" uid="uid://d21xptkc4i083" path="res://introduction.tscn" id="2_hilxt"]
 [ext_resource type="PackedScene" uid="uid://5c2doc244jws" path="res://ui/star_sheet.tscn" id="2_sgbhi"]
 [ext_resource type="PackedScene" uid="uid://dhug5h2y0ce7e" path="res://mini_game_placement.tscn" id="4_xfb0p"]
+[ext_resource type="PackedScene" uid="uid://bvqw7lc1tcsrt" path="res://levels/friday_layoffs.tscn" id="5_vw4lq"]
 [ext_resource type="PackedScene" uid="uid://tojlilnglxyw" path="res://ui/winner_paper.tscn" id="7_4lc7o"]
 [ext_resource type="PackedScene" uid="uid://dcxxyk4umcrw7" path="res://ui/single_winner_display.tscn" id="8_8kas3"]
 
@@ -312,6 +313,7 @@ visible = false
 [node name="MiniGameSelection" parent="CanvasLayer" unique_id=154623932 instance=ExtResource("2_3tnfu")]
 offset_top = 1080.0
 offset_bottom = 1080.0
+_ffaMiniGameScenes = Array[PackedScene]([ExtResource("5_vw4lq")])
 
 [node name="StarSheet" parent="CanvasLayer" unique_id=1972792217 instance=ExtResource("2_sgbhi")]
 offset_top = 1080.0

@@ -3,6 +3,7 @@ using System;
 using Godot.Collections;
 using System.Linq;
 using System.Reflection.Metadata;
+using System.Threading.Tasks;
 
 public partial class FridayLayoffs : MiniGame, INameProvider
 {
@@ -16,6 +17,15 @@ public partial class FridayLayoffs : MiniGame, INameProvider
     private double _handoffCooldown = HAND_OFF_COOLDOWN;
     private bool _canHandoffPinkSlip = true;
     private bool _onFirstThemeLoop = true;
+
+    public override async Task StartMiniGame()
+    {
+        await base.StartMiniGame();
+
+        // Give initial pink slip.
+        Scientist initialPinkSlipHolder = GetNextPinkSlipScientist();
+        GiveNewPinkSlipToScientist(initialPinkSlipHolder);
+    }
 
     protected override void OnTheme()
     {
@@ -185,8 +195,6 @@ public partial class FridayLayoffs : MiniGame, INameProvider
                 HandleScientistCollision(scientist, other);
             };
         }
-        Scientist initialPinkSlipHolder = GetNextPinkSlipScientist();
-        GiveNewPinkSlipToScientist(initialPinkSlipHolder);
     }
 
     public override void _Process(double delta)
@@ -204,7 +212,7 @@ public partial class FridayLayoffs : MiniGame, INameProvider
         {
             if (_handoffCooldown <= 0.0)
             {
-                _pinkSlip.Reparent(_pinkSlipHandoffTarget, false);
+                _pinkSlip.Reparent(_pinkSlipHandoffTarget);
                 _pinkSlipHolder = _pinkSlipHandoffTarget;
                 _handoffCooldown = HAND_OFF_COOLDOWN;
             }

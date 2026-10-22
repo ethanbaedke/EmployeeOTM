@@ -1,8 +1,11 @@
 [gd_scene format=3 uid="uid://bmcrtgqsurm8d"]
 
 [ext_resource type="Texture2D" uid="uid://w0dqoy5a2i6x" path="res://entities/pink_slip.svg" id="1_ars8g"]
+[ext_resource type="Script" uid="uid://d304yoa3j01gp" path="res://entities/PinkSlip.cs" id="1_dtw44"]
 
-[node name="PinkSlip" type="Node2D" unique_id=27744426]
+[node name="PinkSlip" type="Node2D" unique_id=27744426 node_paths=PackedStringArray("_sprite")]
+script = ExtResource("1_dtw44")
+_sprite = NodePath("Sprite2D")
 
 [node name="Sprite2D" type="Sprite2D" parent="." unique_id=1118183885]
 position = Vector2(0, -55.999996)
