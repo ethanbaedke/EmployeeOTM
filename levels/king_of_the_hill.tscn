@@ -3,6 +3,7 @@
 [ext_resource type="Script" uid="uid://lemngjmh4jp0" path="res://levels/KingOfTheHill.cs" id="1_mu6ct"]
 [ext_resource type="VideoStream" uid="uid://d3krjbo2bg53k" path="res://levels/king_of_the_hill_tutorial.ogv" id="2_6v4r3"]
 [ext_resource type="PackedScene" uid="uid://ddsuppc5mxr32" path="res://entities/scientist/scientist.tscn" id="2_8thry"]
+[ext_resource type="Script" uid="uid://bxqgwtb01dhmb" path="res://levels/MiniGameCamera.cs" id="3_wyug6"]
 [ext_resource type="PackedScene" uid="uid://bpulko32timg0" path="res://entities/dirt_platform.tscn" id="5_pfrlf"]
 [ext_resource type="PackedScene" uid="uid://c1w2ibs5t4v4b" path="res://ui/MiniGameTutorial.tscn" id="6_6v4r3"]
 [ext_resource type="PackedScene" uid="uid://cs3rdyu7wyyg7" path="res://entities/capture_area.tscn" id="6_l53ne"]
@@ -11,15 +12,21 @@
 [sub_resource type="RectangleShape2D" id="RectangleShape2D_o3a2j"]
 size = Vector2(100, 1080)
 
-[node name="KingOfTheHill" type="Node2D" unique_id=739882208 node_paths=PackedStringArray("_captureAreas", "_centerScreenCountdown", "_scientists", "_countdownUI", "_tutorial")]
+[node name="KingOfTheHill" type="Node2D" unique_id=739882208 node_paths=PackedStringArray("_captureAreas", "_scientists", "_countdownUI", "_camera", "_tutorial")]
 script = ExtResource("1_mu6ct")
 _captureAreas = [NodePath("CaptureArea2"), NodePath("CaptureArea4"), NodePath("CaptureArea6")]
-_centerScreenCountdown = NodePath("CanvasLayer/CenterScreenCountdown")
 _scientists = [NodePath("Scientist"), NodePath("Scientist2"), NodePath("Scientist3"), NodePath("Scientist4")]
 _countdownUI = NodePath("CanvasLayer/CenterScreenCountdown")
+_camera = NodePath("Camera2D")
 _tutorial = NodePath("CanvasLayer/MiniGameTutorial")
 _miniGameDescription = "Capture microwaves to heat your lunch!"
 _tutorialVideo = ExtResource("2_6v4r3")
+
+[node name="Camera2D" type="Camera2D" parent="." unique_id=78114846 node_paths=PackedStringArray("_initialParentGame")]
+position = Vector2(960, 540)
+position_smoothing_enabled = true
+script = ExtResource("3_wyug6")
+_initialParentGame = NodePath("..")
 
 [node name="Scientist" parent="." unique_id=1174776970 instance=ExtResource("2_8thry")]
 position = Vector2(102, 1011)

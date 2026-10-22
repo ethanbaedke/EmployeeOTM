@@ -13,6 +13,8 @@ public abstract partial class MiniGame : Node2D
     [Export]
     protected CenterScreenCountdown _countdownUI;
     [Export]
+    protected MiniGameCamera _camera;
+    [Export]
     private MiniGameTutorial _tutorial;
     [Export(PropertyHint.MultilineText)]
     private string _miniGameDescription;

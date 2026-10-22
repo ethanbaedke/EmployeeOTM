@@ -3,6 +3,7 @@
 [ext_resource type="Script" uid="uid://dvuyqy0fsrtt3" path="res://levels/FridayLayoffs.cs" id="1_xemdx"]
 [ext_resource type="PackedScene" uid="uid://ddsuppc5mxr32" path="res://entities/scientist/scientist.tscn" id="2_cdpv0"]
 [ext_resource type="VideoStream" uid="uid://brna7qw8dkjga" path="res://levels/friday_layoffs_tutorial.ogv" id="2_mb2uj"]
+[ext_resource type="Script" uid="uid://bxqgwtb01dhmb" path="res://levels/MiniGameCamera.cs" id="3_xemdx"]
 [ext_resource type="PackedScene" uid="uid://c1w2ibs5t4v4b" path="res://ui/MiniGameTutorial.tscn" id="5_jh7wy"]
 [ext_resource type="PackedScene" uid="uid://bpulko32timg0" path="res://entities/dirt_platform.tscn" id="5_kwhk1"]
 [ext_resource type="PackedScene" uid="uid://km4o30h8u3rt" path="res://ui/center_screen_countdown.tscn" id="7_k6j0r"]
@@ -10,13 +11,19 @@
 [sub_resource type="RectangleShape2D" id="RectangleShape2D_o3a2j"]
 size = Vector2(100, 1080)
 
-[node name="FridayLayoffs" type="Node2D" unique_id=739882208 node_paths=PackedStringArray("_scientists", "_countdownUI", "_tutorial")]
+[node name="FridayLayoffs" type="Node2D" unique_id=739882208 node_paths=PackedStringArray("_scientists", "_countdownUI", "_camera", "_tutorial")]
 script = ExtResource("1_xemdx")
 _scientists = [NodePath("Scientist"), NodePath("Scientist2"), NodePath("Scientist3"), NodePath("Scientist4")]
 _countdownUI = NodePath("CanvasLayer/CenterScreenCountdown")
+_camera = NodePath("Camera2D")
 _tutorial = NodePath("CanvasLayer/MiniGameTutorial")
 _miniGameDescription = "Don't end up with the pink slip when time runs out!"
 _tutorialVideo = ExtResource("2_mb2uj")
+
+[node name="Camera2D" type="Camera2D" parent="." unique_id=211476339 node_paths=PackedStringArray("_initialParentGame")]
+position = Vector2(960, 540)
+script = ExtResource("3_xemdx")
+_initialParentGame = NodePath("..")
 
 [node name="Scientist" parent="." unique_id=1174776970 instance=ExtResource("2_cdpv0")]
 position = Vector2(102, 1011)

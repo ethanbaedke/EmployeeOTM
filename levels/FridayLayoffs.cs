@@ -14,12 +14,21 @@ public partial class FridayLayoffs : MiniGame, INameProvider
     private Scientist _pinkSlipHolder = null;
     private Scientist _pinkSlipHandoffTarget = null;
     private double _handoffCooldown = HAND_OFF_COOLDOWN;
+    private bool _canHandoffPinkSlip = true;
     private bool _onFirstThemeLoop = true;
 
     protected override void OnTheme()
     {
-        OtmAudioManager.Instance.SetThemeRepeat(_onFirstThemeLoop);
-        _onFirstThemeLoop = false;
+        if (_onFirstThemeLoop)
+        {
+            OtmAudioManager.Instance.SetThemeRepeat(true);
+            _onFirstThemeLoop = false;
+        }
+        else
+        {
+            OtmAudioManager.Instance.SetThemeRepeat(false);
+            HandleCountdown();
+        }
     }
 
     protected override void OnThemeCountdown()
@@ -27,11 +36,33 @@ public partial class FridayLayoffs : MiniGame, INameProvider
         HandleFiring();
     }
 
+    private async void HandleCountdown()
+    {
+        for (int i = 4; i > 0; i--)
+        {
+            _countdownUI.ShowText(i, OtmAudioManager.Instance.GetBeatTime() * 2.0f);
+            await ToSignal(GetTree().CreateTimer(OtmAudioManager.Instance.GetBeatTime() * 2.0f), SceneTreeTimer.SignalName.Timeout);
+        }
+    }
+
     private async void HandleFiring()
     {
-        await ToSignal(GetTree().CreateTimer(3.692f / 2.0f), SceneTreeTimer.SignalName.Timeout);
+        _pinkSlipHandoffTarget = null;
+        _canHandoffPinkSlip = false;
 
+        // Slow game.
+        Tween timeTween = CreateTween();
+        timeTween.SetIgnoreTimeScale();
+        timeTween.TweenProperty(Engine.Singleton, "time_scale", 0.1f, OtmAudioManager.Instance.GetBeatTime());
+
+        // Zoom in on employee getting fired.
+        _camera.ZoomOnEmployee(_pinkSlipHolder, OtmAudioManager.Instance.GetBeatTime());
+
+        await ToSignal(GetTree().CreateTimer(OtmAudioManager.Instance.GetBeatTime() * 2.0f, ignoreTimeScale:true), SceneTreeTimer.SignalName.Timeout);
+
+        // Fire employee.
         FirePinkSlipHolder();
+        await ToSignal(GetTree().CreateTimer(OtmAudioManager.Instance.GetBeatTime() * 2.0f, ignoreTimeScale:true), SceneTreeTimer.SignalName.Timeout);
 
         // Give points to remaining employees.
         AwardPoints();
@@ -39,18 +70,37 @@ public partial class FridayLayoffs : MiniGame, INameProvider
         {
             OtmAudioManager.Instance.SetThemeRepeat(true);
             _onFirstThemeLoop = true;
-            await ToSignal(GetTree().CreateTimer(3.692f / 2.0f), SceneTreeTimer.SignalName.Timeout);
-            GiveNewScientistPinkSlip();
+
+            // Zoom in on next holder.
+            Scientist nextHolder = GetNextPinkSlipScientist();
+            _camera.ZoomOnEmployee(nextHolder, OtmAudioManager.Instance.GetBeatTime());
+            await ToSignal(GetTree().CreateTimer(OtmAudioManager.Instance.GetBeatTime() * 2.0f, ignoreTimeScale:true), SceneTreeTimer.SignalName.Timeout);
+
+            // Give new holder pink slip.
+            GiveNewPinkSlipToScientist(nextHolder);
+            await ToSignal(GetTree().CreateTimer(OtmAudioManager.Instance.GetBeatTime() * 2.0f, ignoreTimeScale:true), SceneTreeTimer.SignalName.Timeout);
+
+            _camera.ResetCamera(OtmAudioManager.Instance.GetBeatTime());
+            Engine.TimeScale = 1.0f;
+            _canHandoffPinkSlip = true;
         }
         else
         {
             OtmAudioManager.Instance.SetThemeRepeat(false);
-            await ToSignal(GetTree().CreateTimer(3.692f / 2.0f), SceneTreeTimer.SignalName.Timeout);
+            _camera.ResetCamera(OtmAudioManager.Instance.GetBeatTime());
+            await ToSignal(GetTree().CreateTimer(OtmAudioManager.Instance.GetBeatTime() * 4.0f, ignoreTimeScale:true), SceneTreeTimer.SignalName.Timeout);
+            Engine.TimeScale = 1.0f;
             EndMiniGame();
         }
     }
 
-    private void GiveNewScientistPinkSlip()
+    private Scientist GetNextPinkSlipScientist()
+    {
+        // TODO: Select the scientist in first place.
+        return _remainingScientists[0];
+    }
+
+    private void GiveNewPinkSlipToScientist(Scientist scientist)
     {
         if (_pinkSlipHolder != null)
         {
@@ -64,13 +114,12 @@ public partial class FridayLayoffs : MiniGame, INameProvider
 
         OTMLogger.Instance.Info(this, "Giving pink slip to new scientist.");
 
-        // TODO: Select the scientist in first place.
-        Scientist selectedScientist = _remainingScientists[0];
-        _pinkSlipHolder = selectedScientist;
+        
+        _pinkSlipHolder = GetNextPinkSlipScientist();;
 
         // Create the pink slip.
         _pinkSlip = _pinkSlipScene.Instantiate<Node2D>();
-        selectedScientist.AddChild(_pinkSlip);
+        _pinkSlipHolder.AddChild(_pinkSlip);
     }
 
     private void FirePinkSlipHolder()
@@ -103,6 +152,11 @@ public partial class FridayLayoffs : MiniGame, INameProvider
 
     private void HandleScientistCollision(Scientist s1, Scientist s2)
     {
+        if (_canHandoffPinkSlip == false)
+        {
+            return;
+        }
+
         if (s1 == _pinkSlipHolder)
         {
             _pinkSlipHandoffTarget = s2;
@@ -131,7 +185,8 @@ public partial class FridayLayoffs : MiniGame, INameProvider
                 HandleScientistCollision(scientist, other);
             };
         }
-        GiveNewScientistPinkSlip();
+        Scientist initialPinkSlipHolder = GetNextPinkSlipScientist();
+        GiveNewPinkSlipToScientist(initialPinkSlipHolder);
     }
 
     public override void _Process(double delta)
