@@ -20,6 +20,8 @@ public partial class MatchManager : Node2D
     [Export]
     private Introduction _introduction;
     [Export]
+    private ModifierSelection _modifierSelection;
+    [Export]
     private AnimationPlayer _matchFlowAnimPlayer;
 
     private EmployeeData[] _employees;
@@ -91,6 +93,16 @@ public partial class MatchManager : Node2D
                 await ToSignal(_matchFlowAnimPlayer, AnimationPlayer.SignalName.AnimationFinished);
             }
 
+            // Select modifier.
+            EmployeeData selectingEmployeeData = GetEmployeeForModifierSelection();
+            _modifierSelection.InitializeSelection(selectingEmployeeData);
+            _matchFlowAnimPlayer.Play("modifier_selection_in");
+            await ToSignal(_matchFlowAnimPlayer, AnimationPlayer.SignalName.AnimationFinished);
+            _modifierSelection.EnableSelection();
+            await ToSignal(_modifierSelection, "SelectionMade");
+            _matchFlowAnimPlayer.Play("modifier_selection_out");
+            await ToSignal(_matchFlowAnimPlayer, AnimationPlayer.SignalName.AnimationFinished);
+
             // Reset point tracking.
             foreach (EmployeeData data in _employees)
             {
@@ -110,6 +122,12 @@ public partial class MatchManager : Node2D
     {
         _matchFlowAnimPlayer.Play("black_panel_out");
         await ToSignal(_matchFlowAnimPlayer, "animation_finished");
+    }
+
+    private EmployeeData GetEmployeeForModifierSelection()
+    {
+        // TODO: Select employee in last place.
+        return _employees[0];
     }
 
     // Match winners must always have at least one entry when this function is called.

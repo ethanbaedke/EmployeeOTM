@@ -5,9 +5,9 @@
 [ext_resource type="PackedScene" uid="uid://d21xptkc4i083" path="res://introduction.tscn" id="2_hilxt"]
 [ext_resource type="PackedScene" uid="uid://5c2doc244jws" path="res://ui/star_sheet.tscn" id="2_sgbhi"]
 [ext_resource type="PackedScene" uid="uid://dhug5h2y0ce7e" path="res://mini_game_placement.tscn" id="4_xfb0p"]
-[ext_resource type="PackedScene" uid="uid://bvqw7lc1tcsrt" path="res://levels/friday_layoffs.tscn" id="5_vw4lq"]
 [ext_resource type="PackedScene" uid="uid://tojlilnglxyw" path="res://ui/winner_paper.tscn" id="7_4lc7o"]
 [ext_resource type="PackedScene" uid="uid://dcxxyk4umcrw7" path="res://ui/single_winner_display.tscn" id="8_8kas3"]
+[ext_resource type="PackedScene" uid="uid://djkhtg47n3nw0" path="res://ui/modifier_selection.tscn" id="9_hilxt"]
 
 [sub_resource type="StyleBoxFlat" id="StyleBoxFlat_vw4lq"]
 bg_color = Color(0, 0, 0, 1)
@@ -99,6 +99,40 @@ tracks/7/path = NodePath("CanvasLayer/StarSheet:visible")
 tracks/7/interp = 1
 tracks/7/loop_wrap = true
 tracks/7/keys = {
+"times": PackedFloat32Array(0),
+"transitions": PackedFloat32Array(1),
+"update": 1,
+"values": [true]
+}
+tracks/8/type = "bezier"
+tracks/8/imported = false
+tracks/8/enabled = true
+tracks/8/path = NodePath("CanvasLayer/ModifierSelection:position:x")
+tracks/8/interp = 1
+tracks/8/loop_wrap = true
+tracks/8/keys = {
+"handle_modes": PackedInt32Array(0),
+"points": PackedFloat32Array(0, -0.25, 0, 0.25, 0),
+"times": PackedFloat32Array(0)
+}
+tracks/9/type = "bezier"
+tracks/9/imported = false
+tracks/9/enabled = true
+tracks/9/path = NodePath("CanvasLayer/ModifierSelection:position:y")
+tracks/9/interp = 1
+tracks/9/loop_wrap = true
+tracks/9/keys = {
+"handle_modes": PackedInt32Array(0),
+"points": PackedFloat32Array(1080, -0.25, 0, 0.25, 0),
+"times": PackedFloat32Array(0)
+}
+tracks/10/type = "value"
+tracks/10/imported = false
+tracks/10/enabled = true
+tracks/10/path = NodePath("CanvasLayer/ModifierSelection:visible")
+tracks/10/interp = 1
+tracks/10/loop_wrap = true
+tracks/10/keys = {
 "times": PackedFloat32Array(0),
 "transitions": PackedFloat32Array(1),
 "update": 1,
@@ -218,6 +252,68 @@ tracks/1/keys = {
 "times": PackedFloat32Array(0, 0.5)
 }
 
+[sub_resource type="Animation" id="Animation_jb2lr"]
+resource_name = "modifier_selection_in"
+tracks/0/type = "bezier"
+tracks/0/imported = false
+tracks/0/enabled = true
+tracks/0/path = NodePath("CanvasLayer/ModifierSelection:position:x")
+tracks/0/interp = 1
+tracks/0/loop_wrap = true
+tracks/0/keys = {
+"handle_modes": PackedInt32Array(0),
+"points": PackedFloat32Array(0, -0.25, 0, 0.25, 0),
+"times": PackedFloat32Array(0)
+}
+tracks/1/type = "bezier"
+tracks/1/imported = false
+tracks/1/enabled = true
+tracks/1/path = NodePath("CanvasLayer/ModifierSelection:position:y")
+tracks/1/interp = 1
+tracks/1/loop_wrap = true
+tracks/1/keys = {
+"handle_modes": PackedInt32Array(0, 0),
+"points": PackedFloat32Array(1080, -0.25, 0, 0.1, -1000, 0, -0.1, 0, 0, 0),
+"times": PackedFloat32Array(0, 0.5)
+}
+tracks/2/type = "value"
+tracks/2/imported = false
+tracks/2/enabled = true
+tracks/2/path = NodePath("CanvasLayer/ModifierSelection:visible")
+tracks/2/interp = 1
+tracks/2/loop_wrap = true
+tracks/2/keys = {
+"times": PackedFloat32Array(0),
+"transitions": PackedFloat32Array(1),
+"update": 1,
+"values": [true]
+}
+
+[sub_resource type="Animation" id="Animation_vx3xf"]
+resource_name = "modifier_selection_out"
+tracks/0/type = "bezier"
+tracks/0/imported = false
+tracks/0/enabled = true
+tracks/0/path = NodePath("CanvasLayer/ModifierSelection:position:x")
+tracks/0/interp = 1
+tracks/0/loop_wrap = true
+tracks/0/keys = {
+"handle_modes": PackedInt32Array(0),
+"points": PackedFloat32Array(0, -0.25, 0, 0.25, 0),
+"times": PackedFloat32Array(0)
+}
+tracks/1/type = "bezier"
+tracks/1/imported = false
+tracks/1/enabled = true
+tracks/1/path = NodePath("CanvasLayer/ModifierSelection:position:y")
+tracks/1/interp = 1
+tracks/1/loop_wrap = true
+tracks/1/keys = {
+"handle_modes": PackedInt32Array(0, 0),
+"points": PackedFloat32Array(0, -0.25, 0, 0.1, 1000, 1080, -0.1, 0, 0, 0),
+"times": PackedFloat32Array(0, 0.5)
+}
+
 [sub_resource type="Animation" id="Animation_4lc7o"]
 resource_name = "star_sheet_in"
 length = 0.5
@@ -288,11 +384,13 @@ _data = {
 &"black_panel_out": SubResource("Animation_ktyjm"),
 &"mini_game_selection_in": SubResource("Animation_hilxt"),
 &"mini_game_selection_out": SubResource("Animation_vc3lc"),
+&"modifier_selection_in": SubResource("Animation_jb2lr"),
+&"modifier_selection_out": SubResource("Animation_vx3xf"),
 &"star_sheet_in": SubResource("Animation_4lc7o"),
 &"star_sheet_out": SubResource("Animation_8kas3")
 }
 
-[node name="MatchManager" type="Node2D" unique_id=1381656787 node_paths=PackedStringArray("_miniGameSelection", "_miniGamePlacement", "_starSheet", "_winnerPaper", "_singleWinnerDisplay", "_introduction", "_matchFlowAnimPlayer")]
+[node name="MatchManager" type="Node2D" unique_id=1381656787 node_paths=PackedStringArray("_miniGameSelection", "_miniGamePlacement", "_starSheet", "_winnerPaper", "_singleWinnerDisplay", "_introduction", "_modifierSelection", "_matchFlowAnimPlayer")]
 script = ExtResource("1_5j2v8")
 _miniGameSelection = NodePath("CanvasLayer/MiniGameSelection")
 _miniGamePlacement = NodePath("MiniGamePlacement")
@@ -300,6 +398,7 @@ _starSheet = NodePath("CanvasLayer/StarSheet")
 _winnerPaper = NodePath("CanvasLayer/WinnerPaper")
 _singleWinnerDisplay = NodePath("CanvasLayer/SingleWinnerDisplay")
 _introduction = NodePath("Introduction")
+_modifierSelection = NodePath("CanvasLayer/ModifierSelection")
 _matchFlowAnimPlayer = NodePath("MatchFlowAnimationPlayer")
 
 [node name="Introduction" parent="." unique_id=510998399 instance=ExtResource("2_hilxt")]
@@ -313,7 +412,6 @@ visible = false
 [node name="MiniGameSelection" parent="CanvasLayer" unique_id=154623932 instance=ExtResource("2_3tnfu")]
 offset_top = 1080.0
 offset_bottom = 1080.0
-_ffaMiniGameScenes = Array[PackedScene]([ExtResource("5_vw4lq")])
 
 [node name="StarSheet" parent="CanvasLayer" unique_id=1972792217 instance=ExtResource("2_sgbhi")]
 offset_top = 1080.0
@@ -324,6 +422,10 @@ visible = false
 
 [node name="SingleWinnerDisplay" parent="CanvasLayer" unique_id=1501374277 instance=ExtResource("8_8kas3")]
 visible = false
+
+[node name="ModifierSelection" parent="CanvasLayer" unique_id=1636815128 instance=ExtResource("9_hilxt")]
+offset_top = 1080.0
+offset_bottom = 1080.001
 
 [node name="BlackPanel" type="Panel" parent="CanvasLayer" unique_id=1597759366]
 offset_top = -1080.0
