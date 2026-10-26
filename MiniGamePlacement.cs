@@ -10,9 +10,9 @@ public partial class MiniGamePlacement : Node2D
 
     private Node2D _placementNode = null;
 
-    public async Task ShowPlacement(EmployeeData[] employeeData)
+    public async Task ShowPlacement(MatchData matchData)
     {
-        if (employeeData.Length != 4)
+        if (matchData.Employees.Length != 4)
         {
             OTMLogger.Instance.Error(this, "Expected employee data array of size 4 for placement.");
             return;
@@ -25,7 +25,7 @@ public partial class MiniGamePlacement : Node2D
         }
 
         // Sort employees by placement.
-        EmployeeData[] orderedData = new Array<EmployeeData>(employeeData).OrderByDescending(p => p.PointsToAwardFromLastMiniGame).ToArray();
+        EmployeeData[] orderedData = new Array<EmployeeData>(matchData.Employees).OrderByDescending(p => p.PointsToAwardFromLastMiniGame).ToArray();
 
         _placementNode = GetPlacementNode(orderedData);
         for (int i = 0; i < 4; i++)

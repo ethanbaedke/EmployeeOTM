@@ -8,7 +8,9 @@
 script = ExtResource("2_ura83")
 SelectionPrompt = "Cultural Goal"
 LeftOption = "Competitive Atmosphere"
+LeftModifier = 1
 RightOption = "Cooperative Atmosphere"
+RightModifier = 2
 LeftOptionDescription = "Increased knockback."
 RightOptionDescription = "Decreased knockback."
 metadata/_custom_type_script = "uid://c421lk8b05w4"

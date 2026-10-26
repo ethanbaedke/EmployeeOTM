@@ -24,19 +24,20 @@ public partial class MatchManager : Node2D
     [Export]
     private AnimationPlayer _matchFlowAnimPlayer;
 
-    private EmployeeData[] _employees;
+    private MatchData _matchData;
 
     public async Task StartMatchLoop(EmployeeData[] employeeData)
     {
         OTMLogger.Instance.Info(this, "Starting match loop.");
-        _employees = employeeData;
+        _matchData = new MatchData();
+        _matchData.Employees = employeeData;
 
-        _starSheet.InitializeStarSheet(employeeData);
+        _starSheet.InitializeStarSheet(_matchData);
 
         // Play intro.
         _introduction.Visible = true;
         _matchFlowAnimPlayer.Play("black_panel_out");
-        await _introduction.PlayIntroduction(employeeData);
+        await _introduction.PlayIntroduction(_matchData);
 
         // Match loop.
         while (true)
@@ -55,7 +56,7 @@ public partial class MatchManager : Node2D
             _introduction.Visible = false;
             MiniGame miniGameInstance = miniGameScene.Instantiate<MiniGame>();
             this.AddChild(miniGameInstance);
-            miniGameInstance.InitializeMiniGame(_employees);
+            miniGameInstance.InitializeMiniGame(_matchData);
             _matchFlowAnimPlayer.Play("black_panel_out");
             await miniGameInstance.PlayTutorial();
             miniGameInstance.StartMiniGame();
@@ -71,13 +72,13 @@ public partial class MatchManager : Node2D
 
             // Show mini-game results.
             _miniGamePlacement.Visible = true;
-            await _miniGamePlacement.ShowPlacement(_employees);
+            await _miniGamePlacement.ShowPlacement(_matchData);
 
             // Award stars.
-            _starSheet.PlaceExistingStars(_employees);
+            _starSheet.PlaceExistingStars(_matchData);
             _matchFlowAnimPlayer.Play("star_sheet_in");
             await ToSignal(_matchFlowAnimPlayer, AnimationPlayer.SignalName.AnimationFinished);
-            Array<EmployeeData> matchWinners = await _starSheet.PlaceNewStars(_employees);
+            Array<EmployeeData> matchWinners = await _starSheet.PlaceNewStars(_matchData);
 
             // Match over.
             if (matchWinners.Count > 0)
@@ -99,12 +100,21 @@ public partial class MatchManager : Node2D
             _matchFlowAnimPlayer.Play("modifier_selection_in");
             await ToSignal(_matchFlowAnimPlayer, AnimationPlayer.SignalName.AnimationFinished);
             _modifierSelection.EnableSelection();
-            await ToSignal(_modifierSelection, "SelectionMade");
+            Variant[] selectionMadeReturnValues = await ToSignal(_modifierSelection, "SelectionMade");
+            MatchData.MatchModifier selectedModifier = (MatchData.MatchModifier)selectionMadeReturnValues[0].As<int>();
+            if (_matchData.Modifiers.ContainsKey(selectedModifier))
+            {
+                _matchData.Modifiers[selectedModifier]++;
+            }
+            else
+            {
+                _matchData.Modifiers[selectedModifier] = 1;
+            }
             _matchFlowAnimPlayer.Play("modifier_selection_out");
             await ToSignal(_matchFlowAnimPlayer, AnimationPlayer.SignalName.AnimationFinished);
 
             // Reset point tracking.
-            foreach (EmployeeData data in _employees)
+            foreach (EmployeeData data in _matchData.Employees)
             {
                 data.PointsToAwardFromLastMiniGame = 0;
                 data.MiniGamePointTracker = 0;
@@ -127,7 +137,7 @@ public partial class MatchManager : Node2D
     private EmployeeData GetEmployeeForModifierSelection()
     {
         // TODO: Select employee in last place.
-        return _employees[0];
+        return _matchData.Employees[0];
     }
 
     // Match winners must always have at least one entry when this function is called.
@@ -143,7 +153,7 @@ public partial class MatchManager : Node2D
         _miniGamePlacement.Visible = false;
         _starSheet.Visible = false;
         _winnerPaper.Visible = true;
-        _winnerPaper.InitializeWinnerPaper(_employees);
+        _winnerPaper.InitializeWinnerPaper(_matchData);
         _matchFlowAnimPlayer.Play("black_panel_out");
         await _winnerPaper.PlayWinnerAnimation();
         _matchFlowAnimPlayer.Play("black_panel_in");

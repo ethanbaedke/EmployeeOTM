@@ -99,7 +99,7 @@ public partial class Lobby : Node2D
         newPlayer.ProcessMode = ProcessModeEnum.Disabled;
         EmployeeData newData = new EmployeeData(ScientistColors[_registeredDevices.Count - 1]);
         newData.inputDevice = inputDevice;
-        newPlayer.InitializeScientist(newData);
+        newPlayer.InitializeScientist(newData, new Dictionary<MatchData.MatchModifier, int>());
         _joinParent.AddChild(newPlayer);
         Color color = new Color(1.0f, 1.0f, 1.0f, 1.0f);
         color.V = 0.5f;

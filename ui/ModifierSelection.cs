@@ -6,7 +6,7 @@ public partial class ModifierSelection : Control
 {
     // TODO: Fire selection as parameter.
     [Signal]
-    private delegate void SelectionMadeEventHandler();
+    private delegate void SelectionMadeEventHandler(int selectedModifier);
 
 	[Export]
     private TextureRect _employeeTexture;
@@ -123,7 +123,7 @@ public partial class ModifierSelection : Control
             _descriptionLabel.Text = _selectionData.LeftOptionDescription;
             _animPlayer.Play("left_option_selected");
             await ToSignal(_animPlayer, AnimationPlayer.SignalName.AnimationFinished);
-            EmitSignal("SelectionMade");
+            EmitSignal("SelectionMade", (int)_selectionData.LeftModifier);
         }
         else if (_hoverDir == 1)
         {
@@ -132,7 +132,7 @@ public partial class ModifierSelection : Control
             _descriptionLabel.Text = _selectionData.RightOptionDescription;
             _animPlayer.Play("right_option_selected");
             await ToSignal(_animPlayer, AnimationPlayer.SignalName.AnimationFinished);
-            EmitSignal("SelectionMade");
+            EmitSignal("SelectionMade", (int)_selectionData.RightModifier);
         }
     }
 

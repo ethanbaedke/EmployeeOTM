@@ -32,7 +32,7 @@ public partial class Scientist : CharacterBody2D
 	private Vector2 _knockback_velocity = Vector2.Zero;
 	private float _knockback_timer = 0.0f;
 
-	public void InitializeScientist(EmployeeData employeeData)
+	public void InitializeScientist(EmployeeData employeeData, Dictionary<MatchData.MatchModifier, int> matchModifiers)
 	{
 		HeldEmployeeData = employeeData;
 

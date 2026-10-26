@@ -7,21 +7,21 @@ public partial class StarSheet : Control
 	[Export] private VBoxContainer _nameContainer;
     [Export] private VBoxContainer _starRows;
 
-    public void InitializeStarSheet(EmployeeData[] data)
+    public void InitializeStarSheet(MatchData matchData)
     {
         for (int i = 0; i < 4; i++)
         {
-            Color color = data[i].EmployeeColor;
+            Color color = matchData.Employees[i].EmployeeColor;
             color.S = 0.5f; 
             _nameContainer.GetChild<Label>(i).AddThemeColorOverride("font_outline_color", color);
         }
     }
 
-    public void PlaceExistingStars(EmployeeData[] employeeData)
+    public void PlaceExistingStars(MatchData matchData)
     {
         for (int i = 0; i < 4; i++)
         {
-            int numStars = employeeData[i].TotalPoints;
+            int numStars = matchData.Employees[i].TotalPoints;
             HBoxContainer starRow = _starRows.GetChild<HBoxContainer>(i);
             for (int f = 0; f < numStars; f++)
             {
@@ -34,7 +34,7 @@ public partial class StarSheet : Control
         }
     }
 
-    public async Task<Array<EmployeeData>> PlaceNewStars(EmployeeData[] employeeData)
+    public async Task<Array<EmployeeData>> PlaceNewStars(MatchData matchData)
     {
         OTMLogger.Instance.Info(this, "Awarding stars.");
 
@@ -49,9 +49,9 @@ public partial class StarSheet : Control
             starPlacedThisCycle = false;
             for (int i = 0; i < 4; i++)
             {
-                if (employeeData[i].PointsToAwardFromLastMiniGame >= starNum)
+                if (matchData.Employees[i].PointsToAwardFromLastMiniGame >= starNum)
                 {
-                    int starInd = employeeData[i].TotalPoints + (starNum - 1);
+                    int starInd = matchData.Employees[i].TotalPoints + (starNum - 1);
                     if (starInd < 10)
                     {
                         PlaceStar(_starRows.GetChild<HBoxContainer>(i).GetChild<TextureRect>(starInd));
@@ -63,7 +63,7 @@ public partial class StarSheet : Control
 
         // Increment everyones stars in data and check for winners.
         Array<EmployeeData> winners = new Array<EmployeeData>();
-        foreach (EmployeeData data in employeeData)
+        foreach (EmployeeData data in matchData.Employees)
         {
             data.TotalPoints = Mathf.Min(10, data.TotalPoints + data.PointsToAwardFromLastMiniGame);
             if (data.TotalPoints == 10)

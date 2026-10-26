@@ -4,6 +4,7 @@ using System;
 using System.Linq;
 using System.Reflection;
 using System.Reflection.Metadata;
+using System.Text.RegularExpressions;
 using System.Threading.Tasks;
 
 public abstract partial class MiniGame : Node2D
@@ -31,11 +32,11 @@ public abstract partial class MiniGame : Node2D
     private PackedScene _pointAwardEffectScene = GD.Load<PackedScene>("res://entities/scientist/PointAwardEffect.tscn");
     private bool _debugIsAIEnabled = true;
 
-    public void InitializeMiniGame(EmployeeData[] employeeData)
+    public void InitializeMiniGame(MatchData matchData)
     {
         OTMLogger.Instance.Info(this, "Initializing mini-game.");
 
-        if (employeeData.Length != 4)
+        if (matchData.Employees.Length != 4)
         {
             OTMLogger.Instance.Fatal(this, "Mini-game must be initialized with employee data array of size 4.");
             return;
@@ -44,7 +45,7 @@ public abstract partial class MiniGame : Node2D
         // Initialize employees.
         for (int i = 0; i < 4; i++)
         {
-            _scientists[i].InitializeScientist(employeeData[i]);
+            _scientists[i].InitializeScientist(matchData.Employees[i], matchData.Modifiers);
             _scientists[i].ProcessMode = ProcessModeEnum.Disabled;
         }
     }

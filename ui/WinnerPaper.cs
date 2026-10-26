@@ -25,24 +25,24 @@ public partial class WinnerPaper : Control
 
     private Array<EmployeeData> _employeeData;
 
-    public void InitializeWinnerPaper(EmployeeData[] employeeData)
+    public void InitializeWinnerPaper(MatchData matchData)
     {
-        _employeeData = new Array<EmployeeData>(employeeData);
+        _employeeData = new Array<EmployeeData>(matchData.Employees);
 
         for (int i = 0; i < 4; i++)
         {
             // Set color of employee stand.
             StyleBoxFlat sb = _employeeStands[i].GetThemeStylebox("panel") as StyleBoxFlat;
             StyleBoxFlat customSB = sb.Duplicate() as StyleBoxFlat;
-            customSB.BgColor = employeeData[i].EmployeeColor;
+            customSB.BgColor = matchData.Employees[i].EmployeeColor;
             _employeeStands[i].AddThemeStyleboxOverride("panel", customSB);
 
             // Set outline color of employee.
             ShaderMaterial shaderMat = _employeeTextures[i].Material as ShaderMaterial;
-            shaderMat.SetShaderParameter("outline_color", employeeData[i].EmployeeColor);
+            shaderMat.SetShaderParameter("outline_color", matchData.Employees[i].EmployeeColor);
 
             // Set employee texture.
-            _employeeTextures[i].Texture = employeeData[i].EmployeeTexture;
+            _employeeTextures[i].Texture = matchData.Employees[i].EmployeeTexture;
 
             // Reset employee and stand height.
             _employeeTextures[i].Position = new Vector2(_employeeTextures[i].Position.X, 964.0f);
