@@ -1,0 +1,17 @@
+[gd_scene format=3 uid="uid://daas8h06bepum"]
+
+[ext_resource type="Script" uid="uid://cjde4qcx0nes7" path="res://entities/CoffeeRecipient.cs" id="1_ref4w"]
+[ext_resource type="Texture2D" uid="uid://ck7poikntsy4h" path="res://entities/scientist/manager.svg" id="2_wofb1"]
+
+[sub_resource type="CircleShape2D" id="CircleShape2D_pkshj"]
+radius = 32.0
+
+[node name="CoffeeRecipient" type="Area2D" unique_id=868211408]
+script = ExtResource("1_ref4w")
+
+[node name="Sprite2D" type="Sprite2D" parent="." unique_id=7344676]
+scale = Vector2(0.15, 0.15)
+texture = ExtResource("2_wofb1")
+
+[node name="CollisionShape2D" type="CollisionShape2D" parent="." unique_id=992430935]
+shape = SubResource("CircleShape2D_pkshj")

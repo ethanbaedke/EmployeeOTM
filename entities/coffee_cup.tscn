@@ -1,0 +1,32 @@
+[gd_scene format=3 uid="uid://dhsqibopqw776"]
+
+[ext_resource type="Script" uid="uid://bq7s2ivv46nwv" path="res://entities/HeldItem.cs" id="1_beac7"]
+
+[sub_resource type="Gradient" id="Gradient_beac7"]
+colors = PackedColorArray(0.2, 0.2, 0.2, 1, 1, 1, 1, 1)
+
+[sub_resource type="GradientTexture1D" id="GradientTexture1D_q0u7h"]
+gradient = SubResource("Gradient_beac7")
+width = 1
+
+[sub_resource type="Gradient" id="Gradient_q0u7h"]
+colors = PackedColorArray(0.1, 0.1, 0.1, 1, 1, 1, 1, 1)
+
+[sub_resource type="GradientTexture1D" id="GradientTexture1D_rw5ow"]
+gradient = SubResource("Gradient_q0u7h")
+width = 1
+
+[node name="CoffeeCup" type="Node2D" unique_id=27744426 node_paths=PackedStringArray("_spriteParent")]
+script = ExtResource("1_beac7")
+_spriteParent = NodePath("Node2D")
+
+[node name="Node2D" type="Node2D" parent="." unique_id=44550562]
+position = Vector2(0, -56)
+
+[node name="Outline" type="Sprite2D" parent="Node2D" unique_id=1118183885]
+scale = Vector2(24, 32)
+texture = SubResource("GradientTexture1D_q0u7h")
+
+[node name="Coffee" type="Sprite2D" parent="Node2D" unique_id=648222430]
+scale = Vector2(20, 28)
+texture = SubResource("GradientTexture1D_rw5ow")

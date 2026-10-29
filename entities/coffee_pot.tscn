@@ -1,0 +1,38 @@
+[gd_scene format=3 uid="uid://bepm3h4a0pmj4"]
+
+[ext_resource type="Texture2D" uid="uid://cpoquu7ycgy1a" path="res://circle.svg" id="1_fojb1"]
+[ext_resource type="Script" uid="uid://c1cnarlq3bmla" path="res://entities/CoffeePot.cs" id="1_nme50"]
+
+[sub_resource type="Gradient" id="Gradient_fojb1"]
+colors = PackedColorArray(0.1, 0.1, 0.1, 1, 1, 1, 1, 1)
+
+[sub_resource type="GradientTexture1D" id="GradientTexture1D_jsssl"]
+gradient = SubResource("Gradient_fojb1")
+width = 1
+
+[sub_resource type="RectangleShape2D" id="RectangleShape2D_jsssl"]
+size = Vector2(52, 52)
+
+[node name="CoffeePot" type="Area2D" unique_id=1259655962 node_paths=PackedStringArray("_coffeeSprite", "_collisionShape")]
+script = ExtResource("1_nme50")
+_coffeeSprite = NodePath("Background/Coffee")
+_collisionShape = NodePath("CollisionShape2D")
+
+[node name="Outline" type="Sprite2D" parent="." unique_id=1767530807]
+self_modulate = Color(0.2, 0.2, 0.2, 1)
+scale = Vector2(0.1, 0.1)
+texture = ExtResource("1_fojb1")
+
+[node name="Background" type="Sprite2D" parent="." unique_id=2112701287]
+self_modulate = Color(0.9, 0.9, 0.9, 1)
+clip_children = 2
+scale = Vector2(0.09, 0.09)
+texture = ExtResource("1_fojb1")
+
+[node name="Coffee" type="Sprite2D" parent="Background" unique_id=1726402364]
+position = Vector2(-7.1525574e-06, 133.33331)
+scale = Vector2(533.3333, 266.66663)
+texture = SubResource("GradientTexture1D_jsssl")
+
+[node name="CollisionShape2D" type="CollisionShape2D" parent="." unique_id=120138324]
+shape = SubResource("RectangleShape2D_jsssl")

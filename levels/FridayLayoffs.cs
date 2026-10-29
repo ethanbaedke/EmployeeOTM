@@ -11,7 +11,7 @@ public partial class FridayLayoffs : MiniGame, INameProvider
 
     private PackedScene _pinkSlipScene = GD.Load<PackedScene>("res://entities/pink_slip.tscn");
     private Array<Scientist> _remainingScientists;
-    private Node2D _pinkSlip = null;
+    private HeldItem _pinkSlip = null;
     private Scientist _pinkSlipHolder = null;
     private Scientist _pinkSlipHandoffTarget = null;
     private double _handoffCooldown = HAND_OFF_COOLDOWN;
@@ -128,7 +128,7 @@ public partial class FridayLayoffs : MiniGame, INameProvider
         _pinkSlipHolder = GetNextPinkSlipScientist();;
 
         // Create the pink slip.
-        _pinkSlip = _pinkSlipScene.Instantiate<Node2D>();
+        _pinkSlip = _pinkSlipScene.Instantiate<HeldItem>();
         _pinkSlipHolder.AddChild(_pinkSlip);
     }
 
