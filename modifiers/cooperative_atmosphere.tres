@@ -1,0 +1,10 @@
+[gd_resource type="Resource" script_class="ModifierData" format=3 uid="uid://c3byyja25jcw2"]
+
+[ext_resource type="Script" uid="uid://c421lk8b05w4" path="res://modifiers/ModifierData.cs" id="1_04fir"]
+
+[resource]
+script = ExtResource("1_04fir")
+ModifierName = "Cooperative Atmosphere"
+ModifierDescription = "Decreased knockback."
+ModifierValue = 2
+metadata/_custom_type_script = "uid://c421lk8b05w4"

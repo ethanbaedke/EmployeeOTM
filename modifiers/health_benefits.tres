@@ -1,0 +1,11 @@
+[gd_resource type="Resource" script_class="ModifierData" format=3 uid="uid://n2ajsaqbn4pk"]
+
+[ext_resource type="Script" uid="uid://c421lk8b05w4" path="res://modifiers/ModifierData.cs" id="1_a3kle"]
+
+[resource]
+script = ExtResource("1_a3kle")
+ModifierName = "Health Benefits"
+ModifierDescription = "Gain a additional jump."
+ModifierValue = 5
+ConflictingValues = Array[int]([4])
+metadata/_custom_type_script = "uid://c421lk8b05w4"

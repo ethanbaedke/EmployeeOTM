@@ -11,8 +11,6 @@ public partial class ModifierSelection : Control
 	[Export]
     private TextureRect _employeeTexture;
     [Export]
-    private Label _promptLabel;
-    [Export]
     private Label _leftOptionLabel;
     [Export]
     private Label _rightOptionLabel;
@@ -25,19 +23,19 @@ public partial class ModifierSelection : Control
     [Export]
     private AnimationPlayer _animPlayer;
     [Export]
-    private Array<ModifierSelectionData> _allModifierSelections;
+    private Array<ModifierData> _modifierPool;
 
-    private Array<ModifierSelectionData> _availableModifierSelections;
     private bool _selectionInputEnabled = false;
     private int _selectionDevice = -2;
-    private ModifierSelectionData _selectionData;
+    private ModifierData _leftModifier = null;
+    private ModifierData _rightModifier = null;
     private int _hoverDir = 0;
 
     public void InitializeSelection(EmployeeData selectingEmployee)
     {
-        if (_allModifierSelections == null || _allModifierSelections.Count == 0)
+        if (_modifierPool == null || _modifierPool.Count < 2)
         {
-            OTMLogger.Instance.Fatal(this, "No modifier selections exist.");
+            OTMLogger.Instance.Fatal(this, "Modifier pool has less than 2 options.");
             return;
         }
 
@@ -47,20 +45,17 @@ public partial class ModifierSelection : Control
         StyleBoxFlat rightBox = _rightContainer.GetThemeStylebox("panel") as StyleBoxFlat;
         rightBox.BorderColor = new Color(0.8f, 0.8f, 0.8f);
 
-        if (_availableModifierSelections == null || _availableModifierSelections.Count == 0)
-        {
-            _availableModifierSelections = _allModifierSelections.Duplicate();
-        }
-
         _selectionDevice = selectingEmployee.inputDevice;
 
-        _selectionData = _availableModifierSelections.PickRandom();
-        _availableModifierSelections.Remove(_selectionData);
+        _leftModifier = _modifierPool.PickRandom();
+        do
+        {
+            _rightModifier = _modifierPool.PickRandom();
+        } while (_rightModifier == _leftModifier);
 
         _employeeTexture.Texture = selectingEmployee.EmployeeTexture;
-        _promptLabel.Text = _selectionData.SelectionPrompt;
-        _leftOptionLabel.Text = _selectionData.LeftOption;
-        _rightOptionLabel.Text = _selectionData.RightOption;
+        _leftOptionLabel.Text = _leftModifier.ModifierName;
+        _rightOptionLabel.Text = _rightModifier.ModifierName;
     }
 
     public void EnableSelection()
@@ -118,21 +113,65 @@ public partial class ModifierSelection : Control
     {
         if (_hoverDir == -1)
         {
+            // Remove modifiers from the pool that conflict with the selected modifier.
+            foreach (MatchData.MatchModifier conflict in _leftModifier.ConflictingValues)
+            {
+                Array<int> removeIndices = new Array<int>();
+                for (int i = 0; i < _modifierPool.Count; i++)
+                {
+                    if (_modifierPool[i].ModifierValue == conflict)
+                    {
+                        removeIndices.Add(i);
+                    }
+                }
+                foreach (int index in removeIndices)
+                {
+                    _modifierPool.RemoveAt(index);
+                }
+            }
+            // If the selected modifier can only be picked once, remove it from the pool.
+            if (_leftModifier.OneTimePick)
+            {
+                _modifierPool.Remove(_leftModifier);
+            }
+
             _hoverDir = 0;
             _selectionInputEnabled = false;
-            _descriptionLabel.Text = _selectionData.LeftOptionDescription;
+            _descriptionLabel.Text = _leftModifier.ModifierDescription;
             _animPlayer.Play("left_option_selected");
             await ToSignal(_animPlayer, AnimationPlayer.SignalName.AnimationFinished);
-            EmitSignal("SelectionMade", (int)_selectionData.LeftModifier);
+            EmitSignal("SelectionMade", (int)_leftModifier.ModifierValue);
         }
         else if (_hoverDir == 1)
         {
+            // Remove modifiers from the pool that conflict with the selected modifier.
+            foreach (MatchData.MatchModifier conflict in _rightModifier.ConflictingValues)
+            {
+                Array<int> removeIndices = new Array<int>();
+                for (int i = 0; i < _modifierPool.Count; i++)
+                {
+                    if (_modifierPool[i].ModifierValue == conflict)
+                    {
+                        removeIndices.Add(i);
+                    }
+                }
+                foreach (int index in removeIndices)
+                {
+                    _modifierPool.RemoveAt(index);
+                }
+            }
+            // If the selected modifier can only be picked once, remove it from the pool.
+            if (_rightModifier.OneTimePick)
+            {
+                _modifierPool.Remove(_rightModifier);
+            }
+
             _hoverDir = 0;
             _selectionInputEnabled = false;
-            _descriptionLabel.Text = _selectionData.RightOptionDescription;
+            _descriptionLabel.Text = _rightModifier.ModifierDescription;
             _animPlayer.Play("right_option_selected");
             await ToSignal(_animPlayer, AnimationPlayer.SignalName.AnimationFinished);
-            EmitSignal("SelectionMade", (int)_selectionData.RightModifier);
+            EmitSignal("SelectionMade", (int)_rightModifier.ModifierValue);
         }
     }
 

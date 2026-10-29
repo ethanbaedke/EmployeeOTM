@@ -9,6 +9,10 @@ public partial class MatchData : Node
         NONE,
         KNOCKBACK_UP,
         KNOCKBACK_DOWN,
+        HIGH_FIVE,
+        BOOST_PACK,
+        DOUBLE_JUMP,
+        
     }
 
     public EmployeeData[] Employees;

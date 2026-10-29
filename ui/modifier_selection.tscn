@@ -2,18 +2,11 @@
 
 [ext_resource type="Texture2D" uid="uid://chey6hp3g6q6a" path="res://entities/scientist/scientist.svg" id="1_byluw"]
 [ext_resource type="Script" uid="uid://diuyv3srnj7sf" path="res://ui/ModifierSelection.cs" id="1_d1a7p"]
-[ext_resource type="Script" uid="uid://c421lk8b05w4" path="res://ModifierSelectionData.cs" id="2_ura83"]
-
-[sub_resource type="Resource" id="Resource_hilxt"]
-script = ExtResource("2_ura83")
-SelectionPrompt = "Cultural Goal"
-LeftOption = "Competitive Atmosphere"
-LeftModifier = 1
-RightOption = "Cooperative Atmosphere"
-RightModifier = 2
-LeftOptionDescription = "Increased knockback."
-RightOptionDescription = "Decreased knockback."
-metadata/_custom_type_script = "uid://c421lk8b05w4"
+[ext_resource type="Resource" uid="uid://qu0dpc6ceyyh" path="res://modifiers/competitive_atmosphere.tres" id="2_bod3q"]
+[ext_resource type="Resource" uid="uid://c3byyja25jcw2" path="res://modifiers/cooperative_atmosphere.tres" id="3_ydf4l"]
+[ext_resource type="Resource" uid="uid://ddpmo1ej3r5ki" path="res://modifiers/social_engagement.tres" id="4_u4jrd"]
+[ext_resource type="Resource" uid="uid://bgypyutpqymc1" path="res://modifiers/public_transportation.tres" id="5_mxjly"]
+[ext_resource type="Resource" uid="uid://n2ajsaqbn4pk" path="res://modifiers/health_benefits.tres" id="6_cfenc"]
 
 [sub_resource type="StyleBoxFlat" id="StyleBoxFlat_jsssl"]
 bg_color = Color(0.2, 0.2, 0.2, 1)
@@ -354,23 +347,24 @@ _data = {
 &"right_option_selected": SubResource("Animation_ura83")
 }
 
-[node name="ModifierSelection" type="Control" unique_id=1636815128 node_paths=PackedStringArray("_employeeTexture", "_promptLabel", "_leftOptionLabel", "_rightOptionLabel", "_descriptionLabel", "_leftContainer", "_rightContainer", "_animPlayer")]
+[node name="ModifierSelection" type="Control" unique_id=1636815128 node_paths=PackedStringArray("_employeeTexture", "_leftOptionLabel", "_rightOptionLabel", "_descriptionLabel", "_leftContainer", "_rightContainer", "_animPlayer")]
 layout_mode = 3
 anchors_preset = 15
 anchor_right = 1.0
 anchor_bottom = 1.0
+offset_left = 1.0
+offset_right = 1.0
 grow_horizontal = 2
 grow_vertical = 2
 script = ExtResource("1_d1a7p")
 _employeeTexture = NodePath("PanelContainer/Control/TextureRect")
-_promptLabel = NodePath("PanelContainer/Control/Prompt")
 _leftOptionLabel = NodePath("PanelContainer/Control/LeftOption/MarginContainer/Label")
 _rightOptionLabel = NodePath("PanelContainer/Control/RightOption/MarginContainer/Label")
 _descriptionLabel = NodePath("PanelContainer/Control/Description")
 _leftContainer = NodePath("PanelContainer/Control/LeftOption")
 _rightContainer = NodePath("PanelContainer/Control/RightOption")
 _animPlayer = NodePath("AnimationPlayer")
-_allModifierSelections = Array[Resource]([SubResource("Resource_hilxt")])
+_modifierPool = Array[Object]([ExtResource("2_bod3q"), ExtResource("3_ydf4l"), ExtResource("4_u4jrd"), ExtResource("5_mxjly"), ExtResource("6_cfenc")])
 
 [node name="PanelContainer" type="PanelContainer" parent="." unique_id=1790258306]
 layout_mode = 1
@@ -412,7 +406,7 @@ offset_right = 553.0
 offset_bottom = 242.74951
 grow_horizontal = 2
 theme_override_font_sizes/font_size = 64
-text = "Prompt"
+text = "Company Initiative"
 horizontal_alignment = 1
 vertical_alignment = 1
 

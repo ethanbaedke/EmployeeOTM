@@ -1,0 +1,11 @@
+[gd_resource type="Resource" script_class="ModifierData" format=3 uid="uid://ddpmo1ej3r5ki"]
+
+[ext_resource type="Script" uid="uid://c421lk8b05w4" path="res://modifiers/ModifierData.cs" id="1_2emwi"]
+
+[resource]
+script = ExtResource("1_2emwi")
+ModifierName = "Social Engagement"
+ModifierDescription = "Employees high five."
+ModifierValue = 3
+OneTimePick = true
+metadata/_custom_type_script = "uid://c421lk8b05w4"
