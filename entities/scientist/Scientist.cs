@@ -31,6 +31,7 @@ public partial class Scientist : CharacterBody2D
 	private float _collision_cooldown = 0.0f;
 	private Vector2 _knockback_velocity = Vector2.Zero;
 	private float _knockback_timer = 0.0f;
+    private bool _ignoreInput = false;
 
 	public void InitializeScientist(EmployeeData employeeData, Dictionary<MatchData.MatchModifier, int> matchModifiers)
 	{
@@ -57,6 +58,11 @@ public partial class Scientist : CharacterBody2D
 		}
 	}
 
+    public void SetIgnoreInput(bool value)
+    {
+        _ignoreInput = value;
+    }
+
     public void UpdateColor(Color color)
     {
         HeldEmployeeData.EmployeeColor = color;
@@ -76,12 +82,21 @@ public partial class Scientist : CharacterBody2D
 	// Expects a direciton between (-1.0, 1.0).
 	public void SetMovementDirection(float dir)
 	{
+        if (_ignoreInput)
+        {
+            _movement_direction = 0.0f;
+            return;
+        }
+
 		_movement_direction = dir;
 	}
 
 	public void Jump(bool isInitialJump)
 	{
-
+        if (_ignoreInput)
+        {
+            return;
+        }
 
 		if (isInitialJump)
 		{

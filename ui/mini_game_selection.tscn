@@ -6,6 +6,7 @@
 [ext_resource type="PackedScene" uid="uid://c602q0q8qjsfn" path="res://levels/coffee_run.tscn" id="3_kg6bc"]
 [ext_resource type="PackedScene" uid="uid://bvqw7lc1tcsrt" path="res://levels/friday_layoffs.tscn" id="4_gxlan"]
 [ext_resource type="PackedScene" uid="uid://bt4c44pnaed0s" path="res://levels/king_of_the_hill.tscn" id="5_j4jh5"]
+[ext_resource type="PackedScene" uid="uid://bkljc2myl8af6" path="res://levels/improvement_plan.tscn" id="6_j4jh5"]
 
 [sub_resource type="Curve" id="Curve_kg6bc"]
 _data = [Vector2(0, 0), 0.0, 0.0, 0, 0, Vector2(0.8, 0.3), 1.1577299, 1.1577299, 0, 0, Vector2(1, 1), 6.3275824, 0.0, 0, 0]
@@ -22,6 +23,7 @@ grow_vertical = 2
 theme = ExtResource("1_tbeyl")
 script = ExtResource("2_kg6bc")
 _ffaMiniGameScenes = Array[PackedScene]([ExtResource("3_kg6bc"), ExtResource("4_gxlan"), ExtResource("5_j4jh5")])
+_3v1MiniGameScenes = Array[PackedScene]([ExtResource("6_j4jh5")])
 _miniGameContainer = NodePath("MiniGames")
 _selectionHoldTime = SubResource("Curve_kg6bc")
 
@@ -154,197 +156,253 @@ offset_bottom = 975.0
 columns = 7
 
 [node name="Label" type="Label" parent="MiniGames" unique_id=382126743]
+custom_minimum_size = Vector2(1, 0)
 layout_mode = 2
 size_flags_horizontal = 3
 size_flags_vertical = 3
 horizontal_alignment = 1
 vertical_alignment = 1
+autowrap_mode = 3
 
 [node name="Label2" type="Label" parent="MiniGames" unique_id=671997715]
+custom_minimum_size = Vector2(1, 0)
 layout_mode = 2
 size_flags_horizontal = 3
 size_flags_vertical = 3
 horizontal_alignment = 1
 vertical_alignment = 1
+autowrap_mode = 3
 
 [node name="Label3" type="Label" parent="MiniGames" unique_id=1692350102]
+custom_minimum_size = Vector2(1, 0)
 layout_mode = 2
 size_flags_horizontal = 3
 size_flags_vertical = 3
 horizontal_alignment = 1
 vertical_alignment = 1
+autowrap_mode = 3
 
 [node name="Label4" type="Label" parent="MiniGames" unique_id=350100930]
+custom_minimum_size = Vector2(1, 0)
 layout_mode = 2
 size_flags_horizontal = 3
 size_flags_vertical = 3
 horizontal_alignment = 1
 vertical_alignment = 1
+autowrap_mode = 3
 
 [node name="Label5" type="Label" parent="MiniGames" unique_id=1647436486]
+custom_minimum_size = Vector2(1, 0)
 layout_mode = 2
 size_flags_horizontal = 3
 size_flags_vertical = 3
 horizontal_alignment = 1
 vertical_alignment = 1
+autowrap_mode = 3
 
 [node name="Label6" type="Label" parent="MiniGames" unique_id=59717600]
+custom_minimum_size = Vector2(1, 0)
 layout_mode = 2
 size_flags_horizontal = 3
 size_flags_vertical = 3
 horizontal_alignment = 1
 vertical_alignment = 1
+autowrap_mode = 3
 
 [node name="Label7" type="Label" parent="MiniGames" unique_id=1554485847]
+custom_minimum_size = Vector2(1, 0)
 layout_mode = 2
 size_flags_horizontal = 3
 size_flags_vertical = 3
 horizontal_alignment = 1
 vertical_alignment = 1
+autowrap_mode = 3
 
 [node name="Label8" type="Label" parent="MiniGames" unique_id=884956534]
+custom_minimum_size = Vector2(1, 0)
 layout_mode = 2
 size_flags_horizontal = 3
 size_flags_vertical = 3
 horizontal_alignment = 1
 vertical_alignment = 1
+autowrap_mode = 3
 
 [node name="Label9" type="Label" parent="MiniGames" unique_id=881553416]
+custom_minimum_size = Vector2(1, 0)
 layout_mode = 2
 size_flags_horizontal = 3
 size_flags_vertical = 3
 horizontal_alignment = 1
 vertical_alignment = 1
+autowrap_mode = 3
 
 [node name="Label10" type="Label" parent="MiniGames" unique_id=818245172]
+custom_minimum_size = Vector2(1, 0)
 layout_mode = 2
 size_flags_horizontal = 3
 size_flags_vertical = 3
 horizontal_alignment = 1
 vertical_alignment = 1
+autowrap_mode = 3
 
 [node name="Label11" type="Label" parent="MiniGames" unique_id=598293630]
+custom_minimum_size = Vector2(1, 0)
 layout_mode = 2
 size_flags_horizontal = 3
 size_flags_vertical = 3
 horizontal_alignment = 1
 vertical_alignment = 1
+autowrap_mode = 3
 
 [node name="Label12" type="Label" parent="MiniGames" unique_id=677000325]
+custom_minimum_size = Vector2(1, 0)
 layout_mode = 2
 size_flags_horizontal = 3
 size_flags_vertical = 3
 horizontal_alignment = 1
 vertical_alignment = 1
+autowrap_mode = 3
 
 [node name="Label13" type="Label" parent="MiniGames" unique_id=384908480]
+custom_minimum_size = Vector2(1, 0)
 layout_mode = 2
 size_flags_horizontal = 3
 size_flags_vertical = 3
 horizontal_alignment = 1
 vertical_alignment = 1
+autowrap_mode = 3
 
 [node name="Label14" type="Label" parent="MiniGames" unique_id=222295691]
+custom_minimum_size = Vector2(1, 0)
 layout_mode = 2
 size_flags_horizontal = 3
 size_flags_vertical = 3
 horizontal_alignment = 1
 vertical_alignment = 1
+autowrap_mode = 3
 
 [node name="Label15" type="Label" parent="MiniGames" unique_id=260624240]
+custom_minimum_size = Vector2(1, 0)
 layout_mode = 2
 size_flags_horizontal = 3
 size_flags_vertical = 3
 horizontal_alignment = 1
 vertical_alignment = 1
+autowrap_mode = 3
 
 [node name="Label16" type="Label" parent="MiniGames" unique_id=1851796609]
+custom_minimum_size = Vector2(1, 0)
 layout_mode = 2
 size_flags_horizontal = 3
 size_flags_vertical = 3
 horizontal_alignment = 1
 vertical_alignment = 1
+autowrap_mode = 3
 
 [node name="Label17" type="Label" parent="MiniGames" unique_id=2128110291]
+custom_minimum_size = Vector2(1, 0)
 layout_mode = 2
 size_flags_horizontal = 3
 size_flags_vertical = 3
 horizontal_alignment = 1
 vertical_alignment = 1
+autowrap_mode = 3
 
 [node name="Label18" type="Label" parent="MiniGames" unique_id=1557915800]
+custom_minimum_size = Vector2(1, 0)
 layout_mode = 2
 size_flags_horizontal = 3
 size_flags_vertical = 3
 horizontal_alignment = 1
 vertical_alignment = 1
+autowrap_mode = 3
 
 [node name="Label19" type="Label" parent="MiniGames" unique_id=1321972715]
+custom_minimum_size = Vector2(1, 0)
 layout_mode = 2
 size_flags_horizontal = 3
 size_flags_vertical = 3
 horizontal_alignment = 1
 vertical_alignment = 1
+autowrap_mode = 3
 
 [node name="Label20" type="Label" parent="MiniGames" unique_id=814606026]
+custom_minimum_size = Vector2(1, 0)
 layout_mode = 2
 size_flags_horizontal = 3
 size_flags_vertical = 3
 horizontal_alignment = 1
 vertical_alignment = 1
+autowrap_mode = 3
 
 [node name="Label21" type="Label" parent="MiniGames" unique_id=1255792914]
+custom_minimum_size = Vector2(1, 0)
 layout_mode = 2
 size_flags_horizontal = 3
 size_flags_vertical = 3
 horizontal_alignment = 1
 vertical_alignment = 1
+autowrap_mode = 3
 
 [node name="Label22" type="Label" parent="MiniGames" unique_id=1503127074]
+custom_minimum_size = Vector2(1, 0)
 layout_mode = 2
 size_flags_horizontal = 3
 size_flags_vertical = 3
 horizontal_alignment = 1
 vertical_alignment = 1
+autowrap_mode = 3
 
 [node name="Label23" type="Label" parent="MiniGames" unique_id=1409881630]
+custom_minimum_size = Vector2(1, 0)
 layout_mode = 2
 size_flags_horizontal = 3
 size_flags_vertical = 3
 horizontal_alignment = 1
 vertical_alignment = 1
+autowrap_mode = 3
 
 [node name="Label24" type="Label" parent="MiniGames" unique_id=291060893]
+custom_minimum_size = Vector2(1, 0)
 layout_mode = 2
 size_flags_horizontal = 3
 size_flags_vertical = 3
 horizontal_alignment = 1
 vertical_alignment = 1
+autowrap_mode = 3
 
 [node name="Label25" type="Label" parent="MiniGames" unique_id=1370202257]
+custom_minimum_size = Vector2(1, 0)
 layout_mode = 2
 size_flags_horizontal = 3
 size_flags_vertical = 3
 horizontal_alignment = 1
 vertical_alignment = 1
+autowrap_mode = 3
 
 [node name="Label26" type="Label" parent="MiniGames" unique_id=24705740]
+custom_minimum_size = Vector2(1, 0)
 layout_mode = 2
 size_flags_horizontal = 3
 size_flags_vertical = 3
 horizontal_alignment = 1
 vertical_alignment = 1
+autowrap_mode = 3
 
 [node name="Label27" type="Label" parent="MiniGames" unique_id=1417313068]
+custom_minimum_size = Vector2(1, 0)
 layout_mode = 2
 size_flags_horizontal = 3
 size_flags_vertical = 3
 horizontal_alignment = 1
 vertical_alignment = 1
+autowrap_mode = 3
 
 [node name="Label28" type="Label" parent="MiniGames" unique_id=1368130117]
+custom_minimum_size = Vector2(1, 0)
 layout_mode = 2
 size_flags_horizontal = 3
 size_flags_vertical = 3
 horizontal_alignment = 1
 vertical_alignment = 1
+autowrap_mode = 3

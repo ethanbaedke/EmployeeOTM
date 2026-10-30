@@ -1,0 +1,53 @@
+[gd_scene format=3 uid="uid://7q1y0v7seqii"]
+
+[ext_resource type="Script" uid="uid://bq7s2ivv46nwv" path="res://entities/HeldItem.cs" id="1_6aeda"]
+
+[sub_resource type="Gradient" id="Gradient_xrlgo"]
+colors = PackedColorArray(0.5, 0.5, 0.5, 1, 1, 1, 1, 1)
+
+[sub_resource type="GradientTexture1D" id="GradientTexture1D_2cabi"]
+gradient = SubResource("Gradient_xrlgo")
+width = 1
+
+[sub_resource type="Gradient" id="Gradient_0ytf5"]
+colors = PackedColorArray(0.1, 0.1, 0.1, 1, 1, 1, 1, 1)
+
+[sub_resource type="GradientTexture1D" id="GradientTexture1D_jsssl"]
+gradient = SubResource("Gradient_0ytf5")
+width = 1
+
+[node name="PipCage" type="Node2D" unique_id=1395654061 node_paths=PackedStringArray("_spriteParent")]
+script = ExtResource("1_6aeda")
+_spriteParent = NodePath("Node2D")
+
+[node name="Node2D" type="Node2D" parent="." unique_id=364287809]
+position = Vector2(0, 38)
+
+[node name="Sprite2D3" type="Sprite2D" parent="Node2D" unique_id=793175413]
+position = Vector2(-40, -40)
+scale = Vector2(8, 80)
+texture = SubResource("GradientTexture1D_2cabi")
+
+[node name="Sprite2D4" type="Sprite2D" parent="Node2D" unique_id=664428359]
+position = Vector2(40, -40)
+scale = Vector2(8, 80)
+texture = SubResource("GradientTexture1D_2cabi")
+
+[node name="Sprite2D5" type="Sprite2D" parent="Node2D" unique_id=1710264682]
+position = Vector2(-16, -40)
+scale = Vector2(8, 80)
+texture = SubResource("GradientTexture1D_2cabi")
+
+[node name="Sprite2D6" type="Sprite2D" parent="Node2D" unique_id=651527663]
+position = Vector2(16, -40)
+scale = Vector2(8, 80)
+texture = SubResource("GradientTexture1D_2cabi")
+
+[node name="Sprite2D" type="Sprite2D" parent="Node2D" unique_id=1065528613]
+scale = Vector2(96, 8)
+texture = SubResource("GradientTexture1D_jsssl")
+
+[node name="Sprite2D2" type="Sprite2D" parent="Node2D" unique_id=1064036244]
+position = Vector2(0, -80)
+scale = Vector2(96, 8)
+texture = SubResource("GradientTexture1D_jsssl")

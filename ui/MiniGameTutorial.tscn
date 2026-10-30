@@ -5,7 +5,7 @@
 
 [sub_resource type="ShaderMaterial" id="ShaderMaterial_cdpvo"]
 shader = ExtResource("2_cdpvo")
-shader_parameter/blur_amount = 1.0
+shader_parameter/blur_amount = 0.0
 
 [sub_resource type="StyleBoxFlat" id="StyleBoxFlat_wyug6"]
 bg_color = Color(0.2, 0.2, 0.2, 1)
@@ -61,7 +61,7 @@ tracks/3/keys = {
 "times": PackedFloat32Array(0),
 "transitions": PackedFloat32Array(1),
 "update": 0,
-"values": [1.0]
+"values": [0.0]
 }
 
 [sub_resource type="Animation" id="Animation_rpkuw"]
@@ -153,7 +153,7 @@ anchor_bottom = 0.5
 offset_left = -480.0
 offset_top = -135.0
 offset_right = 480.0
-offset_bottom = 135.01245
+offset_bottom = 135.0122
 grow_horizontal = 2
 grow_vertical = 2
 theme_override_styles/panel = SubResource("StyleBoxFlat_wyug6")
