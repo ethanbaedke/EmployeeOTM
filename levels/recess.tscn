@@ -11,8 +11,9 @@
 [sub_resource type="RectangleShape2D" id="RectangleShape2D_o3a2j"]
 size = Vector2(100, 1080)
 
-[node name="Recess" type="Node2D" unique_id=739882208 node_paths=PackedStringArray("_scientists", "_countdownUI", "_camera", "_tutorial")]
+[node name="Recess" type="Node2D" unique_id=739882208 node_paths=PackedStringArray("_ballSpawnPoint", "_scientists", "_countdownUI", "_camera", "_tutorial")]
 script = ExtResource("1_4h88e")
+_ballSpawnPoint = NodePath("VolleyballSpawnPoint")
 _scientists = [NodePath("Scientist"), NodePath("Scientist2"), NodePath("Scientist3"), NodePath("Scientist4")]
 _countdownUI = NodePath("CanvasLayer/CenterScreenCountdown")
 _camera = NodePath("Camera2D")
@@ -88,8 +89,12 @@ shape = SubResource("RectangleShape2D_o3a2j")
 [node name="VolleyballNet" parent="." unique_id=541755658 instance=ExtResource("5_ynfla")]
 position = Vector2(962, 1045)
 
+[node name="VolleyballSpawnPoint" type="Node2D" parent="." unique_id=118140333]
+position = Vector2(961, 258)
+
 [node name="CanvasLayer" type="CanvasLayer" parent="." unique_id=743391810]
 
 [node name="CenterScreenCountdown" parent="CanvasLayer" unique_id=1320922543 instance=ExtResource("7_rg5mq")]
+metadata/_edit_use_anchors_ = true
 
 [node name="MiniGameTutorial" parent="CanvasLayer" unique_id=858250490 instance=ExtResource("8_bur53")]
