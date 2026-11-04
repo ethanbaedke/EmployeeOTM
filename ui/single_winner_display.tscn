@@ -3,6 +3,14 @@
 [ext_resource type="Script" uid="uid://dnj31gwquvfpo" path="res://ui/SingleWinnerDisplay.cs" id="1_4nbt5"]
 [ext_resource type="Texture2D" uid="uid://d4ajcdicpxe8b" path="res://ui/winner_circle.svg" id="2_nh3i7"]
 [ext_resource type="Texture2D" uid="uid://chey6hp3g6q6a" path="res://entities/scientist/scientist.svg" id="3_nh3i7"]
+[ext_resource type="Shader" uid="uid://bfxw6w7c7s14p" path="res://effects/sprite_painter.gdshader" id="3_qfc2p"]
+
+[sub_resource type="ShaderMaterial" id="ShaderMaterial_rjlo1"]
+shader = ExtResource("3_qfc2p")
+shader_parameter/primary = Vector3(1, 0, 0)
+shader_parameter/secondary = Vector3(0, 1, 0)
+shader_parameter/tertiary = Vector3(0, 0, 1)
+shader_parameter/modulation = Vector4(1, 1, 1, 1)
 
 [sub_resource type="Animation" id="Animation_nh3i7"]
 length = 0.001
@@ -105,6 +113,7 @@ grow_vertical = 2
 texture = ExtResource("2_nh3i7")
 
 [node name="Employee" type="TextureRect" parent="." unique_id=515711631]
+material = SubResource("ShaderMaterial_rjlo1")
 layout_mode = 0
 offset_left = 416.0
 offset_top = 352.0

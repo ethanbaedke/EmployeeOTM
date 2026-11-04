@@ -85,7 +85,7 @@ public abstract partial class MiniGame : Node2D
     {
         PointAwardEffect effect = _pointAwardEffectScene.Instantiate<PointAwardEffect>();
         effect.SetNumPoints(numPoints);
-        effect.SetColor(scientist.HeldEmployeeData.EmployeeColor);
+        effect.SetColor(scientist.HeldEmployeeData.EmpColor.PrimaryColor);
         scientist.AddChild(effect);
     }
 

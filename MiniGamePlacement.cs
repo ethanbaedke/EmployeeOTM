@@ -33,7 +33,9 @@ public partial class MiniGamePlacement : Node2D
             Sprite2D sprite = _placementNode.GetChild<Sprite2D>(i);
             sprite.Texture = orderedData[3 - i].EmployeeTexture;
             ShaderMaterial shaderMat = sprite.Material as ShaderMaterial;
-            shaderMat.SetShaderParameter("outline_color", orderedData[3 - i].EmployeeColor);
+            shaderMat.SetShaderParameter("primary", orderedData[3 - i].EmpColor.PrimaryColor);
+            shaderMat.SetShaderParameter("secondary", orderedData[3 - i].EmpColor.SecondaryColor);
+            shaderMat.SetShaderParameter("tertiary", orderedData[3 - i].EmpColor.TertiaryColor);
         }
         _placementNode.Visible = true;
         await ToSignal(GetTree().CreateTimer(2.0f), SceneTreeTimer.SignalName.Timeout);

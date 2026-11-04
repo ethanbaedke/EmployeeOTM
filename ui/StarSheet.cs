@@ -11,7 +11,7 @@ public partial class StarSheet : Control
     {
         for (int i = 0; i < 4; i++)
         {
-            Color color = matchData.Employees[i].EmployeeColor;
+            Color color = matchData.Employees[i].EmpColor.PrimaryColor;
             color.S = 0.5f; 
             _nameContainer.GetChild<Label>(i).AddThemeColorOverride("font_outline_color", color);
         }

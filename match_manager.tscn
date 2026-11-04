@@ -424,7 +424,9 @@ visible = false
 visible = false
 
 [node name="ModifierSelection" parent="CanvasLayer" unique_id=1636815128 instance=ExtResource("9_hilxt")]
+offset_left = 0.0
 offset_top = 1080.0
+offset_right = 0.0
 offset_bottom = 1080.001
 
 [node name="BlackPanel" type="Panel" parent="CanvasLayer" unique_id=1597759366]

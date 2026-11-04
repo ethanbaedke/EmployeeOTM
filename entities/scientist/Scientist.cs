@@ -37,12 +37,12 @@ public partial class Scientist : CharacterBody2D
 	{
 		HeldEmployeeData = employeeData;
 
-		// Set outline color.
-		ShaderMaterial shaderMat = _sprite.Material as ShaderMaterial;
-		shaderMat.SetShaderParameter("outline_color", employeeData.EmployeeColor);
-
-        // Set texture.
+        // Set texture and color.
         _sprite.Texture = HeldEmployeeData.EmployeeTexture;
+        ShaderMaterial shaderMat = _sprite.Material as ShaderMaterial;
+        shaderMat.SetShaderParameter("primary", HeldEmployeeData.EmpColor.PrimaryColor);
+        shaderMat.SetShaderParameter("secondary", HeldEmployeeData.EmpColor.SecondaryColor);
+        shaderMat.SetShaderParameter("tertiary", HeldEmployeeData.EmpColor.TertiaryColor);
 
 		// Create controller.
 		if (employeeData.inputDevice == -2)
@@ -63,13 +63,13 @@ public partial class Scientist : CharacterBody2D
         _ignoreInput = value;
     }
 
-    public void UpdateColor(Color color)
+    public void UpdateColor(EmployeeColor employeeColor)
     {
-        HeldEmployeeData.EmployeeColor = color;
-
-        // Set outline color.
+        HeldEmployeeData.EmpColor = employeeColor;
 		ShaderMaterial shaderMat = _sprite.Material as ShaderMaterial;
-		shaderMat.SetShaderParameter("outline_color", HeldEmployeeData.EmployeeColor);
+		shaderMat.SetShaderParameter("primary", employeeColor.PrimaryColor);
+        shaderMat.SetShaderParameter("secondary", employeeColor.SecondaryColor);
+        shaderMat.SetShaderParameter("tertiary", employeeColor.TertiaryColor);
     }
 
     public void UpdateSprite(CompressedTexture2D texture)

@@ -34,12 +34,14 @@ public partial class WinnerPaper : Control
             // Set color of employee stand.
             StyleBoxFlat sb = _employeeStands[i].GetThemeStylebox("panel") as StyleBoxFlat;
             StyleBoxFlat customSB = sb.Duplicate() as StyleBoxFlat;
-            customSB.BgColor = matchData.Employees[i].EmployeeColor;
+            customSB.BgColor = matchData.Employees[i].EmpColor.PrimaryColor;
             _employeeStands[i].AddThemeStyleboxOverride("panel", customSB);
 
             // Set outline color of employee.
             ShaderMaterial shaderMat = _employeeTextures[i].Material as ShaderMaterial;
-            shaderMat.SetShaderParameter("outline_color", matchData.Employees[i].EmployeeColor);
+            shaderMat.SetShaderParameter("primary", matchData.Employees[i].EmpColor.PrimaryColor);
+            shaderMat.SetShaderParameter("secondary", matchData.Employees[i].EmpColor.SecondaryColor);
+            shaderMat.SetShaderParameter("tertiary", matchData.Employees[i].EmpColor.TertiaryColor);
 
             // Set employee texture.
             _employeeTextures[i].Texture = matchData.Employees[i].EmployeeTexture;
@@ -107,6 +109,6 @@ public partial class WinnerPaper : Control
             .SetTrans(EMPLOYEE_RAISE_TRANSITION_TYPE);
 
         Label placeLabel = _placeLabels[place - 1];
-        placeLabel.AddThemeColorOverride("font_color", _employeeData[index].EmployeeColor);
+        placeLabel.AddThemeColorOverride("font_color", _employeeData[index].EmpColor.PrimaryColor);
     }
 }

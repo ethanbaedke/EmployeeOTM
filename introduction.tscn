@@ -2,6 +2,7 @@
 
 [ext_resource type="Script" uid="uid://vf3gyrb37wda" path="res://Introduction.cs" id="1_f37s4"]
 [ext_resource type="Texture2D" uid="uid://gidsdiwgp53e" path="res://entities/curtain.svg" id="1_oqkmi"]
+[ext_resource type="Shader" uid="uid://bfxw6w7c7s14p" path="res://effects/sprite_painter.gdshader" id="2_kot8c"]
 [ext_resource type="Texture2D" uid="uid://chey6hp3g6q6a" path="res://entities/scientist/scientist.svg" id="2_qebxn"]
 
 [sub_resource type="Gradient" id="Gradient_ibnd7"]
@@ -11,141 +12,29 @@ colors = PackedColorArray(0.1, 0.1, 0.1, 1, 1, 1, 1, 1)
 gradient = SubResource("Gradient_ibnd7")
 width = 1
 
-[sub_resource type="Shader" id="Shader_f37s4"]
-code = "shader_type canvas_item;
+[sub_resource type="ShaderMaterial" id="ShaderMaterial_ahsmv"]
+shader = ExtResource("2_kot8c")
+shader_parameter/primary = Vector3(1, 0, 0)
+shader_parameter/secondary = Vector3(0, 1, 0)
+shader_parameter/tertiary = Vector3(0, 0, 1)
 
-uniform vec4 outline_color : source_color = vec4(1.0, 1.0, 1.0, 1.0);
-uniform float outline_width : hint_range(0.0, 20.0) = 1.0;
-uniform bool outline_enabled = true;
-
-void fragment() {
-    vec4 tex_color = texture(TEXTURE, UV);
-
-    if (outline_enabled) {
-        vec2 texel_size = outline_width / vec2(textureSize(TEXTURE, 0));
-
-        // Sample alpha in 4 directions (and optionally diagonals)
-        float alpha_up    = texture(TEXTURE, UV + vec2(0.0, -texel_size.y)).a;
-        float alpha_down  = texture(TEXTURE, UV + vec2(0.0, texel_size.y)).a;
-        float alpha_left  = texture(TEXTURE, UV + vec2(-texel_size.x, 0.0)).a;
-        float alpha_right = texture(TEXTURE, UV + vec2(texel_size.x, 0.0)).a;
-
-        float outline_alpha = clamp(alpha_up + alpha_down + alpha_left + alpha_right, 0.0, 1.0);
-
-        // If current pixel is transparent but a neighbor isn't, draw outline.
-        if (tex_color.a < 0.9 && outline_alpha > 0.0) {
-            COLOR = vec4(outline_color.rgb, outline_alpha * outline_color.a);
-        }
-    }
-}"
-
-[sub_resource type="ShaderMaterial" id="ShaderMaterial_kot8c"]
-shader = SubResource("Shader_f37s4")
-shader_parameter/outline_color = Color(1, 1, 1, 1)
-shader_parameter/outline_width = 20.0
-shader_parameter/outline_enabled = true
-
-[sub_resource type="Shader" id="Shader_p8k0u"]
-code = "shader_type canvas_item;
-
-uniform vec4 outline_color : source_color = vec4(1.0, 1.0, 1.0, 1.0);
-uniform float outline_width : hint_range(0.0, 20.0) = 1.0;
-uniform bool outline_enabled = true;
-
-void fragment() {
-    vec4 tex_color = texture(TEXTURE, UV);
-
-    if (outline_enabled) {
-        vec2 texel_size = outline_width / vec2(textureSize(TEXTURE, 0));
-
-        // Sample alpha in 4 directions (and optionally diagonals)
-        float alpha_up    = texture(TEXTURE, UV + vec2(0.0, -texel_size.y)).a;
-        float alpha_down  = texture(TEXTURE, UV + vec2(0.0, texel_size.y)).a;
-        float alpha_left  = texture(TEXTURE, UV + vec2(-texel_size.x, 0.0)).a;
-        float alpha_right = texture(TEXTURE, UV + vec2(texel_size.x, 0.0)).a;
-
-        float outline_alpha = clamp(alpha_up + alpha_down + alpha_left + alpha_right, 0.0, 1.0);
-
-        // If current pixel is transparent but a neighbor isn't, draw outline.
-        if (tex_color.a < 0.9 && outline_alpha > 0.0) {
-            COLOR = vec4(outline_color.rgb, outline_alpha * outline_color.a);
-        }
-    }
-}"
+[sub_resource type="ShaderMaterial" id="ShaderMaterial_p8k0u"]
+shader = ExtResource("2_kot8c")
+shader_parameter/primary = Vector3(1, 0, 0)
+shader_parameter/secondary = Vector3(0, 1, 0)
+shader_parameter/tertiary = Vector3(0, 0, 1)
 
 [sub_resource type="ShaderMaterial" id="ShaderMaterial_k6y8d"]
-shader = SubResource("Shader_p8k0u")
-shader_parameter/outline_color = Color(1, 1, 1, 1)
-shader_parameter/outline_width = 20.0
-shader_parameter/outline_enabled = true
+shader = ExtResource("2_kot8c")
+shader_parameter/primary = Vector3(1, 0, 0)
+shader_parameter/secondary = Vector3(0, 1, 0)
+shader_parameter/tertiary = Vector3(0, 0, 1)
 
-[sub_resource type="Shader" id="Shader_12tcu"]
-code = "shader_type canvas_item;
-
-uniform vec4 outline_color : source_color = vec4(1.0, 1.0, 1.0, 1.0);
-uniform float outline_width : hint_range(0.0, 20.0) = 1.0;
-uniform bool outline_enabled = true;
-
-void fragment() {
-    vec4 tex_color = texture(TEXTURE, UV);
-
-    if (outline_enabled) {
-        vec2 texel_size = outline_width / vec2(textureSize(TEXTURE, 0));
-
-        // Sample alpha in 4 directions (and optionally diagonals)
-        float alpha_up    = texture(TEXTURE, UV + vec2(0.0, -texel_size.y)).a;
-        float alpha_down  = texture(TEXTURE, UV + vec2(0.0, texel_size.y)).a;
-        float alpha_left  = texture(TEXTURE, UV + vec2(-texel_size.x, 0.0)).a;
-        float alpha_right = texture(TEXTURE, UV + vec2(texel_size.x, 0.0)).a;
-
-        float outline_alpha = clamp(alpha_up + alpha_down + alpha_left + alpha_right, 0.0, 1.0);
-
-        // If current pixel is transparent but a neighbor isn't, draw outline.
-        if (tex_color.a < 0.9 && outline_alpha > 0.0) {
-            COLOR = vec4(outline_color.rgb, outline_alpha * outline_color.a);
-        }
-    }
-}"
-
-[sub_resource type="ShaderMaterial" id="ShaderMaterial_pf442"]
-shader = SubResource("Shader_12tcu")
-shader_parameter/outline_color = Color(1, 1, 1, 1)
-shader_parameter/outline_width = 20.0
-shader_parameter/outline_enabled = true
-
-[sub_resource type="Shader" id="Shader_4lc7o"]
-code = "shader_type canvas_item;
-
-uniform vec4 outline_color : source_color = vec4(1.0, 1.0, 1.0, 1.0);
-uniform float outline_width : hint_range(0.0, 20.0) = 1.0;
-uniform bool outline_enabled = true;
-
-void fragment() {
-    vec4 tex_color = texture(TEXTURE, UV);
-
-    if (outline_enabled) {
-        vec2 texel_size = outline_width / vec2(textureSize(TEXTURE, 0));
-
-        // Sample alpha in 4 directions (and optionally diagonals)
-        float alpha_up    = texture(TEXTURE, UV + vec2(0.0, -texel_size.y)).a;
-        float alpha_down  = texture(TEXTURE, UV + vec2(0.0, texel_size.y)).a;
-        float alpha_left  = texture(TEXTURE, UV + vec2(-texel_size.x, 0.0)).a;
-        float alpha_right = texture(TEXTURE, UV + vec2(texel_size.x, 0.0)).a;
-
-        float outline_alpha = clamp(alpha_up + alpha_down + alpha_left + alpha_right, 0.0, 1.0);
-
-        // If current pixel is transparent but a neighbor isn't, draw outline.
-        if (tex_color.a < 0.9 && outline_alpha > 0.0) {
-            COLOR = vec4(outline_color.rgb, outline_alpha * outline_color.a);
-        }
-    }
-}"
-
-[sub_resource type="ShaderMaterial" id="ShaderMaterial_8kas3"]
-shader = SubResource("Shader_4lc7o")
-shader_parameter/outline_color = Color(1, 1, 1, 1)
-shader_parameter/outline_width = 20.0
-shader_parameter/outline_enabled = true
+[sub_resource type="ShaderMaterial" id="ShaderMaterial_12tcu"]
+shader = ExtResource("2_kot8c")
+shader_parameter/primary = Vector3(1, 0, 0)
+shader_parameter/secondary = Vector3(0, 1, 0)
+shader_parameter/tertiary = Vector3(0, 0, 1)
 
 [sub_resource type="Animation" id="Animation_oqkmi"]
 length = 0.001
@@ -321,28 +210,28 @@ texture = SubResource("GradientTexture1D_jsssl")
 
 [node name="P1" type="Sprite2D" parent="." unique_id=350315376]
 modulate = Color(0.25, 0.25, 0.25, 1)
-material = SubResource("ShaderMaterial_kot8c")
+material = SubResource("ShaderMaterial_ahsmv")
 position = Vector2(382, 884)
 scale = Vector2(0.25, 0.25)
 texture = ExtResource("2_qebxn")
 
 [node name="P2" type="Sprite2D" parent="." unique_id=1254771226]
 modulate = Color(0.25, 0.25, 0.25, 1)
-material = SubResource("ShaderMaterial_k6y8d")
+material = SubResource("ShaderMaterial_p8k0u")
 position = Vector2(767, 884)
 scale = Vector2(0.25, 0.25)
 texture = ExtResource("2_qebxn")
 
 [node name="P3" type="Sprite2D" parent="." unique_id=1990943645]
 modulate = Color(0.25, 0.25, 0.25, 1)
-material = SubResource("ShaderMaterial_pf442")
+material = SubResource("ShaderMaterial_k6y8d")
 position = Vector2(1152, 884)
 scale = Vector2(0.25, 0.25)
 texture = ExtResource("2_qebxn")
 
 [node name="P4" type="Sprite2D" parent="." unique_id=1845697651]
 modulate = Color(0.25, 0.25, 0.25, 1)
-material = SubResource("ShaderMaterial_8kas3")
+material = SubResource("ShaderMaterial_12tcu")
 position = Vector2(1537, 884)
 scale = Vector2(0.25, 0.25)
 texture = ExtResource("2_qebxn")

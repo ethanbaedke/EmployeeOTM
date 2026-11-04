@@ -9,6 +9,14 @@ using FMOD.Studio;
 
 public partial class GameManager : Node2D
 {
+    public static EmployeeColor[] EmployeeColors =
+    {
+        GD.Load<EmployeeColor>("res://employee_colors/employee_color_red.tres"),
+        GD.Load<EmployeeColor>("res://employee_colors/employee_color_green.tres"),
+        GD.Load<EmployeeColor>("res://employee_colors/employee_color_blue.tres"),
+        GD.Load<EmployeeColor>("res://employee_colors/employee_color_yellow.tres"),
+    };
+
     [Export] private MatchManager _matchManager;
     [Export] private PackedScene _lobbyScene;
 
@@ -29,14 +37,14 @@ public partial class GameManager : Node2D
             await ToSignal(GetTree(), SceneTree.SignalName.PhysicsFrame);
 
             // Fill empty players with ai.
-            Array<Color> unusedColors = new Array<Color>(Lobby.ScientistColors);
+            Array<EmployeeColor> unusedColors = new Array<EmployeeColor>(EmployeeColors);
             foreach (EmployeeData data in employeeData)
             {
-                unusedColors.Remove(data.EmployeeColor);
+                unusedColors.Remove(data.EmpColor);
             }
             for (int i = employeeData.Count; i < 4; i++)
             {
-                Color aiColor = unusedColors.PickRandom();
+                EmployeeColor aiColor = unusedColors.PickRandom();
                 unusedColors.Remove(aiColor);
                 EmployeeData aiData = new EmployeeData(aiColor);
                 employeeData.Add(aiData);

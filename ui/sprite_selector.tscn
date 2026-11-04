@@ -3,6 +3,13 @@
 [ext_resource type="Script" uid="uid://44ga77olv1nq" path="res://ui/SpriteSelector.cs" id="1_3ijvl"]
 [ext_resource type="Texture2D" uid="uid://chey6hp3g6q6a" path="res://entities/scientist/scientist.svg" id="2_m4c8g"]
 [ext_resource type="Texture2D" uid="uid://ck7poikntsy4h" path="res://entities/scientist/manager.svg" id="3_0sf2o"]
+[ext_resource type="Shader" uid="uid://bfxw6w7c7s14p" path="res://effects/sprite_painter.gdshader" id="4_2nh4i"]
+
+[sub_resource type="ShaderMaterial" id="ShaderMaterial_vxw10"]
+shader = ExtResource("4_2nh4i")
+shader_parameter/primary = Vector3(1, 0, 0)
+shader_parameter/secondary = Vector3(0, 1, 0)
+shader_parameter/tertiary = Vector3(0, 0, 1)
 
 [sub_resource type="Animation" id="Animation_m4c8g"]
 length = 0.001
@@ -406,6 +413,7 @@ _center = NodePath("CenterSprite")
 
 [node name="BackLeftSprite" type="Sprite2D" parent="." unique_id=1990015925]
 modulate = Color(0.5, 0.5, 0.5, 1)
+material = SubResource("ShaderMaterial_vxw10")
 position = Vector2(-48, 0)
 scale = Vector2(1e-05, 1e-05)
 texture = ExtResource("2_m4c8g")
@@ -413,6 +421,7 @@ region_rect = Rect2(0, 0, 64, 64)
 
 [node name="LeftSprite" type="Sprite2D" parent="." unique_id=1504582476]
 modulate = Color(0.5, 0.5, 0.5, 1)
+material = SubResource("ShaderMaterial_vxw10")
 position = Vector2(-48, 0)
 scale = Vector2(0.1, 0.1)
 texture = ExtResource("2_m4c8g")
@@ -420,6 +429,7 @@ region_rect = Rect2(0, 0, 64, 64)
 
 [node name="BackRightSprite" type="Sprite2D" parent="." unique_id=341536312]
 modulate = Color(0.5, 0.5, 0.5, 1)
+material = SubResource("ShaderMaterial_vxw10")
 position = Vector2(48, 0)
 scale = Vector2(1e-05, 1e-05)
 texture = ExtResource("2_m4c8g")
@@ -427,12 +437,14 @@ region_rect = Rect2(0, 0, 64, 64)
 
 [node name="RightSprite" type="Sprite2D" parent="." unique_id=164264850]
 modulate = Color(0.5, 0.5, 0.5, 1)
+material = SubResource("ShaderMaterial_vxw10")
 position = Vector2(48, 0)
 scale = Vector2(0.1, 0.1)
 texture = ExtResource("2_m4c8g")
 region_rect = Rect2(0, 0, 64, 64)
 
 [node name="CenterSprite" type="Sprite2D" parent="." unique_id=301796760]
+material = SubResource("ShaderMaterial_vxw10")
 scale = Vector2(0.15, 0.15)
 texture = ExtResource("2_m4c8g")
 region_rect = Rect2(0, 0, 64, 64)

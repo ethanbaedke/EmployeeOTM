@@ -10,7 +10,11 @@ public partial class SingleWinnerDisplay : Control
 
 	public void SetWinner(EmployeeData winner)
 	{
-		_winnerCircle.Modulate = winner.EmployeeColor;
+		_winnerCircle.Modulate = winner.EmpColor.PrimaryColor;
         _employeeTexture.Texture = winner.EmployeeTexture;
+        ShaderMaterial shaderMat = _employeeTexture.Material as ShaderMaterial;
+        shaderMat.SetShaderParameter("primary", winner.EmpColor.PrimaryColor);
+        shaderMat.SetShaderParameter("secondary", winner.EmpColor.SecondaryColor);
+        shaderMat.SetShaderParameter("tertiary", winner.EmpColor.TertiaryColor);
 	}
 }

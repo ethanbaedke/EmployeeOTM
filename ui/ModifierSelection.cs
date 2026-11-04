@@ -54,6 +54,10 @@ public partial class ModifierSelection : Control
         } while (_rightModifier == _leftModifier);
 
         _employeeTexture.Texture = selectingEmployee.EmployeeTexture;
+        ShaderMaterial shaderMat = _employeeTexture.Material as ShaderMaterial;
+        shaderMat.SetShaderParameter("primary", selectingEmployee.EmpColor.PrimaryColor);
+        shaderMat.SetShaderParameter("secondary", selectingEmployee.EmpColor.SecondaryColor);
+        shaderMat.SetShaderParameter("tertiary", selectingEmployee.EmpColor.TertiaryColor);
         _leftOptionLabel.Text = _leftModifier.ModifierName;
         _rightOptionLabel.Text = _rightModifier.ModifierName;
     }

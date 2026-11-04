@@ -34,14 +34,6 @@ public partial class Lobby : Node2D
     [Export]
     private SpriteSelector _spriteSelector;
 
-    public static Color[] ScientistColors =
-    {
-        Colors.Red,
-        Colors.Green,
-        Colors.Blue,
-        Colors.Yellow,
-    };
-
 	private PackedScene _scientistScene = GD.Load<PackedScene>("res://entities/scientist/scientist.tscn");
     private Array<int> _registeredDevices = new Array<int>();
     private bool _deliveringNewPlayer = false;
@@ -97,7 +89,7 @@ public partial class Lobby : Node2D
         // Create new player.
         Scientist newPlayer = _scientistScene.Instantiate<Scientist>();
         newPlayer.ProcessMode = ProcessModeEnum.Disabled;
-        EmployeeData newData = new EmployeeData(ScientistColors[_registeredDevices.Count - 1]);
+        EmployeeData newData = new EmployeeData(GameManager.EmployeeColors[_registeredDevices.Count - 1]);
         newData.inputDevice = inputDevice;
         newPlayer.InitializeScientist(newData, new Dictionary<MatchData.MatchModifier, int>());
         _joinParent.AddChild(newPlayer);
@@ -241,6 +233,7 @@ public partial class Lobby : Node2D
 
                 AttachToParent(scientist, _colorChangeParent);
                 await ToSignal(GetTree().CreateTimer(0.5f), SceneTreeTimer.SignalName.Timeout);
+                _colorSelector.SetSprite(scientist.HeldEmployeeData.EmployeeTexture);
                 Tween colorSelectScaleTween = CreateTween();
                 colorSelectScaleTween.TweenProperty(_colorSelector, "scale", Vector2.One, 0.25);
                 await ToSignal(colorSelectScaleTween, "finished");
@@ -263,6 +256,7 @@ public partial class Lobby : Node2D
 
                 AttachToParent(scientist, _spriteChangeParent);
                 await ToSignal(GetTree().CreateTimer(0.5f), SceneTreeTimer.SignalName.Timeout);
+                _spriteSelector.SetColor(scientist.HeldEmployeeData.EmpColor);
                 Tween spriteSelectScaleTween = CreateTween();
                 spriteSelectScaleTween.TweenProperty(_spriteSelector, "scale", Vector2.One, 0.25);
                 await ToSignal(spriteSelectScaleTween, "finished");

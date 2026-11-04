@@ -7,6 +7,7 @@
 [ext_resource type="Resource" uid="uid://ddpmo1ej3r5ki" path="res://modifiers/social_engagement.tres" id="4_u4jrd"]
 [ext_resource type="Resource" uid="uid://bgypyutpqymc1" path="res://modifiers/public_transportation.tres" id="5_mxjly"]
 [ext_resource type="Resource" uid="uid://n2ajsaqbn4pk" path="res://modifiers/health_benefits.tres" id="6_cfenc"]
+[ext_resource type="Shader" uid="uid://bfxw6w7c7s14p" path="res://effects/sprite_painter.gdshader" id="7_cfenc"]
 
 [sub_resource type="StyleBoxFlat" id="StyleBoxFlat_jsssl"]
 bg_color = Color(0.2, 0.2, 0.2, 1)
@@ -14,6 +15,13 @@ border_width_left = 10
 border_width_top = 10
 border_width_right = 10
 border_width_bottom = 10
+
+[sub_resource type="ShaderMaterial" id="ShaderMaterial_7c35k"]
+shader = ExtResource("7_cfenc")
+shader_parameter/primary = Vector3(1, 0, 0)
+shader_parameter/secondary = Vector3(0, 1, 0)
+shader_parameter/tertiary = Vector3(0, 0, 1)
+shader_parameter/modulation = Vector4(1, 1, 1, 1)
 
 [sub_resource type="StyleBoxFlat" id="StyleBoxFlat_ura83"]
 bg_color = Color(0.2, 0.2, 0.2, 1)
@@ -46,98 +54,98 @@ tracks/0/keys = {
 tracks/1/type = "value"
 tracks/1/imported = false
 tracks/1/enabled = true
-tracks/1/path = NodePath("PanelContainer/Control/TextureRect:modulate")
+tracks/1/path = NodePath("PanelContainer/Control/Prompt:position")
 tracks/1/interp = 1
 tracks/1/loop_wrap = true
 tracks/1/keys = {
 "times": PackedFloat32Array(0),
 "transitions": PackedFloat32Array(1),
 "update": 0,
-"values": [Color(1, 1, 1, 1)]
+"values": [Vector2(623, 88.75)]
 }
 tracks/2/type = "value"
 tracks/2/imported = false
 tracks/2/enabled = true
-tracks/2/path = NodePath("PanelContainer/Control/Prompt:position")
+tracks/2/path = NodePath("PanelContainer/Control/Prompt:modulate")
 tracks/2/interp = 1
 tracks/2/loop_wrap = true
 tracks/2/keys = {
 "times": PackedFloat32Array(0),
 "transitions": PackedFloat32Array(1),
 "update": 0,
-"values": [Vector2(623, 88.75)]
+"values": [Color(1, 1, 1, 1)]
 }
 tracks/3/type = "value"
 tracks/3/imported = false
 tracks/3/enabled = true
-tracks/3/path = NodePath("PanelContainer/Control/Prompt:modulate")
+tracks/3/path = NodePath("PanelContainer/Control/RightOption:position")
 tracks/3/interp = 1
 tracks/3/loop_wrap = true
 tracks/3/keys = {
 "times": PackedFloat32Array(0),
 "transitions": PackedFloat32Array(1),
 "update": 0,
-"values": [Color(1, 1, 1, 1)]
+"values": [Vector2(966, 275)]
 }
 tracks/4/type = "value"
 tracks/4/imported = false
 tracks/4/enabled = true
-tracks/4/path = NodePath("PanelContainer/Control/RightOption:position")
+tracks/4/path = NodePath("PanelContainer/Control/RightOption:modulate")
 tracks/4/interp = 1
 tracks/4/loop_wrap = true
 tracks/4/keys = {
 "times": PackedFloat32Array(0),
 "transitions": PackedFloat32Array(1),
 "update": 0,
-"values": [Vector2(966, 275)]
+"values": [Color(1, 1, 1, 1)]
 }
 tracks/5/type = "value"
 tracks/5/imported = false
 tracks/5/enabled = true
-tracks/5/path = NodePath("PanelContainer/Control/RightOption:modulate")
+tracks/5/path = NodePath("PanelContainer/Control/LeftOption:position")
 tracks/5/interp = 1
 tracks/5/loop_wrap = true
 tracks/5/keys = {
 "times": PackedFloat32Array(0),
 "transitions": PackedFloat32Array(1),
 "update": 0,
-"values": [Color(1, 1, 1, 1)]
+"values": [Vector2(536, 275)]
 }
 tracks/6/type = "value"
 tracks/6/imported = false
 tracks/6/enabled = true
-tracks/6/path = NodePath("PanelContainer/Control/LeftOption:position")
+tracks/6/path = NodePath("PanelContainer/Control/Description:modulate")
 tracks/6/interp = 1
 tracks/6/loop_wrap = true
 tracks/6/keys = {
 "times": PackedFloat32Array(0),
 "transitions": PackedFloat32Array(1),
 "update": 0,
-"values": [Vector2(536, 275)]
+"values": [Color(1, 1, 1, 0)]
 }
 tracks/7/type = "value"
 tracks/7/imported = false
 tracks/7/enabled = true
-tracks/7/path = NodePath("PanelContainer/Control/Description:modulate")
+tracks/7/path = NodePath("PanelContainer/Control/LeftOption:modulate")
 tracks/7/interp = 1
 tracks/7/loop_wrap = true
 tracks/7/keys = {
 "times": PackedFloat32Array(0),
 "transitions": PackedFloat32Array(1),
 "update": 0,
-"values": [Color(1, 1, 1, 0)]
+"values": [Color(1, 1, 1, 1)]
 }
 tracks/8/type = "value"
 tracks/8/imported = false
 tracks/8/enabled = true
-tracks/8/path = NodePath("PanelContainer/Control/LeftOption:modulate")
+tracks/8/path = NodePath("PanelContainer/Control/TextureRect:material:shader_parameter/modulation")
 tracks/8/interp = 1
 tracks/8/loop_wrap = true
 tracks/8/keys = {
 "times": PackedFloat32Array(0),
 "transitions": PackedFloat32Array(1),
 "update": 0,
-"values": [Color(1, 1, 1, 1)]
+"values": [Vector4(1, 1, 1, 1)]
 }
 
 [sub_resource type="Animation" id="Animation_d1a7p"]
@@ -158,86 +166,86 @@ tracks/0/keys = {
 tracks/1/type = "value"
 tracks/1/imported = false
 tracks/1/enabled = true
-tracks/1/path = NodePath("PanelContainer/Control/TextureRect:modulate")
+tracks/1/path = NodePath("PanelContainer/Control/Prompt:position")
 tracks/1/interp = 2
 tracks/1/loop_wrap = true
 tracks/1/keys = {
 "times": PackedFloat32Array(0, 0.3),
 "transitions": PackedFloat32Array(0.5, 1),
 "update": 0,
-"values": [Color(1, 1, 1, 1), Color(1, 1, 1, 0)]
+"values": [Vector2(623, 88.75), Vector2(623, 120.75)]
 }
 tracks/2/type = "value"
 tracks/2/imported = false
 tracks/2/enabled = true
-tracks/2/path = NodePath("PanelContainer/Control/Prompt:position")
+tracks/2/path = NodePath("PanelContainer/Control/Prompt:modulate")
 tracks/2/interp = 2
 tracks/2/loop_wrap = true
 tracks/2/keys = {
 "times": PackedFloat32Array(0, 0.3),
 "transitions": PackedFloat32Array(0.5, 1),
 "update": 0,
-"values": [Vector2(623, 88.75), Vector2(623, 120.75)]
+"values": [Color(1, 1, 1, 1), Color(1, 1, 1, 0)]
 }
 tracks/3/type = "value"
 tracks/3/imported = false
 tracks/3/enabled = true
-tracks/3/path = NodePath("PanelContainer/Control/Prompt:modulate")
+tracks/3/path = NodePath("PanelContainer/Control/RightOption:position")
 tracks/3/interp = 2
 tracks/3/loop_wrap = true
 tracks/3/keys = {
 "times": PackedFloat32Array(0, 0.3),
 "transitions": PackedFloat32Array(0.5, 1),
 "update": 0,
-"values": [Color(1, 1, 1, 1), Color(1, 1, 1, 0)]
+"values": [Vector2(966, 275), Vector2(966, 307)]
 }
 tracks/4/type = "value"
 tracks/4/imported = false
 tracks/4/enabled = true
-tracks/4/path = NodePath("PanelContainer/Control/RightOption:position")
+tracks/4/path = NodePath("PanelContainer/Control/RightOption:modulate")
 tracks/4/interp = 2
 tracks/4/loop_wrap = true
 tracks/4/keys = {
 "times": PackedFloat32Array(0, 0.3),
 "transitions": PackedFloat32Array(0.5, 1),
 "update": 0,
-"values": [Vector2(966, 275), Vector2(966, 307)]
+"values": [Color(1, 1, 1, 1), Color(1, 1, 1, 0)]
 }
 tracks/5/type = "value"
 tracks/5/imported = false
 tracks/5/enabled = true
-tracks/5/path = NodePath("PanelContainer/Control/RightOption:modulate")
+tracks/5/path = NodePath("PanelContainer/Control/LeftOption:position")
 tracks/5/interp = 2
 tracks/5/loop_wrap = true
 tracks/5/keys = {
-"times": PackedFloat32Array(0, 0.3),
-"transitions": PackedFloat32Array(0.5, 1),
-"update": 0,
-"values": [Color(1, 1, 1, 1), Color(1, 1, 1, 0)]
-}
-tracks/6/type = "value"
-tracks/6/imported = false
-tracks/6/enabled = true
-tracks/6/path = NodePath("PanelContainer/Control/LeftOption:position")
-tracks/6/interp = 2
-tracks/6/loop_wrap = true
-tracks/6/keys = {
 "times": PackedFloat32Array(0, 0.6),
 "transitions": PackedFloat32Array(0.5, 1),
 "update": 0,
 "values": [Vector2(536, 275), Vector2(518, 64)]
 }
-tracks/7/type = "value"
-tracks/7/imported = false
-tracks/7/enabled = true
-tracks/7/path = NodePath("PanelContainer/Control/Description:modulate")
-tracks/7/interp = 1
-tracks/7/loop_wrap = true
-tracks/7/keys = {
+tracks/6/type = "value"
+tracks/6/imported = false
+tracks/6/enabled = true
+tracks/6/path = NodePath("PanelContainer/Control/Description:modulate")
+tracks/6/interp = 1
+tracks/6/loop_wrap = true
+tracks/6/keys = {
 "times": PackedFloat32Array(0, 0.6, 1.2),
 "transitions": PackedFloat32Array(1, 1, 1),
 "update": 0,
 "values": [Color(1, 1, 1, 0), Color(1, 1, 1, 0), Color(1, 1, 1, 1)]
+}
+tracks/7/type = "value"
+tracks/7/imported = false
+tracks/7/enabled = true
+tracks/7/path = NodePath("PanelContainer/Control/TextureRect:material:shader_parameter/modulation")
+tracks/7/interp = 1
+tracks/7/loop_wrap = true
+tracks/7/keys = {
+"times": PackedFloat32Array(0, 0.3),
+"transitions": PackedFloat32Array(0.5, 1),
+"update": 0,
+"values": [Vector4(1, 1, 1, 1), Vector4(1, 1, 1, 0)]
 }
 
 [sub_resource type="Animation" id="Animation_ura83"]
@@ -258,86 +266,86 @@ tracks/0/keys = {
 tracks/1/type = "value"
 tracks/1/imported = false
 tracks/1/enabled = true
-tracks/1/path = NodePath("PanelContainer/Control/TextureRect:modulate")
+tracks/1/path = NodePath("PanelContainer/Control/Prompt:position")
 tracks/1/interp = 2
 tracks/1/loop_wrap = true
 tracks/1/keys = {
 "times": PackedFloat32Array(0, 0.3),
 "transitions": PackedFloat32Array(0.5, 1),
 "update": 0,
-"values": [Color(1, 1, 1, 1), Color(1, 1, 1, 0)]
+"values": [Vector2(623, 88.75), Vector2(623, 120.75)]
 }
 tracks/2/type = "value"
 tracks/2/imported = false
 tracks/2/enabled = true
-tracks/2/path = NodePath("PanelContainer/Control/Prompt:position")
+tracks/2/path = NodePath("PanelContainer/Control/Prompt:modulate")
 tracks/2/interp = 2
 tracks/2/loop_wrap = true
 tracks/2/keys = {
 "times": PackedFloat32Array(0, 0.3),
 "transitions": PackedFloat32Array(0.5, 1),
 "update": 0,
-"values": [Vector2(623, 88.75), Vector2(623, 120.75)]
+"values": [Color(1, 1, 1, 1), Color(1, 1, 1, 0)]
 }
 tracks/3/type = "value"
 tracks/3/imported = false
 tracks/3/enabled = true
-tracks/3/path = NodePath("PanelContainer/Control/Prompt:modulate")
+tracks/3/path = NodePath("PanelContainer/Control/RightOption:position")
 tracks/3/interp = 2
 tracks/3/loop_wrap = true
 tracks/3/keys = {
-"times": PackedFloat32Array(0, 0.3),
-"transitions": PackedFloat32Array(0.5, 1),
-"update": 0,
-"values": [Color(1, 1, 1, 1), Color(1, 1, 1, 0)]
-}
-tracks/4/type = "value"
-tracks/4/imported = false
-tracks/4/enabled = true
-tracks/4/path = NodePath("PanelContainer/Control/RightOption:position")
-tracks/4/interp = 2
-tracks/4/loop_wrap = true
-tracks/4/keys = {
 "times": PackedFloat32Array(0, 0.6),
 "transitions": PackedFloat32Array(0.5, 1),
 "update": 0,
 "values": [Vector2(966, 275), Vector2(518, 64)]
 }
-tracks/5/type = "value"
-tracks/5/imported = false
-tracks/5/enabled = true
-tracks/5/path = NodePath("PanelContainer/Control/LeftOption:position")
-tracks/5/interp = 2
-tracks/5/loop_wrap = true
-tracks/5/keys = {
+tracks/4/type = "value"
+tracks/4/imported = false
+tracks/4/enabled = true
+tracks/4/path = NodePath("PanelContainer/Control/LeftOption:position")
+tracks/4/interp = 2
+tracks/4/loop_wrap = true
+tracks/4/keys = {
 "times": PackedFloat32Array(0, 0.3),
 "transitions": PackedFloat32Array(0.5, 1),
 "update": 0,
 "values": [Vector2(536, 275), Vector2(536, 307)]
 }
-tracks/6/type = "value"
-tracks/6/imported = false
-tracks/6/enabled = true
-tracks/6/path = NodePath("PanelContainer/Control/Description:modulate")
-tracks/6/interp = 1
-tracks/6/loop_wrap = true
-tracks/6/keys = {
+tracks/5/type = "value"
+tracks/5/imported = false
+tracks/5/enabled = true
+tracks/5/path = NodePath("PanelContainer/Control/Description:modulate")
+tracks/5/interp = 1
+tracks/5/loop_wrap = true
+tracks/5/keys = {
 "times": PackedFloat32Array(0, 0.6, 1.2),
 "transitions": PackedFloat32Array(1, 1, 1),
 "update": 0,
 "values": [Color(1, 1, 1, 0), Color(1, 1, 1, 0), Color(1, 1, 1, 1)]
 }
+tracks/6/type = "value"
+tracks/6/imported = false
+tracks/6/enabled = true
+tracks/6/path = NodePath("PanelContainer/Control/LeftOption:modulate")
+tracks/6/interp = 2
+tracks/6/loop_wrap = true
+tracks/6/keys = {
+"times": PackedFloat32Array(0, 0.3),
+"transitions": PackedFloat32Array(0.5, 1),
+"update": 0,
+"values": [Color(1, 1, 1, 1), Color(1, 1, 1, 0)]
+}
 tracks/7/type = "value"
 tracks/7/imported = false
 tracks/7/enabled = true
-tracks/7/path = NodePath("PanelContainer/Control/LeftOption:modulate")
-tracks/7/interp = 2
+tracks/7/path = NodePath("PanelContainer/Control/TextureRect:material:shader_parameter/modulation")
+tracks/7/interp = 1
 tracks/7/loop_wrap = true
 tracks/7/keys = {
 "times": PackedFloat32Array(0, 0.3),
 "transitions": PackedFloat32Array(0.5, 1),
 "update": 0,
-"values": [Color(1, 1, 1, 1), Color(1, 1, 1, 0)]
+"values": [Vector4(1, 1, 1, 1), Vector4(1, 1, 1, 0)]
 }
 
 [sub_resource type="AnimationLibrary" id="AnimationLibrary_ura83"]
@@ -385,6 +393,7 @@ theme_override_styles/panel = SubResource("StyleBoxFlat_jsssl")
 layout_mode = 2
 
 [node name="TextureRect" type="TextureRect" parent="PanelContainer/Control" unique_id=633904680]
+material = SubResource("ShaderMaterial_7c35k")
 layout_mode = 1
 anchors_preset = 4
 anchor_top = 0.5
@@ -403,7 +412,7 @@ anchor_right = 0.5
 offset_left = -87.0
 offset_top = 88.75
 offset_right = 553.0
-offset_bottom = 242.74951
+offset_bottom = 242.74948
 grow_horizontal = 2
 theme_override_font_sizes/font_size = 64
 text = "Company Initiative"
@@ -415,7 +424,7 @@ layout_mode = 0
 offset_left = 536.0
 offset_top = 275.0
 offset_right = 920.0
-offset_bottom = 471.00125
+offset_bottom = 471.0008
 theme_override_styles/panel = SubResource("StyleBoxFlat_ura83")
 
 [node name="MarginContainer" type="MarginContainer" parent="PanelContainer/Control/LeftOption" unique_id=1331500873]
@@ -439,7 +448,7 @@ layout_mode = 0
 offset_left = 966.0
 offset_top = 275.0
 offset_right = 1350.0063
-offset_bottom = 471.0002
+offset_bottom = 470.99994
 theme_override_styles/panel = SubResource("StyleBoxFlat_bod3q")
 
 [node name="MarginContainer" type="MarginContainer" parent="PanelContainer/Control/RightOption" unique_id=126870973]

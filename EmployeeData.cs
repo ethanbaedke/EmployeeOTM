@@ -3,7 +3,7 @@ using System;
 
 public partial class EmployeeData : GodotObject
 {
-    public Color EmployeeColor = Colors.White;
+    public EmployeeColor EmpColor = null;
     public Texture2D EmployeeTexture = GD.Load<CompressedTexture2D>("res://entities/scientist/scientist.svg");
     // The number of points this employee has accrued this match.
     public int TotalPoints = 0;
@@ -15,8 +15,8 @@ public partial class EmployeeData : GodotObject
     // -2 represents an AI controlled employee.
     public int inputDevice = -2;
 
-    public EmployeeData(Color employeeColor)
+    public EmployeeData(EmployeeColor employeeColor)
     {
-        EmployeeColor = employeeColor;
+        EmpColor = employeeColor;
     }
 }

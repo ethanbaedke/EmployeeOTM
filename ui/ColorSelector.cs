@@ -7,8 +7,6 @@ public partial class ColorSelector : Node2D
     [Export]
     private AnimationPlayer _animPlayer;
     [Export]
-    private Color[] _colors;
-    [Export]
     private Sprite2D _backLeft;
     [Export]
     private Sprite2D _left;
@@ -19,13 +17,23 @@ public partial class ColorSelector : Node2D
     [Export]
     private Sprite2D _center;
 
+    private EmployeeColor[] _colors;
     private int _colorIndex = 0;
     private bool _isShifting = false;
     private int _queuedScrollDir = 0;
 
-    public Color GetSelectedColor()
+    public EmployeeColor GetSelectedColor()
     {
         return _colors[_colorIndex];
+    }
+
+    public void SetSprite(Texture2D texture)
+    {
+        _backLeft.Texture = texture;
+        _left.Texture = texture;
+        _center.Texture = texture;
+        _right.Texture = texture;
+        _backRight.Texture = texture;
     }
 
 	public async void ScrollLeft()
@@ -83,7 +91,6 @@ public partial class ColorSelector : Node2D
 
     private void UpdateSprite(Sprite2D sprite, int indexOffset)
     {
-        GradientTexture1D tex = sprite.Texture as GradientTexture1D;
         int colorIndex = _colorIndex;
         while (indexOffset > 0)
         {
@@ -99,13 +106,18 @@ public partial class ColorSelector : Node2D
                 colorIndex = _colors.Length - 1;
             }
         }
-        tex.Gradient.SetColor(0, _colors[colorIndex]);
+        EmployeeColor empColor = _colors[colorIndex];
+        ShaderMaterial mat = sprite.Material as ShaderMaterial;
+        mat.SetShaderParameter("primary", empColor.PrimaryColor);
+        mat.SetShaderParameter("secondary", empColor.SecondaryColor);
+        mat.SetShaderParameter("tertiary", empColor.TertiaryColor);
     }
 
     public override void _Ready()
     {
         base._Ready();
 
+        _colors = GameManager.EmployeeColors;
         UpdateColors();
     }
 

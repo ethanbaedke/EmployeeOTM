@@ -25,7 +25,9 @@ public partial class Introduction : Node2D
         {
             _employeeSprites[i].Texture = matchData.Employees[i].EmployeeTexture;
             ShaderMaterial shaderMat = _employeeSprites[i].Material as ShaderMaterial;
-            shaderMat.SetShaderParameter("outline_color", matchData.Employees[i].EmployeeColor);
+            shaderMat.SetShaderParameter("primary", matchData.Employees[i].EmpColor.PrimaryColor);
+            shaderMat.SetShaderParameter("secondary", matchData.Employees[i].EmpColor.SecondaryColor);
+            shaderMat.SetShaderParameter("tertiary", matchData.Employees[i].EmpColor.TertiaryColor);
         }
 
         _animPlayer.Play("base");

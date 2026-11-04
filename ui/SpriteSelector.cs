@@ -27,6 +27,14 @@ public partial class SpriteSelector : Node2D
         return _textures[_textureIndex];
     }
 
+    public void SetColor(EmployeeColor employeeColor)
+    {
+        ShaderMaterial mat = _center.Material as ShaderMaterial;
+        mat.SetShaderParameter("primary", employeeColor.PrimaryColor);
+        mat.SetShaderParameter("secondary", employeeColor.SecondaryColor);
+        mat.SetShaderParameter("tertiary", employeeColor.TertiaryColor);
+    }
+
 	public async void ScrollLeft()
     {
         if (_isShifting)
