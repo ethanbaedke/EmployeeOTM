@@ -66,7 +66,7 @@ public partial class FridayLayoffs : MiniGame, INameProvider
         timeTween.TweenProperty(Engine.Singleton, "time_scale", 0.1f, OtmAudioManager.Instance.GetBeatTime());
 
         // Zoom in on employee getting fired.
-        _camera.ZoomOnEmployee(_pinkSlipHolder, OtmAudioManager.Instance.GetBeatTime());
+        _camera.ZoomOnTarget(_pinkSlipHolder, OtmAudioManager.Instance.GetBeatTime());
 
         await ToSignal(GetTree().CreateTimer(OtmAudioManager.Instance.GetBeatTime() * 2.0f, ignoreTimeScale:true), SceneTreeTimer.SignalName.Timeout);
 
@@ -83,7 +83,7 @@ public partial class FridayLayoffs : MiniGame, INameProvider
 
             // Zoom in on next holder.
             Scientist nextHolder = GetNextPinkSlipScientist();
-            _camera.ZoomOnEmployee(nextHolder, OtmAudioManager.Instance.GetBeatTime());
+            _camera.ZoomOnTarget(nextHolder, OtmAudioManager.Instance.GetBeatTime());
             await ToSignal(GetTree().CreateTimer(OtmAudioManager.Instance.GetBeatTime() * 2.0f, ignoreTimeScale:true), SceneTreeTimer.SignalName.Timeout);
 
             // Give new holder pink slip.

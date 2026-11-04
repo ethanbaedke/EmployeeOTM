@@ -3,15 +3,30 @@
 [ext_resource type="Script" uid="uid://c0cl07wdb17kc" path="res://entities/Volleyball.cs" id="1_fvqiq"]
 [ext_resource type="Texture2D" uid="uid://cpoquu7ycgy1a" path="res://circle.svg" id="2_ib7kv"]
 
-[sub_resource type="CircleShape2D" id="CircleShape2D_ib7kv"]
-radius = 26.0
+[sub_resource type="PhysicsMaterial" id="PhysicsMaterial_ib7kv"]
+friction = 0.0
+bounce = 1.0
 
-[node name="Volleyball" type="RigidBody2D" unique_id=1579505157]
+[sub_resource type="CircleShape2D" id="CircleShape2D_ib7kv"]
+radius = 39.0
+
+[node name="Volleyball" type="RigidBody2D" unique_id=1579505157 node_paths=PackedStringArray("_groundCast", "_collisionShape")]
+physics_material_override = SubResource("PhysicsMaterial_ib7kv")
+gravity_scale = 0.5
+contact_monitor = true
+max_contacts_reported = 2
+linear_damp = 0.75
 script = ExtResource("1_fvqiq")
+_groundCast = NodePath("RayCast2D")
+_collisionShape = NodePath("CollisionShape2D")
 
 [node name="Sprite2D" type="Sprite2D" parent="." unique_id=318992001]
-scale = Vector2(0.1, 0.1)
+scale = Vector2(0.15, 0.15)
 texture = ExtResource("2_ib7kv")
 
 [node name="CollisionShape2D" type="CollisionShape2D" parent="." unique_id=576212495]
 shape = SubResource("CircleShape2D_ib7kv")
+
+[node name="RayCast2D" type="RayCast2D" parent="." unique_id=472851605]
+target_position = Vector2(0, 1080)
+collision_mask = 2
