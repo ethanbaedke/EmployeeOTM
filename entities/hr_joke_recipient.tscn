@@ -1,0 +1,17 @@
+[gd_scene format=3 uid="uid://bnr8nh54vq0fv"]
+
+[ext_resource type="Script" uid="uid://cjde4qcx0nes7" path="res://entities/HeldItemRecipient.cs" id="1_pmxyf"]
+[ext_resource type="Texture2D" uid="uid://ck7poikntsy4h" path="res://entities/scientist/manager.svg" id="2_tv18i"]
+
+[sub_resource type="CircleShape2D" id="CircleShape2D_pkshj"]
+radius = 32.0
+
+[node name="HRJokeRecipient" type="Area2D" unique_id=868211408]
+script = ExtResource("1_pmxyf")
+
+[node name="Sprite2D" type="Sprite2D" parent="." unique_id=7344676]
+scale = Vector2(0.15, 0.15)
+texture = ExtResource("2_tv18i")
+
+[node name="CollisionShape2D" type="CollisionShape2D" parent="." unique_id=992430935]
+shape = SubResource("CircleShape2D_pkshj")

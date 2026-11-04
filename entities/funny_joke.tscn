@@ -1,0 +1,19 @@
+[gd_scene format=3 uid="uid://lr5ob6fo4ctl"]
+
+[ext_resource type="Script" uid="uid://bq7s2ivv46nwv" path="res://entities/HeldItem.cs" id="1_88h05"]
+
+[node name="FunnyJoke" type="Node2D" unique_id=1873593944 node_paths=PackedStringArray("_spriteParent")]
+script = ExtResource("1_88h05")
+_spriteParent = NodePath("Sprite2D")
+
+[node name="Sprite2D" type="Node2D" parent="." unique_id=2032015878]
+position = Vector2(0, -55.999996)
+scale = Vector2(0.15, 0.15)
+
+[node name="Label" type="Label" parent="Sprite2D" unique_id=661376828]
+offset_left = -245.0
+offset_right = 246.0
+offset_bottom = 132.0
+theme_override_font_sizes/font_size = 96
+text = "!@#$%^&*"
+horizontal_alignment = 1

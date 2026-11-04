@@ -8,6 +8,7 @@
 [ext_resource type="PackedScene" uid="uid://bvqw7lc1tcsrt" path="res://levels/friday_layoffs.tscn" id="4_7skip"]
 [ext_resource type="PackedScene" uid="uid://bt4c44pnaed0s" path="res://levels/king_of_the_hill.tscn" id="5_f86xo"]
 [ext_resource type="PackedScene" uid="uid://bkljc2myl8af6" path="res://levels/improvement_plan.tscn" id="7_be6ut"]
+[ext_resource type="PackedScene" uid="uid://7h1cjt085l44" path="res://levels/unhinged_coworker.tscn" id="8_7skip"]
 
 [sub_resource type="Curve" id="Curve_kg6bc"]
 _data = [Vector2(0, 0), 0.0, 0.0, 0, 0, Vector2(0.8, 0.3), 1.1577299, 1.1577299, 0, 0, Vector2(1, 1), 6.3275824, 0.0, 0, 0]
@@ -25,7 +26,7 @@ theme = ExtResource("1_tbeyl")
 script = ExtResource("2_kg6bc")
 _ffaMiniGameScenes = Array[PackedScene]([ExtResource("3_54hqs"), ExtResource("4_7skip"), ExtResource("5_f86xo")])
 _2v2MiniGameScenes = Array[PackedScene]([ExtResource("3_kg6bc")])
-_3v1MiniGameScenes = Array[PackedScene]([ExtResource("7_be6ut")])
+_3v1MiniGameScenes = Array[PackedScene]([ExtResource("7_be6ut"), ExtResource("8_7skip")])
 _miniGameContainer = NodePath("MiniGames")
 _selectionHoldTime = SubResource("Curve_kg6bc")
 

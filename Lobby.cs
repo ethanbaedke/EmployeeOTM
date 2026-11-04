@@ -93,9 +93,8 @@ public partial class Lobby : Node2D
         newData.inputDevice = inputDevice;
         newPlayer.InitializeScientist(newData, new Dictionary<MatchData.MatchModifier, int>());
         _joinParent.AddChild(newPlayer);
-        Color color = new Color(1.0f, 1.0f, 1.0f, 1.0f);
-        color.V = 0.5f;
-        newPlayer.Modulate = color;
+        ShaderMaterial shaderMat = newPlayer.Sprite.Material as ShaderMaterial;
+        shaderMat.SetShaderParameter("modulation", new Vector4(0.5f, 0.5f, 0.5f, 1.0f));
 
         // Release new player into lobby.
         _joinDoorsAnimPlayer.Play("open_doors");
@@ -128,7 +127,7 @@ public partial class Lobby : Node2D
         await ToSignal(positionTween, "finished");
 
         Tween modulateTween = CreateTween();
-        modulateTween.TweenProperty(scientist, "modulate:v", 0.5f, 0.5f);
+        modulateTween.TweenProperty(scientist.Sprite.Material, "shader_parameter/modulation", new Vector4(0.5f, 0.5f, 0.5f, 1.0f), 0.5f);
         
         await ToSignal(GetTree().CreateTimer(0.25f), SceneTreeTimer.SignalName.Timeout);
         scientist.Reparent(parent);
@@ -180,7 +179,7 @@ public partial class Lobby : Node2D
         }
 
         Tween fadeForwardTween = CreateTween();
-        fadeForwardTween.TweenProperty(scientist, "modulate:v", 1.0f, 0.5f);
+        fadeForwardTween.TweenProperty(scientist.Sprite.Material, "shader_parameter/modulation", new Vector4(1.0f, 1.0f, 1.0f, 1.0f), 0.5f);
         // We do not wait for the fade to be complete, since as soon as there is space to come out we want our collider to be active.
         // We only wait a frame so the player doesn't jump if releasing from the parent was a result of selection.
         await ToSignal(GetTree(), "process_frame");

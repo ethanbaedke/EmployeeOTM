@@ -10,13 +10,14 @@ shader = ExtResource("2_vxw10")
 shader_parameter/primary = Vector3(1, 0, 0)
 shader_parameter/secondary = Vector3(0.8, 0, 0)
 shader_parameter/tertiary = Vector3(0.6, 0, 0)
+shader_parameter/modulation = Vector4(1, 1, 1, 1)
 
 [sub_resource type="CircleShape2D" id="CircleShape2D_uawpl"]
 radius = 32.0
 
-[node name="Scientist" type="CharacterBody2D" unique_id=1174776970 node_paths=PackedStringArray("_sprite")]
+[node name="Scientist" type="CharacterBody2D" unique_id=1174776970 node_paths=PackedStringArray("Sprite")]
 script = ExtResource("1_uawpl")
-_sprite = NodePath("Sprite2D")
+Sprite = NodePath("Sprite2D")
 
 [node name="Sprite2D" type="Sprite2D" parent="." unique_id=2072305348]
 material = SubResource("ShaderMaterial_ar06b")

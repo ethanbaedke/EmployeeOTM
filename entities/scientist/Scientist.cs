@@ -8,9 +8,8 @@ public partial class Scientist : CharacterBody2D
     [Signal]
     public delegate void ScientistCollidedEventHandler(Scientist otherScientist);
 
-
     [Export]
-	private Sprite2D _sprite;
+	public Sprite2D Sprite;
 
 	const double MAX_GROUND_SPEED = 750.0f;
 	const double MAX_GROUND_ACCELERATION = 10000.0f;
@@ -38,8 +37,8 @@ public partial class Scientist : CharacterBody2D
 		HeldEmployeeData = employeeData;
 
         // Set texture and color.
-        _sprite.Texture = HeldEmployeeData.EmployeeTexture;
-        ShaderMaterial shaderMat = _sprite.Material as ShaderMaterial;
+        Sprite.Texture = HeldEmployeeData.EmployeeTexture;
+        ShaderMaterial shaderMat = Sprite.Material as ShaderMaterial;
         shaderMat.SetShaderParameter("primary", HeldEmployeeData.EmpColor.PrimaryColor);
         shaderMat.SetShaderParameter("secondary", HeldEmployeeData.EmpColor.SecondaryColor);
         shaderMat.SetShaderParameter("tertiary", HeldEmployeeData.EmpColor.TertiaryColor);
@@ -66,7 +65,7 @@ public partial class Scientist : CharacterBody2D
     public void UpdateColor(EmployeeColor employeeColor)
     {
         HeldEmployeeData.EmpColor = employeeColor;
-		ShaderMaterial shaderMat = _sprite.Material as ShaderMaterial;
+		ShaderMaterial shaderMat = Sprite.Material as ShaderMaterial;
 		shaderMat.SetShaderParameter("primary", employeeColor.PrimaryColor);
         shaderMat.SetShaderParameter("secondary", employeeColor.SecondaryColor);
         shaderMat.SetShaderParameter("tertiary", employeeColor.TertiaryColor);
@@ -76,7 +75,7 @@ public partial class Scientist : CharacterBody2D
     {
         HeldEmployeeData.EmployeeTexture = texture;
 
-        _sprite.Texture = HeldEmployeeData.EmployeeTexture;
+        Sprite.Texture = HeldEmployeeData.EmployeeTexture;
     }
 
 	// Expects a direciton between (-1.0, 1.0).

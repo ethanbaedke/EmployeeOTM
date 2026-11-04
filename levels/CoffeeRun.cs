@@ -7,7 +7,7 @@ public partial class CoffeeRun : MiniGame, INameProvider
     [Export]
     private CoffeePot[] _coffeePots;
     [Export]
-    private CoffeeRecipient[] _coffeeRecipients;
+    private HeldItemRecipient[] _coffeeRecipients;
 
     private const int GAME_THEME_LOOPS = 4;
 
@@ -72,9 +72,9 @@ public partial class CoffeeRun : MiniGame, INameProvider
             pot.SetBrewEnabled(false);
         }
 
-        foreach (CoffeeRecipient recipient in _coffeeRecipients)
+        foreach (HeldItemRecipient recipient in _coffeeRecipients)
         {
-            recipient.CoffeeRecieved += OnCoffeeDelivered;
+            recipient.HeldItemRecieved += OnCoffeeDelivered;
         }
 
         OtmAudioManager.Instance.SetThemeRepeat(true);

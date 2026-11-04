@@ -1,34 +1,34 @@
 using Godot;
 using System;
 
-public partial class CoffeeRecipient : Area2D
+public partial class HeldItemRecipient : Area2D
 {
     [Signal]
-    public delegate void CoffeeRecievedEventHandler(Scientist deliverer);
+    public delegate void HeldItemRecievedEventHandler(Scientist deliverer);
 
     private void OnBodyEntered(Node2D body)
     {
         if (body is Scientist scientist)
         {
-            // Check if the employee has a coffee cup.
-            HeldItem coffeeCup = null;
+            // Check if the employee has a held item.
+            HeldItem item = null;
             foreach (Node child in scientist.GetChildren())
             {
                 if (child is HeldItem heldItem)
                 {
-                    coffeeCup = heldItem;
+                    item = heldItem;
                     break;
                 }
             }
 
-            if (coffeeCup == null)
+            if (item == null)
             {
                 return;
             }
 
-            // Take the coffee.
-            coffeeCup.QueueFree();
-            EmitSignal("CoffeeRecieved", scientist);
+            // Take the item.
+            item.QueueFree();
+            EmitSignal("HeldItemRecieved", scientist);
         }
     }
 
