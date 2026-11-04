@@ -92,7 +92,7 @@ public abstract partial class MiniGame : Node2D
     protected abstract void OnTheme();
     protected abstract void OnThemeCountdown();
 
-    private void OnMatchCountdown()
+    protected virtual void OnMatchCountdown()
     {
         HandleCountdown();
     }

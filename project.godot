@@ -37,6 +37,10 @@ banks/import/fmod_studio_path="C:/Users/ethan/EOTM/FMOD Studio 2.03.15/FMOD Stud
 banks/import/fmod_project_path="C:/Users/ethan/EOTM/FMOD Project/FMOD Project.fspro"
 banks/initialization/load_banks=2
 
+[layer_names]
+
+2d_physics/layer_2="Ground"
+
 [physics]
 
 3d/physics_engine="Jolt Physics"

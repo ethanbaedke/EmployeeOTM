@@ -1,0 +1,43 @@
+[gd_scene format=3 uid="uid://ds1jpsgotdqyp"]
+
+[ext_resource type="Script" uid="uid://npiop41lb6u" path="res://entities/VolleyballNet.cs" id="1_xg2cc"]
+
+[sub_resource type="Gradient" id="Gradient_xg2cc"]
+
+[sub_resource type="GradientTexture1D" id="GradientTexture1D_jsssl"]
+gradient = SubResource("Gradient_xg2cc")
+width = 1
+
+[sub_resource type="Gradient" id="Gradient_tfyol"]
+colors = PackedColorArray(0.8, 0.8, 0.8, 1, 1, 1, 1, 1)
+
+[sub_resource type="GradientTexture1D" id="GradientTexture1D_in5gy"]
+gradient = SubResource("Gradient_tfyol")
+width = 1
+
+[sub_resource type="RectangleShape2D" id="RectangleShape2D_jsssl"]
+size = Vector2(16, 300)
+
+[sub_resource type="RectangleShape2D" id="RectangleShape2D_xg2cc"]
+size = Vector2(24, 100)
+
+[node name="VolleyballNet" type="StaticBody2D" unique_id=1160310224]
+script = ExtResource("1_xg2cc")
+
+[node name="Shaft" type="Sprite2D" parent="." unique_id=409957028]
+position = Vector2(0, -150.00002)
+scale = Vector2(16, 300)
+texture = SubResource("GradientTexture1D_jsssl")
+
+[node name="Net" type="Sprite2D" parent="." unique_id=1790558824]
+position = Vector2(0, -350)
+scale = Vector2(24, 100)
+texture = SubResource("GradientTexture1D_in5gy")
+
+[node name="CollisionShape2D" type="CollisionShape2D" parent="." unique_id=651956564]
+position = Vector2(0, -150)
+shape = SubResource("RectangleShape2D_jsssl")
+
+[node name="CollisionShape2D2" type="CollisionShape2D" parent="." unique_id=1167428125]
+position = Vector2(0, -350)
+shape = SubResource("RectangleShape2D_xg2cc")
