@@ -105,7 +105,7 @@ public partial class UnhingedCoworker : MiniGame, INameProvider
     {
         base._Ready();
 
-        OtmAudioManager.Instance.SetThemeRepeat(true);
+        OtmAudioManager.Instance.SetThemeRepeat(true); 
         _jokeTeller = _scientists[0];
         _jokeStoppers = new Scientist[]
         {

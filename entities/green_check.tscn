@@ -1,0 +1,12 @@
+[gd_scene format=3 uid="uid://dakgiyg2mtk2v"]
+
+[ext_resource type="Texture2D" uid="uid://batwi6htn02tu" path="res://entities/green_check.svg" id="1_aptha"]
+[ext_resource type="Script" uid="uid://dyw8uqehg5emy" path="res://entities/SuccessIndicator.cs" id="1_rn8a3"]
+
+[node name="GreenCheck" type="Node2D" unique_id=1999470934 node_paths=PackedStringArray("_sprite")]
+script = ExtResource("1_rn8a3")
+_sprite = NodePath("Sprite2D")
+
+[node name="Sprite2D" type="Sprite2D" parent="." unique_id=1815847899]
+scale = Vector2(0.25, 0.25)
+texture = ExtResource("1_aptha")

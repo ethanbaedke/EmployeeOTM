@@ -1,0 +1,52 @@
+<?xml version="1.0" encoding="UTF-8" standalone="no"?>
+<!-- Created with Inkscape (http://www.inkscape.org/) -->
+
+<svg
+   width="512"
+   height="512"
+   viewBox="0 0 512 512"
+   version="1.1"
+   id="svg1"
+   inkscape:version="1.4.4 (dcaf3e7, 2026-05-05)"
+   sodipodi:docname="green_check.svg"
+   xmlns:inkscape="http://www.inkscape.org/namespaces/inkscape"
+   xmlns:sodipodi="http://sodipodi.sourceforge.net/DTD/sodipodi-0.dtd"
+   xmlns="http://www.w3.org/2000/svg"
+   xmlns:svg="http://www.w3.org/2000/svg">
+  <sodipodi:namedview
+     id="namedview1"
+     pagecolor="#ffffff"
+     bordercolor="#000000"
+     borderopacity="0.25"
+     inkscape:showpageshadow="2"
+     inkscape:pageopacity="0.0"
+     inkscape:pagecheckerboard="0"
+     inkscape:deskcolor="#d1d1d1"
+     inkscape:document-units="px"
+     inkscape:zoom="1.1145218"
+     inkscape:cx="109.01536"
+     inkscape:cy="175.41155"
+     inkscape:window-width="1920"
+     inkscape:window-height="1009"
+     inkscape:window-x="-8"
+     inkscape:window-y="270"
+     inkscape:window-maximized="1"
+     inkscape:current-layer="layer1" />
+  <defs
+     id="defs1" />
+  <g
+     inkscape:label="Layer 1"
+     inkscape:groupmode="layer"
+     id="layer1">
+    <path
+       id="path1"
+       style="fill:#00ff00;paint-order:stroke markers fill"
+       d="m 256,354.0223 c 10e-6,27.85358 -11.72549,46.152 -40.27979,46.15614 C 187.16592,400.18244 86.610729,333.8314 86.602239,305.97782 86.594239,278.12424 112.27023,256.01242 140.82452,256 169.37881,255.9876 255.98302,326.16873 256,354.0223 L 140.84758,306.43866 Z"
+       sodipodi:nodetypes="csssccc" />
+    <path
+       id="path2"
+       style="fill:#00ff00;paint-order:stroke markers fill"
+       d="m 421.76767,116.95289 c 0,27.25157 -146.70993,271.75747 -176.19117,271.76152 -29.48124,0.004 -47.14394,-31.23236 -47.15271,-58.48393 -0.009,-27.25157 140.4527,-262.613938 169.93394,-262.626098 29.48124,-0.0122 53.39239,22.0676 53.40993,49.319158 l -53.38611,0.0293 z"
+       sodipodi:nodetypes="csssccc" />
+  </g>
+</svg>

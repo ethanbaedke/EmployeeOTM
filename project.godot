@@ -40,6 +40,7 @@ banks/initialization/load_banks=2
 [layer_names]
 
 2d_physics/layer_2="Ground"
+2d_physics/layer_3="Package"
 
 [physics]
 
