@@ -1,0 +1,84 @@
+<?xml version="1.0" encoding="UTF-8" standalone="no"?>
+<!-- Created with Inkscape (http://www.inkscape.org/) -->
+
+<svg
+   width="512"
+   height="512"
+   viewBox="0 0 512 512"
+   version="1.1"
+   id="svg1"
+   inkscape:version="1.4.4 (dcaf3e7, 2026-05-05)"
+   sodipodi:docname="swag_shirt.svg"
+   xmlns:inkscape="http://www.inkscape.org/namespaces/inkscape"
+   xmlns:sodipodi="http://sodipodi.sourceforge.net/DTD/sodipodi-0.dtd"
+   xmlns="http://www.w3.org/2000/svg"
+   xmlns:svg="http://www.w3.org/2000/svg">
+  <sodipodi:namedview
+     id="namedview1"
+     pagecolor="#ffffff"
+     bordercolor="#000000"
+     borderopacity="0.25"
+     inkscape:showpageshadow="2"
+     inkscape:pageopacity="0.0"
+     inkscape:pagecheckerboard="0"
+     inkscape:deskcolor="#d1d1d1"
+     inkscape:document-units="px"
+     inkscape:zoom="1.1145218"
+     inkscape:cx="364.28179"
+     inkscape:cy="240.01325"
+     inkscape:window-width="1920"
+     inkscape:window-height="1009"
+     inkscape:window-x="-8"
+     inkscape:window-y="270"
+     inkscape:window-maximized="1"
+     inkscape:current-layer="layer1" />
+  <defs
+     id="defs1" />
+  <g
+     inkscape:label="Layer 1"
+     inkscape:groupmode="layer"
+     id="layer1">
+    <path
+       id="rect1"
+       style="fill:#666666;stroke-width:0.808926;paint-order:stroke markers fill"
+       d="m 122.0956,115.30476 h 43.23429 c 0,0 52.88322,36.02892 87.19931,35.81454 33.30895,-0.2081 83.61035,-35.81454 83.61035,-35.81454 h 48.61776 V 337.82999 H 122.0956 Z"
+       sodipodi:nodetypes="ccsccccc" />
+    <path
+       id="rect2"
+       style="fill:#666666;paint-order:stroke markers fill"
+       d="m 122.0956,115.30476 45.79462,0 -45.79462,164.63593 -81.684452,-70.88242 z"
+       sodipodi:nodetypes="ccccc" />
+    <path
+       id="path2"
+       style="fill:#666666;stroke-width:1.06755;paint-order:stroke markers fill"
+       d="m 384.75731,115.30476 h -52.1906 l 52.1906,164.63593 93.09304,-70.88242 z"
+       sodipodi:nodetypes="ccccc" />
+    <path
+       id="rect3"
+       style="fill:#ff00ff;stroke-width:1.03728;paint-order:stroke markers fill"
+       d="m 242.86162,193.84953 c 1.03663,-11.62189 13.70991,-24.10905 25.37794,-24.10905 11.66803,0 25.37795,24.10905 25.37795,24.10905 0,0 13.70991,-24.10905 25.37794,-24.10905 11.66803,0 24.5695,12.46906 25.37794,24.10905 1.5057,21.67922 -21.02936,41.56825 -40.60471,51.00548 -7.04852,3.39808 -16.4941,3.5357 -23.4746,0 -18.81341,-9.52919 -39.30609,-29.99978 -37.43246,-51.00548 z"
+       sodipodi:nodetypes="sscsssss" />
+    <text
+       xml:space="preserve"
+       style="font-size:117.956px;font-family:'MV Boli';-inkscape-font-specification:'MV Boli';writing-mode:lr-tb;direction:ltr;fill:#333333;stroke-width:0.614355;paint-order:stroke markers fill"
+       x="171.89021"
+       y="245.30038"
+       id="text4"><tspan
+         sodipodi:role="line"
+         id="tspan4"
+         x="171.89021"
+         y="245.30038"
+         style="stroke-width:0.614355">I</tspan></text>
+    <text
+       xml:space="preserve"
+       style="font-size:89.4404px;font-family:'MV Boli';-inkscape-font-specification:'MV Boli';writing-mode:lr-tb;direction:ltr;fill:#333333;stroke-width:0.465836;paint-order:stroke markers fill"
+       x="141.7301"
+       y="325.36758"
+       id="text5"><tspan
+         sodipodi:role="line"
+         id="tspan5"
+         x="141.7301"
+         y="325.36758"
+         style="stroke-width:0.465836">Work</tspan></text>
+  </g>
+</svg>

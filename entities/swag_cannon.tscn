@@ -1,0 +1,16 @@
+[gd_scene format=3 uid="uid://jdaj2qelq51i"]
+
+[ext_resource type="Script" uid="uid://ckrqjjonsfa5b" path="res://entities/SwagCannon.cs" id="1_ynaq1"]
+[ext_resource type="Texture2D" uid="uid://dutxm5tvrt1ka" path="res://entities/swag_cannon.svg" id="2_tu6b8"]
+
+[node name="SwagCannon" type="Node2D" unique_id=621207464 node_paths=PackedStringArray("_firePosition")]
+script = ExtResource("1_ynaq1")
+_firePosition = NodePath("FirePosition")
+
+[node name="Sprite2D" type="Sprite2D" parent="." unique_id=1661611606]
+position = Vector2(0, 21)
+scale = Vector2(0.5, 0.5)
+texture = ExtResource("2_tu6b8")
+
+[node name="FirePosition" type="Node2D" parent="." unique_id=1137543859]
+position = Vector2(0, 86)

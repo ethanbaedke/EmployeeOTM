@@ -1,0 +1,13 @@
+[gd_scene format=3 uid="uid://c78an5pc3iu84"]
+
+[ext_resource type="Texture2D" uid="uid://c4fpcsmfo8cey" path="res://entities/swag_shirt.svg" id="1_bg6am"]
+[ext_resource type="Script" uid="uid://bq7s2ivv46nwv" path="res://entities/HeldItem.cs" id="1_laust"]
+
+[node name="SwagShirt" type="Node2D" unique_id=348446964 node_paths=PackedStringArray("_spriteParent")]
+script = ExtResource("1_laust")
+_spriteParent = NodePath("Sprite2D")
+
+[node name="Sprite2D" type="Sprite2D" parent="." unique_id=376974834]
+position = Vector2(2, 16)
+scale = Vector2(0.2, 0.2)
+texture = ExtResource("1_bg6am")

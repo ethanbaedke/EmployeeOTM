@@ -1,0 +1,68 @@
+<?xml version="1.0" encoding="UTF-8" standalone="no"?>
+<!-- Created with Inkscape (http://www.inkscape.org/) -->
+
+<svg
+   width="512"
+   height="512"
+   viewBox="0 0 135.46667 135.46667"
+   version="1.1"
+   id="svg1"
+   inkscape:version="1.4.4 (dcaf3e7, 2026-05-05)"
+   sodipodi:docname="swag_hat.svg"
+   xmlns:inkscape="http://www.inkscape.org/namespaces/inkscape"
+   xmlns:sodipodi="http://sodipodi.sourceforge.net/DTD/sodipodi-0.dtd"
+   xmlns="http://www.w3.org/2000/svg"
+   xmlns:svg="http://www.w3.org/2000/svg">
+  <sodipodi:namedview
+     id="namedview1"
+     pagecolor="#ffffff"
+     bordercolor="#000000"
+     borderopacity="0.25"
+     inkscape:showpageshadow="2"
+     inkscape:pageopacity="0.0"
+     inkscape:pagecheckerboard="0"
+     inkscape:deskcolor="#d1d1d1"
+     inkscape:document-units="mm"
+     inkscape:zoom="0.78808595"
+     inkscape:cx="113.56629"
+     inkscape:cy="361.00123"
+     inkscape:window-width="1920"
+     inkscape:window-height="1009"
+     inkscape:window-x="-8"
+     inkscape:window-y="270"
+     inkscape:window-maximized="1"
+     inkscape:current-layer="layer1" />
+  <defs
+     id="defs1" />
+  <g
+     inkscape:label="Layer 1"
+     inkscape:groupmode="layer"
+     id="layer1">
+    <path
+       id="rect1"
+       style="fill:#333333;stroke-width:0.270225;paint-order:stroke markers fill"
+       d="m 16.602287,51.359705 c 20.826749,-18.059161 67.077408,-17.835301 83.534623,-0.62702 12.19178,12.748164 10.26605,35.113359 10.26605,35.113359 H 7.4612879 c 0,0 -3.734661,-23.321685 9.1409991,-34.486339 z"
+       sodipodi:nodetypes="ssccs" />
+    <path
+       id="rect2"
+       style="fill:#666666;stroke-width:0.166992;paint-order:stroke markers fill"
+       d="m 7.8516919,78.59513 c 7.9223811,-4.620857 107.5306681,-5.130687 121.3947281,0.0214 3.30148,1.22689 0,7.229434 0,7.229434 H 7.4125849 c 0,0 -2.371991,-5.611294 0.439107,-7.250914 z"
+       sodipodi:nodetypes="ssccs" />
+    <text
+       xml:space="preserve"
+       style="font-size:13.4111px;font-family:'MV Boli';-inkscape-font-specification:'MV Boli';writing-mode:lr-tb;direction:ltr;fill:#999999;stroke-width:0.0698492;paint-order:stroke markers fill"
+       x="22.492435"
+       y="53.49432"
+       id="text2"><tspan
+         sodipodi:role="line"
+         id="tspan2"
+         style="fill:#999999;stroke-width:0.0698492"
+         x="22.492435"
+         y="53.49432">   Boss</tspan><tspan
+         sodipodi:role="line"
+         style="fill:#999999;stroke-width:0.0698492"
+         x="22.492435"
+         y="70.258194"
+         id="tspan3">Knows Best</tspan></text>
+  </g>
+</svg>

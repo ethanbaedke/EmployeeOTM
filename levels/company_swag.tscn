@@ -1,0 +1,133 @@
+[gd_scene format=3 uid="uid://b7bvesmd6fsng"]
+
+[ext_resource type="Script" uid="uid://vrco8bghkpmb" path="res://levels/CompanySwag.cs" id="1_uui4p"]
+[ext_resource type="Script" uid="uid://bxqgwtb01dhmb" path="res://levels/MiniGameCamera.cs" id="2_ucqjx"]
+[ext_resource type="PackedScene" uid="uid://ddsuppc5mxr32" path="res://entities/scientist/scientist.tscn" id="3_ba5qu"]
+[ext_resource type="PackedScene" uid="uid://bpulko32timg0" path="res://entities/dirt_platform.tscn" id="4_okvo2"]
+[ext_resource type="PackedScene" uid="uid://km4o30h8u3rt" path="res://ui/center_screen_countdown.tscn" id="6_d8535"]
+[ext_resource type="PackedScene" uid="uid://jdaj2qelq51i" path="res://entities/swag_cannon.tscn" id="7_uui4p"]
+[ext_resource type="PackedScene" uid="uid://c1w2ibs5t4v4b" path="res://ui/MiniGameTutorial.tscn" id="7_xslrb"]
+
+[sub_resource type="Curve" id="Curve_ynfla"]
+_data = [Vector2(0, 1), 0.0, -2.0, 0, 0, Vector2(1, 0.10344827), 0.0, 0.0, 0, 0]
+point_count = 2
+
+[sub_resource type="Curve" id="Curve_i2gh2"]
+_limits = [1.0, 2.0, 0.0, 1.0]
+_data = [Vector2(0, 1), 0.0, 0.0, 0, 0, Vector2(1, 2), 0.0, 0.0, 0, 0]
+point_count = 2
+
+[sub_resource type="Curve" id="Curve_r3f8q"]
+_data = [Vector2(0, 0), 0.0, 0.0, 0, 0, Vector2(1, 1), 0.0, 0.0, 0, 0]
+point_count = 2
+
+[sub_resource type="Gradient" id="Gradient_uui4p"]
+
+[sub_resource type="GradientTexture1D" id="GradientTexture1D_jsssl"]
+gradient = SubResource("Gradient_uui4p")
+width = 1
+
+[sub_resource type="RectangleShape2D" id="RectangleShape2D_o3a2j"]
+size = Vector2(100, 1080)
+
+[node name="CompanySwag" type="Node2D" unique_id=739882208 node_paths=PackedStringArray("_swagCannon", "_scientists", "_countdownUI", "_camera", "_tutorial")]
+script = ExtResource("1_uui4p")
+_swagCannon = NodePath("SwagCannon")
+_scientists = [NodePath("SwagCannon/Scientist"), NodePath("Scientist2"), NodePath("Scientist3"), NodePath("Scientist4")]
+_countdownUI = NodePath("CanvasLayer/CenterScreenCountdown")
+_camera = NodePath("Camera2D")
+_tutorial = NodePath("CanvasLayer/MiniGameTutorial")
+_miniGameDescription = "Stay niche by avoiding company swag."
+
+[node name="CanvasLayer" type="CanvasLayer" parent="." unique_id=743391810]
+
+[node name="CenterScreenCountdown" parent="CanvasLayer" unique_id=1320922543 instance=ExtResource("6_d8535")]
+metadata/_edit_use_anchors_ = true
+
+[node name="MiniGameTutorial" parent="CanvasLayer" unique_id=858250490 instance=ExtResource("7_xslrb")]
+
+[node name="Camera2D" type="Camera2D" parent="." unique_id=78114846]
+position = Vector2(960, 540)
+script = ExtResource("2_ucqjx")
+_timeCurve = SubResource("Curve_ynfla")
+_zoomCurve = SubResource("Curve_i2gh2")
+_positionPercentCurve = SubResource("Curve_r3f8q")
+
+[node name="CannonBar" type="Sprite2D" parent="." unique_id=1814590374]
+position = Vector2(960, 207)
+scale = Vector2(2124.0002, 10)
+texture = SubResource("GradientTexture1D_jsssl")
+
+[node name="SwagCannon" parent="." unique_id=621207464 instance=ExtResource("7_uui4p")]
+position = Vector2(933, 190)
+
+[node name="Scientist" parent="SwagCannon" unique_id=1174776970 instance=ExtResource("3_ba5qu")]
+z_index = -1
+scale = Vector2(2, 2)
+collision_layer = 0
+collision_mask = 0
+
+[node name="Scientist2" parent="." unique_id=1941702726 instance=ExtResource("3_ba5qu")]
+position = Vector2(408, 1014)
+
+[node name="Scientist3" parent="." unique_id=1859229547 instance=ExtResource("3_ba5qu")]
+position = Vector2(1143, 1013)
+
+[node name="Scientist4" parent="." unique_id=1556663606 instance=ExtResource("3_ba5qu")]
+position = Vector2(1512, 1013)
+
+[node name="DirtPlatform12" parent="." unique_id=1553320347 instance=ExtResource("4_okvo2")]
+position = Vector2(40, -3)
+
+[node name="DirtPlatform13" parent="." unique_id=1965337230 instance=ExtResource("4_okvo2")]
+position = Vector2(408, -3)
+
+[node name="DirtPlatform14" parent="." unique_id=1528435103 instance=ExtResource("4_okvo2")]
+position = Vector2(776, -3)
+
+[node name="DirtPlatform15" parent="." unique_id=186301830 instance=ExtResource("4_okvo2")]
+position = Vector2(1145, -3)
+
+[node name="DirtPlatform16" parent="." unique_id=680107740 instance=ExtResource("4_okvo2")]
+position = Vector2(1513, -3)
+
+[node name="DirtPlatform17" parent="." unique_id=342086237 instance=ExtResource("4_okvo2")]
+position = Vector2(1881, -3)
+
+[node name="DirtPlatform18" parent="." unique_id=90790260 instance=ExtResource("4_okvo2")]
+position = Vector2(40, 1077)
+collision_layer = 3
+
+[node name="DirtPlatform19" parent="." unique_id=1062873516 instance=ExtResource("4_okvo2")]
+position = Vector2(408, 1077)
+collision_layer = 3
+
+[node name="DirtPlatform20" parent="." unique_id=1817116692 instance=ExtResource("4_okvo2")]
+position = Vector2(776, 1077)
+collision_layer = 3
+
+[node name="DirtPlatform21" parent="." unique_id=215887808 instance=ExtResource("4_okvo2")]
+position = Vector2(1145, 1077)
+collision_layer = 3
+
+[node name="DirtPlatform22" parent="." unique_id=1100536675 instance=ExtResource("4_okvo2")]
+position = Vector2(1513, 1077)
+collision_layer = 3
+
+[node name="DirtPlatform23" parent="." unique_id=736932843 instance=ExtResource("4_okvo2")]
+position = Vector2(1881, 1077)
+collision_layer = 3
+
+[node name="StaticBody2D" type="StaticBody2D" parent="." unique_id=1604060188]
+position = Vector2(-52, 526)
+
+[node name="CollisionShape2D" type="CollisionShape2D" parent="StaticBody2D" unique_id=57227153]
+position = Vector2(52, 0)
+shape = SubResource("RectangleShape2D_o3a2j")
+
+[node name="StaticBody2D2" type="StaticBody2D" parent="." unique_id=1917195559]
+position = Vector2(1972, 532)
+
+[node name="CollisionShape2D" type="CollisionShape2D" parent="StaticBody2D2" unique_id=1560606836]
+position = Vector2(-52, 0)
+shape = SubResource("RectangleShape2D_o3a2j")

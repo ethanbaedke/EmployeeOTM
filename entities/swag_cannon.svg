@@ -1,0 +1,76 @@
+<?xml version="1.0" encoding="UTF-8" standalone="no"?>
+<!-- Created with Inkscape (http://www.inkscape.org/) -->
+
+<svg
+   width="512"
+   height="512"
+   viewBox="0 0 512 512"
+   version="1.1"
+   id="svg1"
+   inkscape:version="1.4.4 (dcaf3e7, 2026-05-05)"
+   sodipodi:docname="swag_cannon.svg"
+   xmlns:inkscape="http://www.inkscape.org/namespaces/inkscape"
+   xmlns:sodipodi="http://sodipodi.sourceforge.net/DTD/sodipodi-0.dtd"
+   xmlns="http://www.w3.org/2000/svg"
+   xmlns:svg="http://www.w3.org/2000/svg">
+  <sodipodi:namedview
+     id="namedview1"
+     pagecolor="#ffffff"
+     bordercolor="#000000"
+     borderopacity="0.25"
+     inkscape:showpageshadow="2"
+     inkscape:pageopacity="0.0"
+     inkscape:pagecheckerboard="0"
+     inkscape:deskcolor="#d1d1d1"
+     inkscape:document-units="px"
+     inkscape:zoom="1.1145218"
+     inkscape:cx="317.17639"
+     inkscape:cy="172.71982"
+     inkscape:window-width="1920"
+     inkscape:window-height="1009"
+     inkscape:window-x="-8"
+     inkscape:window-y="270"
+     inkscape:window-maximized="1"
+     inkscape:current-layer="layer1" />
+  <defs
+     id="defs1" />
+  <g
+     inkscape:label="Layer 1"
+     inkscape:groupmode="layer"
+     id="layer1">
+    <path
+       id="rect2"
+       style="fill:#333333;stroke-width:2.04042;paint-order:stroke markers fill"
+       d="m 131.03833,303.89396 h 250.7203 l -44.72946,82.57542 H 182.83032 Z"
+       sodipodi:nodetypes="ccccc" />
+    <path
+       id="rect1"
+       style="fill:#666666;stroke-width:1.06958;paint-order:stroke markers fill"
+       d="M 29.819082,213.07493 H 485.35313 V 315.1817 H 29.819082 Z" />
+    <rect
+       style="fill:#666666;stroke-width:1.71308;paint-order:stroke markers fill"
+       id="rect3"
+       width="107.11524"
+       height="151.53609"
+       x="29.81908"
+       y="163.6456" />
+    <rect
+       style="fill:#666666;stroke-width:1.71308;paint-order:stroke markers fill"
+       id="rect4"
+       width="107.11524"
+       height="151.53609"
+       x="378.23792"
+       y="163.6456" />
+    <text
+       xml:space="preserve"
+       style="font-size:68.6467px;font-family:'MV Boli';-inkscape-font-specification:'MV Boli';writing-mode:lr-tb;direction:ltr;fill:#333333;stroke-width:0.357535;paint-order:stroke markers fill"
+       x="46.7313"
+       y="283.69595"
+       id="text4"><tspan
+         sodipodi:role="line"
+         id="tspan4"
+         x="46.7313"
+         y="283.69595"
+         style="fill:#333333;stroke-width:0.357535">Swag Cannon</tspan></text>
+  </g>
+</svg>
