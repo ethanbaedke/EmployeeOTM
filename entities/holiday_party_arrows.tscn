@@ -1,0 +1,38 @@
+[gd_scene format=3 uid="uid://bih2xj35ytmq0"]
+
+[ext_resource type="Texture2D" uid="uid://bnvljc34s5ip0" path="res://entities/arrow.svg" id="1_5063t"]
+[ext_resource type="Script" uid="uid://bfwlxhscver74" path="res://entities/HolidayPartyArrows.cs" id="1_hmrgw"]
+
+[node name="HolidayPartyArrows" type="Node2D" unique_id=1499591222 node_paths=PackedStringArray("_leftArrow", "_upArrow", "_rightArrow", "_downArrow")]
+script = ExtResource("1_hmrgw")
+_leftArrow = NodePath("LeftArrow")
+_upArrow = NodePath("UpArrow")
+_rightArrow = NodePath("RightArrow")
+_downArrow = NodePath("DownArrow")
+
+[node name="LeftArrow" type="Sprite2D" parent="." unique_id=1769708294]
+modulate = Color(0.5, 0.5, 0.5, 1)
+position = Vector2(-181, 6.9999995)
+scale = Vector2(0.35, 0.35)
+texture = ExtResource("1_5063t")
+
+[node name="UpArrow" type="Sprite2D" parent="." unique_id=988316520]
+modulate = Color(0.5, 0.5, 0.5, 1)
+position = Vector2(-66, -2)
+rotation = 1.5707964
+scale = Vector2(0.35, 0.35)
+texture = ExtResource("1_5063t")
+
+[node name="RightArrow" type="Sprite2D" parent="." unique_id=247882963]
+modulate = Color(0.5, 0.5, 0.5, 1)
+position = Vector2(67.999985, -2)
+rotation = 3.1415927
+scale = Vector2(0.35, 0.35)
+texture = ExtResource("1_5063t")
+
+[node name="DownArrow" type="Sprite2D" parent="." unique_id=894918832]
+modulate = Color(0.5, 0.5, 0.5, 1)
+position = Vector2(193.99998, 2)
+rotation = 4.712389
+scale = Vector2(0.35, 0.35)
+texture = ExtResource("1_5063t")

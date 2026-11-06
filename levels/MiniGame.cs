@@ -70,6 +70,7 @@ public abstract partial class MiniGame : Node2D
 
         for (int i = 0; i < 4; i++)
         {
+            _scientists[i].Velocity = Vector2.Zero;
             _scientists[i].ProcessMode = ProcessModeEnum.Inherit;
         }
         _miniGameStarted = true;

@@ -11,6 +11,9 @@ public partial class Settings : GodotObject
         MOVE_LEFT,
         MOVE_RIGHT,
         JUMP,
+        UP_INPUT,
+        DOWN_INPUT,
+        VERTICAL_AXIS,
     }
 
     private Dictionary<Key, InputAction> keyMappings = null;
@@ -34,6 +37,10 @@ public partial class Settings : GodotObject
             { Key.D, InputAction.MOVE_RIGHT },
             { Key.Right, InputAction.MOVE_RIGHT },
             { Key.Space, InputAction.JUMP },
+            { Key.W, InputAction.UP_INPUT },
+            { Key.Up, InputAction.UP_INPUT },
+            { Key.S, InputAction.DOWN_INPUT },
+            { Key.Down, InputAction.DOWN_INPUT },
         };
     }
 
@@ -73,7 +80,8 @@ public partial class Settings : GodotObject
     {
         axisMappings = new Dictionary<JoyAxis, InputAction>
         {
-            { JoyAxis.LeftX, InputAction.MOVE_AXIS }
+            { JoyAxis.LeftX, InputAction.MOVE_AXIS },
+            { JoyAxis.LeftY, InputAction.VERTICAL_AXIS }
         };
     }
 

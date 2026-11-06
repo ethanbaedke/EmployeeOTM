@@ -31,6 +31,7 @@ public partial class Scientist : CharacterBody2D
 	private Vector2 _knockback_velocity = Vector2.Zero;
 	private float _knockback_timer = 0.0f;
     private bool _ignoreInput = false;
+    private bool _movementLocked = false;
 
 	public void InitializeScientist(EmployeeData employeeData, Dictionary<MatchData.MatchModifier, int> matchModifiers)
 	{
@@ -60,6 +61,11 @@ public partial class Scientist : CharacterBody2D
     public void SetIgnoreInput(bool value)
     {
         _ignoreInput = value;
+    }
+
+    public void SetMovementLocked(bool value)
+    {
+        _movementLocked = value;
     }
 
     public void UpdateColor(EmployeeColor employeeColor)
@@ -128,6 +134,13 @@ public partial class Scientist : CharacterBody2D
 
 	public override void _PhysicsProcess(double delta)
 	{
+        if (_movementLocked)
+        {
+            Velocity = Vector2.Zero;
+            MoveAndSlide();
+            return;
+        }
+
 		// Apply gravity.
 		ApplyGravity(delta);
 

@@ -3,13 +3,14 @@
 [ext_resource type="Texture2D" uid="uid://dixcjh6ecuky8" path="res://ui/shift_schedule.svg" id="1_aergq"]
 [ext_resource type="Theme" uid="uid://b7dmkta068ob5" path="res://ui/shift_schedule.tres" id="1_tbeyl"]
 [ext_resource type="Script" uid="uid://bu4pxp0psagn5" path="res://ui/MiniGameSelection.cs" id="2_kg6bc"]
-[ext_resource type="PackedScene" uid="uid://c602q0q8qjsfn" path="res://levels/coffee_run.tscn" id="3_f86xo"]
-[ext_resource type="PackedScene" uid="uid://c57njtnyyu2oe" path="res://levels/mail_room.tscn" id="3_kg6bc"]
-[ext_resource type="PackedScene" uid="uid://bvqw7lc1tcsrt" path="res://levels/friday_layoffs.tscn" id="4_be6ut"]
-[ext_resource type="PackedScene" uid="uid://bt4c44pnaed0s" path="res://levels/king_of_the_hill.tscn" id="5_hoiyc"]
-[ext_resource type="PackedScene" uid="uid://coxls0woj60sf" path="res://levels/recess.tscn" id="7_kgvy7"]
-[ext_resource type="PackedScene" uid="uid://bkljc2myl8af6" path="res://levels/improvement_plan.tscn" id="8_k2h64"]
-[ext_resource type="PackedScene" uid="uid://7h1cjt085l44" path="res://levels/unhinged_coworker.tscn" id="9_m80ap"]
+[ext_resource type="PackedScene" uid="uid://c602q0q8qjsfn" path="res://levels/coffee_run.tscn" id="3_be6ut"]
+[ext_resource type="PackedScene" uid="uid://di4se8ia57nf5" path="res://levels/holiday_party.tscn" id="3_kg6bc"]
+[ext_resource type="PackedScene" uid="uid://bvqw7lc1tcsrt" path="res://levels/friday_layoffs.tscn" id="4_hoiyc"]
+[ext_resource type="PackedScene" uid="uid://bt4c44pnaed0s" path="res://levels/king_of_the_hill.tscn" id="6_kgvy7"]
+[ext_resource type="PackedScene" uid="uid://c57njtnyyu2oe" path="res://levels/mail_room.tscn" id="7_k2h64"]
+[ext_resource type="PackedScene" uid="uid://coxls0woj60sf" path="res://levels/recess.tscn" id="8_m80ap"]
+[ext_resource type="PackedScene" uid="uid://bkljc2myl8af6" path="res://levels/improvement_plan.tscn" id="9_0rkmi"]
+[ext_resource type="PackedScene" uid="uid://7h1cjt085l44" path="res://levels/unhinged_coworker.tscn" id="10_vyrga"]
 
 [sub_resource type="Curve" id="Curve_kg6bc"]
 _data = [Vector2(0, 0), 0.0, 0.0, 0, 0, Vector2(0.8, 0.3), 1.1577299, 1.1577299, 0, 0, Vector2(1, 1), 6.3275824, 0.0, 0, 0]
@@ -25,9 +26,9 @@ grow_horizontal = 2
 grow_vertical = 2
 theme = ExtResource("1_tbeyl")
 script = ExtResource("2_kg6bc")
-_ffaMiniGameScenes = Array[PackedScene]([ExtResource("3_f86xo"), ExtResource("4_be6ut"), ExtResource("5_hoiyc")])
-_2v2MiniGameScenes = Array[PackedScene]([ExtResource("3_kg6bc"), ExtResource("7_kgvy7")])
-_3v1MiniGameScenes = Array[PackedScene]([ExtResource("8_k2h64"), ExtResource("9_m80ap")])
+_ffaMiniGameScenes = Array[PackedScene]([ExtResource("3_be6ut"), ExtResource("4_hoiyc"), ExtResource("3_kg6bc"), ExtResource("6_kgvy7")])
+_2v2MiniGameScenes = Array[PackedScene]([ExtResource("7_k2h64"), ExtResource("8_m80ap")])
+_3v1MiniGameScenes = Array[PackedScene]([ExtResource("9_0rkmi"), ExtResource("10_vyrga")])
 _miniGameContainer = NodePath("MiniGames")
 _selectionHoldTime = SubResource("Curve_kg6bc")
 
