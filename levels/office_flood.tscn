@@ -1,0 +1,117 @@
+[gd_scene format=3 uid="uid://dcue026mxa2el"]
+
+[ext_resource type="Script" uid="uid://bpsre1tk41ab5" path="res://levels/OfficeFlood.cs" id="1_852r7"]
+[ext_resource type="Script" uid="uid://bxqgwtb01dhmb" path="res://levels/MiniGameCamera.cs" id="2_j7lbw"]
+[ext_resource type="PackedScene" uid="uid://ddsuppc5mxr32" path="res://entities/scientist/scientist.tscn" id="3_wdlrn"]
+[ext_resource type="PackedScene" uid="uid://bpulko32timg0" path="res://entities/dirt_platform.tscn" id="4_6mdao"]
+[ext_resource type="PackedScene" uid="uid://km4o30h8u3rt" path="res://ui/center_screen_countdown.tscn" id="6_uihis"]
+[ext_resource type="PackedScene" uid="uid://c1w2ibs5t4v4b" path="res://ui/MiniGameTutorial.tscn" id="7_8ag6d"]
+
+[sub_resource type="Curve" id="Curve_ynfla"]
+_data = [Vector2(0, 1), 0.0, -2.0, 0, 0, Vector2(1, 0.10344827), 0.0, 0.0, 0, 0]
+point_count = 2
+
+[sub_resource type="Curve" id="Curve_i2gh2"]
+_limits = [1.0, 2.0, 0.0, 1.0]
+_data = [Vector2(0, 1), 0.0, 0.0, 0, 0, Vector2(1, 2), 0.0, 0.0, 0, 0]
+point_count = 2
+
+[sub_resource type="Curve" id="Curve_r3f8q"]
+_data = [Vector2(0, 0), 0.0, 0.0, 0, 0, Vector2(1, 1), 0.0, 0.0, 0, 0]
+point_count = 2
+
+[sub_resource type="RectangleShape2D" id="RectangleShape2D_852r7"]
+size = Vector2(50, 1620)
+
+[sub_resource type="RectangleShape2D" id="RectangleShape2D_j7lbw"]
+size = Vector2(1920, 50)
+
+[sub_resource type="RectangleShape2D" id="RectangleShape2D_3uj6b"]
+size = Vector2(1920, 200)
+
+[sub_resource type="Gradient" id="Gradient_852r7"]
+colors = PackedColorArray(0, 0, 0.7, 1, 1, 1, 1, 1)
+
+[sub_resource type="GradientTexture1D" id="GradientTexture1D_852r7"]
+gradient = SubResource("Gradient_852r7")
+width = 1
+
+[node name="OfficeFlood" type="Node2D" unique_id=739882208 node_paths=PackedStringArray("_waterArea", "_scientists", "_countdownUI", "_camera", "_tutorial")]
+script = ExtResource("1_852r7")
+_waterArea = NodePath("Camera2D/WaterArea")
+_scientists = [NodePath("Scientist"), NodePath("Scientist2"), NodePath("Scientist3"), NodePath("Scientist4")]
+_countdownUI = NodePath("CanvasLayer/CenterScreenCountdown")
+_camera = NodePath("Camera2D")
+_tutorial = NodePath("CanvasLayer/MiniGameTutorial")
+_miniGameDescription = "Escape the rising tides."
+
+[node name="CanvasLayer" type="CanvasLayer" parent="." unique_id=743391810]
+
+[node name="CenterScreenCountdown" parent="CanvasLayer" unique_id=1320922543 instance=ExtResource("6_uihis")]
+metadata/_edit_use_anchors_ = true
+
+[node name="MiniGameTutorial" parent="CanvasLayer" unique_id=858250490 instance=ExtResource("7_8ag6d")]
+
+[node name="Camera2D" type="Camera2D" parent="." unique_id=78114846]
+position = Vector2(960, 540)
+position_smoothing_enabled = true
+script = ExtResource("2_j7lbw")
+_timeCurve = SubResource("Curve_ynfla")
+_zoomCurve = SubResource("Curve_i2gh2")
+_positionPercentCurve = SubResource("Curve_r3f8q")
+
+[node name="RigidBody2D" type="StaticBody2D" parent="Camera2D" unique_id=172943324]
+position = Vector2(-985, -170)
+
+[node name="CollisionShape2D" type="CollisionShape2D" parent="Camera2D/RigidBody2D" unique_id=125530799]
+shape = SubResource("RectangleShape2D_852r7")
+
+[node name="RigidBody2D2" type="StaticBody2D" parent="Camera2D" unique_id=1023280795]
+position = Vector2(985, -170)
+
+[node name="CollisionShape2D" type="CollisionShape2D" parent="Camera2D/RigidBody2D2" unique_id=1182883630]
+shape = SubResource("RectangleShape2D_852r7")
+
+[node name="RigidBody2D4" type="StaticBody2D" parent="Camera2D" unique_id=392968434]
+position = Vector2(0, -1005)
+
+[node name="CollisionShape2D" type="CollisionShape2D" parent="Camera2D/RigidBody2D4" unique_id=5554417]
+shape = SubResource("RectangleShape2D_j7lbw")
+
+[node name="WaterArea" type="Area2D" parent="Camera2D" unique_id=211241310]
+position = Vector2(0, 540)
+
+[node name="CollisionShape2D" type="CollisionShape2D" parent="Camera2D/WaterArea" unique_id=1883327106]
+shape = SubResource("RectangleShape2D_3uj6b")
+
+[node name="Sprite2D" type="Sprite2D" parent="Camera2D/WaterArea" unique_id=1645707500]
+scale = Vector2(1920, 200)
+texture = SubResource("GradientTexture1D_852r7")
+
+[node name="Scientist" parent="." unique_id=1174776970 instance=ExtResource("3_wdlrn")]
+position = Vector2(285, 836)
+
+[node name="Scientist2" parent="." unique_id=1941702726 instance=ExtResource("3_wdlrn")]
+position = Vector2(735, 836)
+
+[node name="Scientist3" parent="." unique_id=1859229547 instance=ExtResource("3_wdlrn")]
+position = Vector2(1185, 836)
+
+[node name="Scientist4" parent="." unique_id=1556663606 instance=ExtResource("3_wdlrn")]
+position = Vector2(1635, 836)
+
+[node name="DirtPlatform24" parent="." unique_id=101771345 instance=ExtResource("4_6mdao")]
+position = Vector2(285, 900)
+collision_layer = 3
+
+[node name="DirtPlatform25" parent="." unique_id=469050764 instance=ExtResource("4_6mdao")]
+position = Vector2(735, 900)
+collision_layer = 3
+
+[node name="DirtPlatform26" parent="." unique_id=922187090 instance=ExtResource("4_6mdao")]
+position = Vector2(1185, 900)
+collision_layer = 3
+
+[node name="DirtPlatform27" parent="." unique_id=1658549602 instance=ExtResource("4_6mdao")]
+position = Vector2(1635, 900)
+collision_layer = 3
