@@ -10,9 +10,6 @@ public class NavPlatform
     public float Left;
     public float Right;
     public float Top;
-    // Name of the body this surface came from, for debugging. Merged surfaces keep the first name.
-    public string SourceName;
-    public int MergedCount = 1;
     // Links leaving this platform.
     public readonly List<NavLink> Links = new List<NavLink>();
 
@@ -49,35 +46,31 @@ public class NavGraph
     // Matches the CircleShape2D radius in scientist.tscn.
     public const float SCIENTIST_RADIUS = 32.0f;
 
-    // Surfaces narrower than this aren't worth standing on.
+    // Platform building.
     private const float MIN_PLATFORM_WIDTH = SCIENTIST_RADIUS * 2.0f;
-    // Surfaces this close in height and position are merged into one platform.
     private const float MERGE_TOLERANCE = 2.0f;
 
-    // Jump limits, fit to a simulation of Scientist's movement (JUMP_FORCE 1300, jump held, starting from a standstill).
-    // A held jump rises ~191px at most; MAX_JUMP_RISE leaves some margin.
+    // Jump limits, measured by simulating Scientist's movement (JUMP_FORCE 1300, jump held, from a standstill).
+    // Max rise is ~191px. Higher jumps can't travel as far sideways, so the max gap shrinks past JUMP_GAP_FALLOFF_START.
     private const float MAX_JUMP_RISE = 175.0f;
-    // Higher jumps can't travel as far sideways: up to 150px rise reaches ~275px, 175px reaches ~235px.
     private const float JUMP_GAP_AT_LOW_RISE = 260.0f;
     private const float JUMP_GAP_FALLOFF_START = 150.0f;
     private const float JUMP_GAP_FALLOFF = 1.4f;
-    // How far outside the target platform's edge to take off, so we don't hit its underside.
+
+    // Takeoff and landing spots. Taking off outside the target's edge keeps us from hitting its underside.
     private const float TAKEOFF_OFFSET = 100.0f;
-    // How far onto the target platform to aim the landing.
     private const float LANDING_INSET = SCIENTIST_RADIUS * 2.0f;
 
-    // Fraction of the theoretical sideways drift while falling that we count on for drops.
-    private const float DROP_REACH_MARGIN = 0.85f;
+    // Extra sideways reach on drops, from rolling over the edge's corner before falling. Simulation measured at least 10.8px.
+    private const float DROP_CORNER_REACH = 8.0f;
 
-    // Cost of taking a link, in pixels of walking. Keeps paths from taking extra jumps to save a few steps.
+    // Link costs, in pixels of walking. Keeps paths from taking extra jumps to save a few steps.
     private const float JUMP_COST = 250.0f;
     private const float DROP_COST = 50.0f;
 
     public readonly List<NavPlatform> Platforms = new List<NavPlatform>();
     // Every solid rectangle in the level, in global coordinates.
     public readonly List<Rect2> Solids = new List<Rect2>();
-    // Name of the body each solid came from, matching Solids by index.
-    private readonly List<string> _solidNames = new List<string>();
 
     // Builds the graph from every StaticBody2D under levelRoot.
     public static NavGraph Build(Node levelRoot, Rect2 bounds)
@@ -93,7 +86,7 @@ public class NavGraph
     }
 
     // The closest platform at or below a point whose x-range contains it, or null.
-    // A scientist's center sits one radius above the platform it stands on, so this also finds what a scientist is standing on.
+    // Also finds what a scientist is standing on, since its center is just above its platform.
     public NavPlatform FindPlatformBelow(Vector2 point)
     {
         NavPlatform best = null;
@@ -110,11 +103,9 @@ public class NavGraph
         return best;
     }
 
-    // Roughly how far a scientist has to travel between two points, or infinity if there's no route.
-    public float PathCost(Vector2 from, Vector2 to)
+    public bool CanReach(Vector2 from, Vector2 to)
     {
-        FindPath(FindPlatformBelow(from), from.X, FindPlatformBelow(to), to.X, out float cost);
-        return cost;
+        return FindPath(FindPlatformBelow(from), from.X, FindPlatformBelow(to), to.X) != null;
     }
 
     // A few standing spots along each platform: near both ends and in the middle.
@@ -125,29 +116,26 @@ public class NavGraph
         {
             foreach (float x in new[] { platform.Left + inset, (platform.Left + platform.Right) / 2.0f, platform.Right - inset })
             {
-                yield return new Vector2(x, platform.Top - SCIENTIST_RADIUS);
+                // Clamp so spots stay on narrow platforms.
+                yield return new Vector2(platform.ClampX(x), platform.Top - SCIENTIST_RADIUS);
             }
         }
     }
 
-    // The cheapest sequence of links from a position on one platform to a position on another, and its total cost.
-    // Returns an empty list if already on the target platform, or null (with infinite cost) if it can't be reached.
-    public List<NavLink> FindPath(NavPlatform start, float startX, NavPlatform goal, float goalX, out float totalCost)
+    // The cheapest sequence of links from a position on one platform to a position on another.
+    // Returns an empty list if already on the target platform, or null if it can't be reached.
+    public List<NavLink> FindPath(NavPlatform start, float startX, NavPlatform goal, float goalX)
     {
-        totalCost = float.PositiveInfinity;
         if (start == null || goal == null) return null;
-        if (start == goal)
-        {
-            totalCost = Mathf.Abs(goalX - startX);
-            return new List<NavLink>();
-        }
+        if (start == goal) return new List<NavLink>();
 
-        // Dijkstra over links, each standing for having landed at its LandingX. Keying by link rather than platform matters
-        // because where we land on a platform decides how far we walk to the next link. Links absent from cameFrom start the route.
+        // Dijkstra where each node is a link (having landed at its LandingX). Keyed by link, not platform, because
+        // where we land decides how far we walk to the next link.
         Dictionary<NavLink, float> cost = new Dictionary<NavLink, float>();
         Dictionary<NavLink, NavLink> cameFrom = new Dictionary<NavLink, NavLink>();
         HashSet<NavLink> visited = new HashSet<NavLink>();
         NavLink last = null;
+        float totalCost = float.PositiveInfinity;
 
         foreach (NavLink link in start.Links)
         {
@@ -202,8 +190,7 @@ public class NavGraph
         return path;
     }
 
-    // Cost of taking a link from its takeoff to its landing, in pixels of walking.
-    public static float LinkCost(NavLink link)
+    private static float LinkCost(NavLink link)
     {
         return Mathf.Abs(link.LandingX - link.TakeoffX) + (link.Kind == NavLinkKind.Jump ? JUMP_COST : DROP_COST);
     }
@@ -244,7 +231,6 @@ public class NavGraph
 
         Vector2 size = rectShape.Size * xform.Scale.Abs();
         Solids.Add(new Rect2(xform.Origin - size / 2.0f, size));
-        _solidNames.Add(body.Name);
     }
 
     private void BuildPlatforms(Rect2 bounds)
@@ -277,11 +263,11 @@ public class NavGraph
 
             foreach ((float left, float right) in open)
             {
-                surfaces.Add(new NavPlatform { Left = left, Right = right, Top = top, SourceName = _solidNames[i] });
+                surfaces.Add(new NavPlatform { Left = left, Right = right, Top = top });
             }
         }
 
-        // Merge surfaces that line up into a single platform.
+        // Merge adjacent surfaces at the same height.
         surfaces.Sort((a, b) => a.Top != b.Top ? a.Top.CompareTo(b.Top) : a.Left.CompareTo(b.Left));
         List<NavPlatform> merged = new List<NavPlatform>();
         foreach (NavPlatform surface in surfaces)
@@ -292,7 +278,6 @@ public class NavGraph
                 && surface.Left <= last.Right + MERGE_TOLERANCE)
             {
                 last.Right = Mathf.Max(last.Right, surface.Right);
-                last.MergedCount++;
             }
             else
             {
@@ -320,20 +305,22 @@ public class NavGraph
             {
                 if (from == to) continue;
 
-                // Jump to any platform (lower ones too, across gaps too wide to walk off into); walk off edges to reach lower ones.
-                    TryAddJump(from, to, -1.0f);
-                    TryAddJump(from, to, 1.0f);
+                // Drop to lower platforms, since jumping down risks hitting whatever is overhead. Jump to level or higher ones.
                 if (to.Top > from.Top + MERGE_TOLERANCE)
                 {
                     TryAddDrop(from, to, -1.0f);
                     TryAddDrop(from, to, 1.0f);
                 }
+                else
+                {
+                    TryAddJump(from, to, -1.0f);
+                    TryAddJump(from, to, 1.0f);
+                }
             }
         }
     }
 
-    // A jump onto the given side of `to` (side -1 = its left edge, 1 = its right edge).
-    // `to` may be lower than `from`; we use the level-jump reach for those, which only undersells how far a jump down goes.
+    // A jump onto the given side of the target platform (side -1 = its left edge, 1 = its right edge).
     private void TryAddJump(NavPlatform from, NavPlatform to, float side)
     {
         float rise = Mathf.Max(0.0f, from.Top - to.Top);
@@ -343,42 +330,41 @@ public class NavGraph
 
         // Take off a little outside the target's edge, staying on our own platform.
         float takeoffX = Mathf.Clamp(edge + side * TAKEOFF_OFFSET, from.Left + SCIENTIST_RADIUS, from.Right - SCIENTIST_RADIUS);
-        // Clamping may have pulled the takeoff underneath or past the target; that's the other side's job.
+        // Skip if clamping put the takeoff under the target. The jump from the other side covers that.
         if ((takeoffX - edge) * side < SCIENTIST_RADIUS) return;
 
         float gap = Mathf.Abs(takeoffX - edge);
         float maxGap = JUMP_GAP_AT_LOW_RISE - Mathf.Max(0.0f, rise - JUMP_GAP_FALLOFF_START) * JUMP_GAP_FALLOFF;
         if (gap > maxGap) return;
 
-        // The column we rise through, the space we cross at the higher of the two platforms, and (jumping down) the space
-        // we fall through onto the target.
+        // The column we rise through, and the space we cross above the target from takeoff to landing.
         float clearanceTop = Mathf.Min(from.Top, to.Top) - SCIENTIST_RADIUS * 2.0f;
         float landingX = to.ClampX(edge - side * LANDING_INSET);
         Rect2 riseColumn = new Rect2(takeoffX - SCIENTIST_RADIUS, clearanceTop, SCIENTIST_RADIUS * 2.0f, from.Top - clearanceTop);
-        Rect2 crossing = new Rect2(Mathf.Min(takeoffX, edge), clearanceTop, gap, SCIENTIST_RADIUS * 2.0f);
-        Rect2 descent = new Rect2(Mathf.Min(edge, landingX), clearanceTop, Mathf.Abs(landingX - edge), to.Top - clearanceTop);
-        if (IsBlocked(riseColumn) || IsBlocked(crossing) || IsBlocked(descent)) return;
+        Rect2 crossing = new Rect2(Mathf.Min(takeoffX, landingX), clearanceTop, Mathf.Abs(landingX - takeoffX), SCIENTIST_RADIUS * 2.0f);
+        if (IsBlocked(riseColumn) || IsBlocked(crossing)) return;
 
         from.Links.Add(new NavLink { From = from, To = to, Kind = NavLinkKind.Jump, TakeoffX = takeoffX, LandingX = landingX });
     }
 
-    // Walking off the given end of `from` (side -1 = left end, 1 = right end) and landing on `to`.
+    // Walking off the given end of our platform (side -1 = left end, 1 = right end) and landing on the target platform.
     private void TryAddDrop(NavPlatform from, NavPlatform to, float side)
     {
         float edge = side < 0.0f ? from.Left : from.Right;
 
-        // Land just past the edge if `to` is beneath it, otherwise on the near end of `to`.
-        // The landing must clear our own edge and be safely on `to`, or we'd roll off a corner.
+        // Land just past the edge if the target is beneath it, otherwise on the target's near end.
+        // The landing must be clear of our edge and fully on the target, or we'd roll off a corner.
         float landingX = Mathf.Clamp(edge + side * LANDING_INSET, to.Left + SCIENTIST_RADIUS, to.Right - SCIENTIST_RADIUS);
         if ((landingX - edge) * side < SCIENTIST_RADIUS) return;
 
-        // How far we can drift sideways at walking speed before falling to `to`.
+        // The sideways gap to the target (0 if it extends under us) must be crossable at full walking speed during the fall.
+        float nearEdge = side > 0.0f ? to.Left : to.Right;
+        float gap = Mathf.Max(0.0f, (nearEdge - edge) * side);
         float fallTime = Mathf.Sqrt(2.0f * (to.Top - from.Top) / (float)Scientist.GRAVITY);
-        float maxGap = (float)Scientist.MAX_GROUND_SPEED * fallTime * DROP_REACH_MARGIN;
-        if (Mathf.Abs(landingX - edge) > Mathf.Max(maxGap, LANDING_INSET)) return;
+        if (gap > (float)Scientist.MAX_GROUND_SPEED * fallTime + DROP_CORNER_REACH) return;
 
-        // Anything in between would catch us first. We're already moving out past the edge by the time we've fallen
-        // below it, so a platform underneath that sticks out by a few pixels (common with stacked platforms) doesn't count.
+        // Anything in the fall path would catch us. The path starts a bit past our edge, so a platform below that
+        // sticks out a few pixels doesn't count.
         float fallStart = edge + side * SCIENTIST_RADIUS * 0.5f;
         Rect2 fallSpace = new Rect2(Mathf.Min(fallStart, landingX), from.Top - SCIENTIST_RADIUS * 2.0f, Mathf.Abs(landingX - fallStart), to.Top - from.Top + SCIENTIST_RADIUS * 2.0f);
         if (IsBlocked(fallSpace)) return;

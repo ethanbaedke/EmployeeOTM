@@ -13,7 +13,7 @@ public partial class NavDebugDraw : Node2D
     private static readonly Color DROP_COLOR = Colors.DeepSkyBlue;
     private static readonly Color TARGET_COLOR = Colors.Magenta;
     private static readonly Color UNREACHABLE_COLOR = Colors.Red;
-    // Links not leaving the selected platform are drawn faded.
+
     private const float FADED_ALPHA = 0.2f;
     private const int LABEL_FONT_SIZE = 20;
 
@@ -87,12 +87,7 @@ public partial class NavDebugDraw : Node2D
             Color color = platform == _selectedPlatform ? SELECTED_COLOR : PLATFORM_COLOR;
             DrawLine(new Vector2(platform.Left, platform.Top), new Vector2(platform.Right, platform.Top), color, 6.0f);
 
-            string label = $"#{platform.Id} {platform.SourceName}";
-            if (platform.MergedCount > 1)
-            {
-                label += $" (+{platform.MergedCount - 1})";
-            }
-            DrawString(font, new Vector2(platform.Left + 8.0f, platform.Top - 8.0f), label, fontSize: LABEL_FONT_SIZE, modulate: color);
+            DrawString(font, new Vector2(platform.Left + 8.0f, platform.Top - 8.0f), $"#{platform.Id}", fontSize: LABEL_FONT_SIZE, modulate: color);
         }
 
         DrawPaths(graph, font);
@@ -166,7 +161,7 @@ public partial class NavDebugDraw : Node2D
             DrawDashedLine(takeoff, landing, color, width, 12.0f);
         }
 
-        // Takeoff tick.
+        // Mark the takeoff point.
         DrawLine(takeoff, takeoff + new Vector2(0.0f, -16.0f), color, width);
     }
 }
