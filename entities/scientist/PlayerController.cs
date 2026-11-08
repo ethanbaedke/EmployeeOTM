@@ -5,87 +5,87 @@ using System.Linq;
 
 public partial class PlayerController : ScientistController
 {
-    public int InputDevice = -2;
+	public int InputDevice = -2;
 
-    private Dictionary<Settings.InputAction, bool> actionStates = new Dictionary<Settings.InputAction, bool>();
+	private Dictionary<Settings.InputAction, bool> actionStates = new Dictionary<Settings.InputAction, bool>();
 
-    public override void _Process(double delta)
-    {
-        base._Process(delta);
+	public override void _Process(double delta)
+	{
+		base._Process(delta);
 
-        Scientist scientist = TryGetScientist();
-        if (scientist == null) return;
+		Scientist scientist = TryGetScientist();
+		if (scientist == null) return;
 
-        // If on keyboard, use left and right move actions for movement.
-        if (InputDevice == -1)
-        {
-            float moveDir = 0.0f;
-            if (actionStates.ContainsKey(Settings.InputAction.MOVE_LEFT) && actionStates[Settings.InputAction.MOVE_LEFT])
-            {
-                moveDir -= 1.0f;
-            }
-            if (actionStates.ContainsKey(Settings.InputAction.MOVE_RIGHT) && actionStates[Settings.InputAction.MOVE_RIGHT])
-            {
-                moveDir += 1.0f;
-            }
-            if (actionStates.ContainsKey(Settings.InputAction.JUMP) && actionStates[Settings.InputAction.JUMP])
-            {
-                scientist.Jump(false);
-            }
+		// If on keyboard, use left and right move actions for movement.
+		if (InputDevice == -1)
+		{
+			float moveDir = 0.0f;
+			if (actionStates.ContainsKey(Settings.InputAction.MOVE_LEFT) && actionStates[Settings.InputAction.MOVE_LEFT])
+			{
+				moveDir -= 1.0f;
+			}
+			if (actionStates.ContainsKey(Settings.InputAction.MOVE_RIGHT) && actionStates[Settings.InputAction.MOVE_RIGHT])
+			{
+				moveDir += 1.0f;
+			}
+			if (actionStates.ContainsKey(Settings.InputAction.JUMP) && actionStates[Settings.InputAction.JUMP])
+			{
+				scientist.Jump(false, delta);
+			}
 
-            scientist.SetMovementDirection(moveDir);
-        }
-    }
+			scientist.SetMovementDirection(moveDir);
+		}
+	}
 
-    public override void _UnhandledInput(InputEvent @event)
-    {
-        base._UnhandledInput(@event);
+	public override void _UnhandledInput(InputEvent @event)
+	{
+		base._UnhandledInput(@event);
 
-        if (@event.IsEcho()) return;
+		if (@event.IsEcho()) return;
 
-        int deviceInd = @event.Device;
-        if (@event is InputEventKey)
-        {
-            deviceInd = -1;
-        }
-        if (deviceInd != InputDevice) return;
+		int deviceInd = @event.Device;
+		if (@event is InputEventKey)
+		{
+			deviceInd = -1;
+		}
+		if (deviceInd != InputDevice) return;
 
-        Scientist scientist = TryGetScientist();
-        if (scientist == null) return;
+		Scientist scientist = TryGetScientist();
+		if (scientist == null) return;
 
-        Settings.InputAction action = Settings.InputAction.NONE;
-        if (@event is InputEventKey keyEvent)
-        {
-            action = OTMSaveData.Instance.Settings.GetActionFromKey(keyEvent.Keycode);
-        }
-        else if (@event is InputEventJoypadButton buttonEvent)
-        {
-            action = OTMSaveData.Instance.Settings.GetActionFromButton(buttonEvent.ButtonIndex);
-        }
-        else if (@event is InputEventJoypadMotion motionEvent)
-        {
-            action = OTMSaveData.Instance.Settings.GetActionFromAxis(motionEvent.Axis);
-            if (action == Settings.InputAction.MOVE_AXIS)
-            {
-                scientist.SetMovementDirection(motionEvent.AxisValue);
-                GetViewport().SetInputAsHandled();
-                return;
-            }
-        }
+		Settings.InputAction action = Settings.InputAction.NONE;
+		if (@event is InputEventKey keyEvent)
+		{
+			action = OTMSaveData.Instance.Settings.GetActionFromKey(keyEvent.Keycode);
+		}
+		else if (@event is InputEventJoypadButton buttonEvent)
+		{
+			action = OTMSaveData.Instance.Settings.GetActionFromButton(buttonEvent.ButtonIndex);
+		}
+		else if (@event is InputEventJoypadMotion motionEvent)
+		{
+			action = OTMSaveData.Instance.Settings.GetActionFromAxis(motionEvent.Axis);
+			if (action == Settings.InputAction.MOVE_AXIS)
+			{
+				scientist.SetMovementDirection(motionEvent.AxisValue);
+				GetViewport().SetInputAsHandled();
+				return;
+			}
+		}
 
-        // If we've never seen this action before, add it as disabled.
-        if (actionStates.ContainsKey(action) == false)
-        {
-            actionStates[action] = false;
-        }
+		// If we've never seen this action before, add it as disabled.
+		if (actionStates.ContainsKey(action) == false)
+		{
+			actionStates[action] = false;
+		}
 
-        // Call jump with isInitialJump=true if the jump input was pressed from a released state.
-        if (action == Settings.InputAction.JUMP && @event.IsPressed() && actionStates[Settings.InputAction.JUMP] == false)
-        {
-            scientist.Jump(true);
-        }
+		// Call jump with isInitialJump=true if the jump input was pressed from a released state.
+		if (action == Settings.InputAction.JUMP && @event.IsPressed() && actionStates[Settings.InputAction.JUMP] == false)
+		{
+			scientist.Jump(true, 0.0f);
+		}
 
-        actionStates[action] = @event.IsPressed();
-        GetViewport().SetInputAsHandled();
-    }
+		actionStates[action] = @event.IsPressed();
+		GetViewport().SetInputAsHandled();
+	}
 }
