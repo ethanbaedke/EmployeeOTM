@@ -1,0 +1,63 @@
+using Godot;
+using System.Collections.Generic;
+
+// Roams the map. Bot heads to a random reachable spot, hangs around a moment, then picks another.
+public sealed class Wander : AIBehavior
+{
+    private const float RADIUS = 60.0f;
+    private const double DWELL_MIN_TIME = 0.5;
+    private const double DWELL_MAX_TIME = 2.0;
+    private const double GIVE_UP_TIME = 8.0;
+    private const float MIN_DISTANCE = 300.0f;
+
+    private Vector2? _spot = null;
+    private bool _arrived = false;
+    private double _timer = 0.0;
+
+    public override AIIntent Tick(NavGraph nav, Scientist bot, double delta)
+    {
+        _timer -= delta;
+        // Only pick a new spot once landed, so we can tell what's reachable from here.
+        if (bot.IsOnFloor() == false) return Intent();
+
+        // On arrival, swap the give-up timer for a dwell timer.
+        if (_arrived == false && HasArrived(nav, bot.GlobalPosition))
+        {
+            _arrived = true;
+            _timer = GD.RandRange(DWELL_MIN_TIME, DWELL_MAX_TIME);
+        }
+
+        if (_spot == null || _timer <= 0.0)
+        {
+            _spot = PickSpot(bot.GlobalPosition, nav);
+            _arrived = false;
+            _timer = GIVE_UP_TIME;
+        }
+        return Intent();
+    }
+
+    private AIIntent Intent()
+    {
+        return _spot is Vector2 spot ? new AIIntent(spot, RADIUS) : AIIntent.Idle;
+    }
+
+    private bool HasArrived(NavGraph nav, Vector2 position)
+    {
+        if (_spot is not Vector2 spot) return false;
+        NavPlatform here = nav.FindPlatformBelow(position);
+        return here != null && here == nav.FindPlatformBelow(spot)
+            && Mathf.Abs(spot.X - position.X) <= RADIUS + AIController.ARRIVE_DISTANCE;
+    }
+
+    // A random reachable spot that isn't right next to us. Falls back to any spot if none qualify.
+    private static Vector2? PickSpot(Vector2 position, NavGraph nav)
+    {
+        List<Vector2> all = new List<Vector2>(nav.StandingSpots());
+        if (all.Count == 0) return null;
+
+        List<Vector2> candidates = all.FindAll(spot =>
+            spot.DistanceTo(position) >= MIN_DISTANCE && nav.CanReach(position, spot));
+        List<Vector2> pool = candidates.Count > 0 ? candidates : all;
+        return pool[GD.RandRange(0, pool.Count - 1)];
+    }
+}

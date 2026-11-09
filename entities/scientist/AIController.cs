@@ -23,7 +23,7 @@ public partial class AIController : ScientistController
     private const float FIDGET_MAX_TIME = 1.0f;
 
     // Movement tolerances.
-    private const float ARRIVE_DISTANCE = 16.0f;
+    public const float ARRIVE_DISTANCE = 16.0f;
     private const float TAKEOFF_TOLERANCE = 12.0f;
     private const float MAX_TAKEOFF_DRIFT = 50.0f;
     private const float BRAKE_MARGIN = 8.0f;
@@ -32,13 +32,6 @@ public partial class AIController : ScientistController
     private const float STUCK_SPEED = 30.0f;
     private const float STUCK_MIN_TIME = 0.2f;
     private const float STUCK_MAX_TIME = 0.5f;
-
-    // Wandering, the default when there's no other intent.
-    private const float WANDER_RADIUS = 60.0f;
-    private const double WANDER_DWELL_MIN_TIME = 0.5;
-    private const double WANDER_DWELL_MAX_TIME = 2.0;
-    private const double WANDER_GIVE_UP_TIME = 8.0;
-    private const float WANDER_MIN_DISTANCE = 300.0f;
 
     // The route currently being followed. Empty when already on the target's platform, null when it can't be reached.
     public List<NavLink> Path { get; private set; } = null;
@@ -49,7 +42,6 @@ public partial class AIController : ScientistController
     private AIIntent _intent = AIIntent.Idle;
     // The link we're currently taking (walking off its edge, or in the air).
     private NavLink _activeLink = null;
-    private bool _arrived = false;
 
     // Fidgeting.
     private float? _fidgetX = null;
@@ -61,10 +53,8 @@ public partial class AIController : ScientistController
     private float _lastX = 0.0f;
     private float? _unstickDirection = null;
 
-    // Wandering.
-    private Vector2? _wanderSpot = null;
-    private bool _wanderArrived = false;
-    private double _wanderTimer = 0.0;
+    // The default when there's no other intent.
+    private readonly Wander _wander = new Wander();
 
     public override void _PhysicsProcess(double delta)
     {
@@ -77,12 +67,11 @@ public partial class AIController : ScientistController
         NavGraph graph = _miniGame?.NavGraph;
         _intent = _miniGame?.DebugNavTarget is Vector2 debugTarget
             ? new AIIntent(debugTarget)
-            : GetWanderIntent(scientist, graph, delta);
+            : graph != null ? _wander.Tick(graph, scientist, delta) : AIIntent.Idle;
 
         if (graph == null || _intent.MoveTo is not Vector2 target)
         {
             Path = null;
-            _arrived = false;
             scientist.SetMovementDirection(0.0f);
             SetDebugText("AI");
             return;
@@ -96,7 +85,6 @@ public partial class AIController : ScientistController
         else
         {
             _stuckTime = 0.0;
-            _arrived = false;
             UpdateAirborne(scientist);
         }
         _lastX = scientist.GlobalPosition.X;
@@ -104,7 +92,7 @@ public partial class AIController : ScientistController
 
     private void UpdateGrounded(Scientist scientist, NavGraph graph, Vector2 target, double delta)
     {
-        float wanderRadius = _intent.WanderRadius;
+        float arriveRadius = _intent.ArriveRadius;
         Vector2 position = scientist.GlobalPosition;
         NavPlatform here = graph.FindPlatformBelow(position);
 
@@ -119,11 +107,11 @@ public partial class AIController : ScientistController
 
         bool onTargetPlatform = here != null && Path != null && Path.Count == 0;
 
-        _arrived = onTargetPlatform && Mathf.Abs(target.X - position.X) <= wanderRadius + ARRIVE_DISTANCE;
-        if (_arrived)
+        bool arrived = onTargetPlatform && Mathf.Abs(target.X - position.X) <= arriveRadius + ARRIVE_DISTANCE;
+        if (arrived)
         {
             _stuckTime = 0.0;
-            UpdateFidget(scientist, here, target, wanderRadius, delta);
+            UpdateFidget(scientist, here, target, arriveRadius, delta);
             return;
         }
 
@@ -237,7 +225,7 @@ public partial class AIController : ScientistController
         SetDebugText($"#{link.From.Id}>#{link.To.Id} air");
     }
 
-    private void UpdateFidget(Scientist scientist, NavPlatform here, Vector2 target, float wanderRadius, double delta)
+    private void UpdateFidget(Scientist scientist, NavPlatform here, Vector2 target, float arriveRadius, double delta)
     {
         _fidgetTimer -= delta;
         if (_fidgetTimer <= 0.0)
@@ -248,7 +236,7 @@ public partial class AIController : ScientistController
             switch (WeightedAction.Pick(FIDGETS))
             {
                 case Fidget.Shuffle:
-                    float offset = (float)GD.RandRange(-wanderRadius, wanderRadius);
+                    float offset = (float)GD.RandRange(-arriveRadius, arriveRadius);
                     _fidgetX = here.ClampX(target.X + offset);
                     break;
                 case Fidget.Hop:
@@ -290,48 +278,6 @@ public partial class AIController : ScientistController
         float speedToward = velocityX * direction;
         float stoppingDistance = speedToward > 0.0f ? speedToward * speedToward / (2.0f * deceleration) : 0.0f;
         return Mathf.Abs(offset) <= stoppingDistance + margin ? 0.0f : direction;
-    }
-
-    // Roams the map: head to a random reachable spot, hang around a moment, then pick another.
-    private AIIntent GetWanderIntent(Scientist scientist, NavGraph graph, double delta)
-    {
-        if (graph == null) return AIIntent.Idle;
-
-        _wanderTimer -= delta;
-        // Only pick a new spot once landed, so we can tell what's reachable from here.
-        if (scientist.IsOnFloor() == false) return WanderIntent();
-
-        // On arrival, swap the give-up timer for a dwell timer.
-        if (_arrived && _wanderArrived == false)
-        {
-            _wanderArrived = true;
-            _wanderTimer = GD.RandRange(WANDER_DWELL_MIN_TIME, WANDER_DWELL_MAX_TIME);
-        }
-
-        if (_wanderSpot == null || _wanderTimer <= 0.0)
-        {
-            _wanderSpot = PickWanderSpot(scientist.GlobalPosition, graph);
-            _wanderArrived = false;
-            _wanderTimer = WANDER_GIVE_UP_TIME;
-        }
-        return WanderIntent();
-    }
-
-    private AIIntent WanderIntent()
-    {
-        return _wanderSpot is Vector2 spot ? new AIIntent(spot, WANDER_RADIUS) : AIIntent.Idle;
-    }
-
-    // A random reachable spot that isn't right next to us. Falls back to any spot if none qualify.
-    private static Vector2? PickWanderSpot(Vector2 position, NavGraph graph)
-    {
-        List<Vector2> all = new List<Vector2>(graph.StandingSpots());
-        if (all.Count == 0) return null;
-
-        List<Vector2> candidates = all.FindAll(spot =>
-            spot.DistanceTo(position) >= WANDER_MIN_DISTANCE && graph.CanReach(position, spot));
-        List<Vector2> pool = candidates.Count > 0 ? candidates : all;
-        return pool[GD.RandRange(0, pool.Count - 1)];
     }
 
     private static MiniGame FindMiniGame(Node node)
