@@ -4,22 +4,6 @@ using System.Collections.Generic;
 
 public partial class AIController : ScientistController
 {
-    private enum Fidget
-    {
-        Idle,
-        Shuffle,
-        Hop,
-    }
-
-    private static readonly WeightedAction<Fidget>[] FIDGETS =
-    {
-        new WeightedAction<Fidget>(Fidget.Idle, 3.0f),
-        new WeightedAction<Fidget>(Fidget.Shuffle, 2.0f),
-        new WeightedAction<Fidget>(Fidget.Hop, 1.0f),
-    };
-    private const float FIDGET_MIN_TIME = 0.2f;
-    private const float FIDGET_MAX_TIME = 1.0f;
-
     // Movement tolerances.
     public const float ARRIVE_DISTANCE = 16.0f;
     private const float TAKEOFF_TOLERANCE = 12.0f;
@@ -38,10 +22,6 @@ public partial class AIController : ScientistController
     private AIIntent _intent = AIIntent.Idle;
     private NavLink _activeLink = null;
 
-    // Fidgeting.
-    private float? _fidgetX = null;
-    private double _fidgetTimer = 0.0;
-
     // Getting unstuck.
     private double _stuckTime = 0.0;
     private double _stuckLimit = GD.RandRange(STUCK_MIN_TIME, STUCK_MAX_TIME);
@@ -59,9 +39,7 @@ public partial class AIController : ScientistController
 
         _miniGame ??= FindMiniGame(scientist);
         NavGraph graph = _miniGame?.NavGraph;
-        _intent = _miniGame?.DebugNavTarget is Vector2 debugTarget
-            ? new AIIntent(debugTarget)
-            : graph != null ? _wander.Tick(graph, scientist, delta) : AIIntent.Idle;
+        _intent = graph != null ? _wander.Tick(graph, scientist, delta) : AIIntent.Idle;
 
         if (graph == null || _intent.MoveTo is not Vector2 target)
         {
@@ -86,7 +64,6 @@ public partial class AIController : ScientistController
 
     private void UpdateGrounded(Scientist scientist, NavGraph graph, Vector2 target, double delta)
     {
-        float arriveRadius = _intent.ArriveRadius;
         Vector2 position = scientist.GlobalPosition;
         NavPlatform here = graph.FindPlatformBelow(position);
 
@@ -99,11 +76,10 @@ public partial class AIController : ScientistController
         if (_intent.HasArrived(graph, position))
         {
             _stuckTime = 0.0;
-            UpdateFidget(scientist, here, target, arriveRadius, delta);
+            scientist.SetMovementDirection(0.0f);
+            SetDebugText("idle");
             return;
         }
-
-        _fidgetTimer = 0.0;
 
         // No link to take, so walk straight at the target.
         if (here == null || Path == null || Path.Count == 0)
@@ -174,7 +150,7 @@ public partial class AIController : ScientistController
         NavLink link = _activeLink;
         if (link == null)
         {
-            // Fidget hop, knocked off, or fell without a plan. Hold still and replan on landing.
+            // Knocked off, or fell without a plan. Hold still and replan on landing.
             scientist.SetMovementDirection(0.0f);
             SetDebugText("falling");
             return;
@@ -208,38 +184,6 @@ public partial class AIController : ScientistController
 
         scientist.SetMovementDirection(SteerToward(aimX - position.X, velocity.X, (float)Scientist.MAX_AIR_ACCELERATION, BRAKE_MARGIN));
         SetDebugText($"#{link.From.Id}>#{link.To.Id} air");
-    }
-
-    private void UpdateFidget(Scientist scientist, NavPlatform here, Vector2 target, float arriveRadius, double delta)
-    {
-        _fidgetTimer -= delta;
-        if (_fidgetTimer <= 0.0)
-        {
-            _fidgetTimer = GD.RandRange(FIDGET_MIN_TIME, FIDGET_MAX_TIME);
-            _fidgetX = null;
-
-            switch (WeightedAction.Pick(FIDGETS))
-            {
-                case Fidget.Shuffle:
-                    float offset = (float)GD.RandRange(-arriveRadius, arriveRadius);
-                    _fidgetX = here.ClampX(target.X + offset);
-                    break;
-                case Fidget.Hop:
-                    scientist.Jump(true);
-                    break;
-            }
-        }
-
-        if (_fidgetX is float fidgetX)
-        {
-            WalkTo(scientist, fidgetX, ARRIVE_DISTANCE);
-            SetDebugText("shuffle");
-        }
-        else
-        {
-            scientist.SetMovementDirection(0.0f);
-            SetDebugText("idle");
-        }
     }
 
     // Walks toward x, braking so we stop on it. Returns true once within tolerance.

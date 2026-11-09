@@ -6,13 +6,10 @@ public partial class NavDebugDraw : Node2D
 {
     private static readonly Color SOLID_COLOR = new Color(1.0f, 1.0f, 1.0f, 0.35f);
     private static readonly Color PLATFORM_COLOR = Colors.LimeGreen;
-    private static readonly Color SELECTED_COLOR = Colors.Yellow;
     private static readonly Color JUMP_COLOR = Colors.Orange;
     private static readonly Color DROP_COLOR = Colors.DeepSkyBlue;
-    private static readonly Color TARGET_COLOR = Colors.Magenta;
     private static readonly Color UNREACHABLE_COLOR = Colors.Red;
 
-    private const float FADED_ALPHA = 0.2f;
     private const int LABEL_FONT_SIZE = 20;
 
     public MiniGame Game { get; set; }
@@ -21,8 +18,6 @@ public partial class NavDebugDraw : Node2D
     private bool _showPaths = false;
     public bool ShowGraph { get => _showGraph; set { _showGraph = value; Visible = _showGraph || _showPaths; } }
     public bool ShowPaths { get => _showPaths; set { _showPaths = value; Visible = _showGraph || _showPaths; } }
-
-    private NavPlatform _selectedPlatform = null;
 
     public override void _Ready()
     {
@@ -40,28 +35,6 @@ public partial class NavDebugDraw : Node2D
         if (Visible)
         {
             QueueRedraw();
-        }
-    }
-
-    public override void _UnhandledInput(InputEvent @event)
-    {
-        base._UnhandledInput(@event);
-
-        if (Visible == false || Game?.NavGraph == null) return;
-        if (@event is not InputEventMouseButton mouseEvent || mouseEvent.Pressed == false) return;
-
-        if (mouseEvent.ButtonIndex == MouseButton.Left)
-        {
-            Vector2 point = GetGlobalMousePosition();
-            Game.DebugNavTarget = point;
-            _selectedPlatform = Game.NavGraph.FindPlatformBelow(point);
-            GetViewport().SetInputAsHandled();
-        }
-        else if (mouseEvent.ButtonIndex == MouseButton.Right)
-        {
-            Game.DebugNavTarget = null;
-            _selectedPlatform = null;
-            GetViewport().SetInputAsHandled();
         }
     }
 
@@ -92,27 +65,20 @@ public partial class NavDebugDraw : Node2D
         {
             foreach (NavLink link in platform.Links)
             {
-                bool faded = _selectedPlatform != null && platform != _selectedPlatform;
-                DrawLink(link, faded ? FADED_ALPHA : 1.0f, 3.0f);
+                DrawLink(link, 3.0f);
             }
         }
 
         foreach (NavPlatform platform in graph.Platforms)
         {
-            Color color = platform == _selectedPlatform ? SELECTED_COLOR : PLATFORM_COLOR;
-            DrawLine(new Vector2(platform.Left, platform.Top), new Vector2(platform.Right, platform.Top), color, 6.0f);
+            DrawLine(new Vector2(platform.Left, platform.Top), new Vector2(platform.Right, platform.Top), PLATFORM_COLOR, 6.0f);
 
-            DrawString(font, new Vector2(platform.Left + 8.0f, platform.Top - 8.0f), $"#{platform.Id}", fontSize: LABEL_FONT_SIZE, modulate: color);
+            DrawString(font, new Vector2(platform.Left + 8.0f, platform.Top - 8.0f), $"#{platform.Id}", fontSize: LABEL_FONT_SIZE, modulate: PLATFORM_COLOR);
         }
     }
 
     private void DrawPaths(NavGraph graph, Font font)
     {
-        if (Game.DebugNavTarget is Vector2 debugTarget)
-        {
-            DrawCross(debugTarget, TARGET_COLOR);
-        }
-
         foreach (Scientist scientist in Game.Scientists)
         {
             if (scientist.Visible == false) continue;
@@ -132,7 +98,7 @@ public partial class NavDebugDraw : Node2D
             foreach (NavLink link in ai.Path)
             {
                 DrawLine(new Vector2(x, y), new Vector2(link.TakeoffX, y), color, 5.0f);
-                DrawLink(link, 1.0f, 5.0f, color);
+                DrawLink(link, 5.0f, color);
                 x = link.LandingX;
                 y = link.To.Top;
             }
@@ -147,10 +113,9 @@ public partial class NavDebugDraw : Node2D
         DrawLine(center + new Vector2(-12.0f, 12.0f), center + new Vector2(12.0f, -12.0f), color, 4.0f);
     }
 
-    private void DrawLink(NavLink link, float alpha, float width, Color? colorOverride = null)
+    private void DrawLink(NavLink link, float width, Color? colorOverride = null)
     {
         Color color = colorOverride ?? (link.Kind == NavLinkKind.Jump ? JUMP_COLOR : DROP_COLOR);
-        color.A *= alpha;
 
         Vector2 takeoff = new Vector2(link.TakeoffX, link.From.Top);
         Vector2 landing = new Vector2(link.LandingX, link.To.Top);

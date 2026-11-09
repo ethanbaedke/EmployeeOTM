@@ -34,8 +34,6 @@ public abstract partial class MiniGame : Node2D
     private NavDebugDraw _navDebugDraw = null;
 
     public NavGraph NavGraph { get; private set; }
-    // Debug-only override: when set, every AI heads here instead of its mini-game goal.
-    public Vector2? DebugNavTarget { get; set; } = null;
 
     public Scientist[] Scientists => _scientists;
 
