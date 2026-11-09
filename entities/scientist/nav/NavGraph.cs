@@ -50,8 +50,8 @@ public class NavGraph
     private const float MIN_PLATFORM_WIDTH = SCIENTIST_RADIUS * 2.0f;
     private const float MERGE_TOLERANCE = 2.0f;
 
-    // Jump limits, measured by simulating Scientist's movement (JUMP_FORCE 1300, jump held, from a standstill).
-    // Max rise is ~191px. Higher jumps can't travel as far sideways, so the max gap shrinks past JUMP_GAP_FALLOFF_START.
+    // Jump limits, hand tuned. 
+    // TODO: Simulate directly from Scientist's movement.
     private const float MAX_JUMP_RISE = 175.0f;
     private const float JUMP_GAP_AT_LOW_RISE = 260.0f;
     private const float JUMP_GAP_FALLOFF_START = 150.0f;

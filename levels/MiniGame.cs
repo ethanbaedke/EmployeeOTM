@@ -62,7 +62,7 @@ public abstract partial class MiniGame : Node2D
         {
             _navDebugDraw = new NavDebugDraw();
             _navDebugDraw.Game = this;
-            _navDebugDraw.Visible = false;
+            _navDebugDraw.ShowGraph = false;
             AddChild(_navDebugDraw);
         }
     }
@@ -267,7 +267,11 @@ public abstract partial class MiniGame : Node2D
                 }
                 else if (keyEvent.Keycode == Key.Key6 && _navDebugDraw != null)
                 {
-                    _navDebugDraw.Visible = !_navDebugDraw.Visible;
+                    _navDebugDraw.ShowGraph = !_navDebugDraw.ShowGraph;
+                }
+                else if (keyEvent.Keycode == Key.Key7 && _navDebugDraw != null)
+                {
+                    _navDebugDraw.ShowPaths = !_navDebugDraw.ShowPaths;
                 }
 
                 if (scientistInd != -1)

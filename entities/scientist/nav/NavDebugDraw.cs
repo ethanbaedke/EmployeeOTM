@@ -3,7 +3,7 @@ using System;
 using System.Collections.Generic;
 
 // Debug overlay for a mini-game's nav graph, drawn in world space.
-// Left-click selects the platform under the cursor and sets a debug target for the AI. Right-click clears both.
+// ShowGraph and ShowPaths toggle independently; while either is on, left-click selects the platform under the cursor and sets a debug target for the AI. Right-click clears both.
 public partial class NavDebugDraw : Node2D
 {
     private static readonly Color SOLID_COLOR = new Color(1.0f, 1.0f, 1.0f, 0.35f);
@@ -18,6 +18,11 @@ public partial class NavDebugDraw : Node2D
     private const int LABEL_FONT_SIZE = 20;
 
     public MiniGame Game { get; set; }
+
+    private bool _showGraph = false;
+    private bool _showPaths = false;
+    public bool ShowGraph { get => _showGraph; set { _showGraph = value; Visible = _showGraph || _showPaths; } }
+    public bool ShowPaths { get => _showPaths; set { _showPaths = value; Visible = _showGraph || _showPaths; } }
 
     private NavPlatform _selectedPlatform = null;
 
@@ -67,6 +72,19 @@ public partial class NavDebugDraw : Node2D
         NavGraph graph = Game?.NavGraph;
         if (graph == null) return;
 
+        Font font = ThemeDB.FallbackFont;
+        if (ShowGraph)
+        {
+            DrawGraph(graph, font);
+        }
+        if (ShowPaths)
+        {
+            DrawPaths(graph, font);
+        }
+    }
+
+    private void DrawGraph(NavGraph graph, Font font)
+    {
         foreach (Rect2 solid in graph.Solids)
         {
             DrawRect(solid, SOLID_COLOR, filled: false, width: 2.0f);
@@ -81,7 +99,6 @@ public partial class NavDebugDraw : Node2D
             }
         }
 
-        Font font = ThemeDB.FallbackFont;
         foreach (NavPlatform platform in graph.Platforms)
         {
             Color color = platform == _selectedPlatform ? SELECTED_COLOR : PLATFORM_COLOR;
@@ -89,8 +106,6 @@ public partial class NavDebugDraw : Node2D
 
             DrawString(font, new Vector2(platform.Left + 8.0f, platform.Top - 8.0f), $"#{platform.Id}", fontSize: LABEL_FONT_SIZE, modulate: color);
         }
-
-        DrawPaths(graph, font);
     }
 
     // Draws the route each AI scientist is currently following.
