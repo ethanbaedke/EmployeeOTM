@@ -10,7 +10,6 @@ public class NavPlatform
     public float Left;
     public float Right;
     public float Top;
-    // Links leaving this platform.
     public readonly List<NavLink> Links = new List<NavLink>();
 
     public bool ContainsX(float x, float tolerance = 0.0f)
@@ -30,7 +29,6 @@ public enum NavLinkKind
     Drop,
 }
 
-// A way to get from one platform to another: be at TakeoffX on From, then jump or walk off and land at LandingX on To.
 public class NavLink
 {
     public NavPlatform From;
@@ -40,17 +38,15 @@ public class NavLink
     public float LandingX;
 }
 
-// A platform graph generated from a level's static geometry, used by the AI to plan routes.
 public class NavGraph
 {
     // Matches the CircleShape2D radius in scientist.tscn.
     public const float SCIENTIST_RADIUS = 32.0f;
 
-    // Platform building.
     private const float MIN_PLATFORM_WIDTH = SCIENTIST_RADIUS * 2.0f;
     private const float MERGE_TOLERANCE = 2.0f;
 
-    // Jump limits, hand tuned. 
+    // Jump limits, hand tuned.
     // TODO: Simulate directly from Scientist's movement.
     private const float MAX_JUMP_RISE = 175.0f;
     private const float JUMP_GAP_AT_LOW_RISE = 260.0f;
@@ -69,10 +65,8 @@ public class NavGraph
     private const float DROP_COST = 50.0f;
 
     public readonly List<NavPlatform> Platforms = new List<NavPlatform>();
-    // Every solid rectangle in the level, in global coordinates.
     public readonly List<Rect2> Solids = new List<Rect2>();
 
-    // Builds the graph from every StaticBody2D under levelRoot.
     public static NavGraph Build(Node levelRoot, Rect2 bounds)
     {
         NavGraph graph = new NavGraph();
@@ -108,7 +102,6 @@ public class NavGraph
         return FindPath(FindPlatformBelow(from), from.X, FindPlatformBelow(to), to.X) != null;
     }
 
-    // A few standing spots along each platform: near both ends and in the middle.
     public IEnumerable<Vector2> StandingSpots()
     {
         float inset = SCIENTIST_RADIUS * 2.0f;
@@ -122,7 +115,6 @@ public class NavGraph
         }
     }
 
-    // The cheapest sequence of links from a position on one platform to a position on another.
     // Returns an empty list if already on the target platform, or null if it can't be reached.
     public List<NavLink> FindPath(NavPlatform start, float startX, NavPlatform goal, float goalX)
     {
@@ -144,7 +136,6 @@ public class NavGraph
 
         while (true)
         {
-            // Graphs are tiny, so a linear scan for the next link is fine.
             NavLink current = null;
             foreach ((NavLink link, float c) in cost)
             {
@@ -328,7 +319,6 @@ public class NavGraph
 
         float edge = side < 0.0f ? to.Left : to.Right;
 
-        // Take off a little outside the target's edge, staying on our own platform.
         float takeoffX = Mathf.Clamp(edge + side * TAKEOFF_OFFSET, from.Left + SCIENTIST_RADIUS, from.Right - SCIENTIST_RADIUS);
         // Skip if clamping put the takeoff under the target. The jump from the other side covers that.
         if ((takeoffX - edge) * side < SCIENTIST_RADIUS) return;
@@ -337,7 +327,6 @@ public class NavGraph
         float maxGap = JUMP_GAP_AT_LOW_RISE - Mathf.Max(0.0f, rise - JUMP_GAP_FALLOFF_START) * JUMP_GAP_FALLOFF;
         if (gap > maxGap) return;
 
-        // The column we rise through, and the space we cross above the target from takeoff to landing.
         float clearanceTop = Mathf.Min(from.Top, to.Top) - SCIENTIST_RADIUS * 2.0f;
         float landingX = to.ClampX(edge - side * LANDING_INSET);
         Rect2 riseColumn = new Rect2(takeoffX - SCIENTIST_RADIUS, clearanceTop, SCIENTIST_RADIUS * 2.0f, from.Top - clearanceTop);
@@ -382,7 +371,6 @@ public class NavGraph
         return false;
     }
 
-    // Removes [cutLeft, cutRight] from a list of open intervals.
     private static List<(float Left, float Right)> Subtract(List<(float Left, float Right)> intervals, float cutLeft, float cutRight)
     {
         List<(float Left, float Right)> result = new List<(float, float)>();

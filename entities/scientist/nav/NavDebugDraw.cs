@@ -2,8 +2,6 @@ using Godot;
 using System;
 using System.Collections.Generic;
 
-// Debug overlay for a mini-game's nav graph, drawn in world space.
-// ShowGraph and ShowPaths toggle independently; while either is on, left-click selects the platform under the cursor and sets a debug target for the AI. Right-click clears both.
 public partial class NavDebugDraw : Node2D
 {
     private static readonly Color SOLID_COLOR = new Color(1.0f, 1.0f, 1.0f, 0.35f);
@@ -45,9 +43,9 @@ public partial class NavDebugDraw : Node2D
         }
     }
 
-    public override void _Input(InputEvent @event)
+    public override void _UnhandledInput(InputEvent @event)
     {
-        base._Input(@event);
+        base._UnhandledInput(@event);
 
         if (Visible == false || Game?.NavGraph == null) return;
         if (@event is not InputEventMouseButton mouseEvent || mouseEvent.Pressed == false) return;
@@ -108,7 +106,6 @@ public partial class NavDebugDraw : Node2D
         }
     }
 
-    // Draws the route each AI scientist is currently following.
     private void DrawPaths(NavGraph graph, Font font)
     {
         if (Game.DebugNavTarget is Vector2 debugTarget)
@@ -176,7 +173,6 @@ public partial class NavDebugDraw : Node2D
             DrawDashedLine(takeoff, landing, color, width, 12.0f);
         }
 
-        // Mark the takeoff point.
         DrawLine(takeoff, takeoff + new Vector2(0.0f, -16.0f), color, width);
     }
 }

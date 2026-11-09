@@ -1,7 +1,6 @@
 using Godot;
 using System.Collections.Generic;
 
-// Roams the map. Bot heads to a random reachable spot, hangs around a moment, then picks another.
 public sealed class Wander : AIBehavior
 {
     private const float RADIUS = 60.0f;
@@ -21,7 +20,7 @@ public sealed class Wander : AIBehavior
         if (bot.IsOnFloor() == false) return Intent();
 
         // On arrival, swap the give-up timer for a dwell timer.
-        if (_arrived == false && HasArrived(nav, bot.GlobalPosition))
+        if (_arrived == false && Intent().HasArrived(nav, bot.GlobalPosition))
         {
             _arrived = true;
             _timer = GD.RandRange(DWELL_MIN_TIME, DWELL_MAX_TIME);
@@ -41,15 +40,6 @@ public sealed class Wander : AIBehavior
         return _spot is Vector2 spot ? new AIIntent(spot, RADIUS) : AIIntent.Idle;
     }
 
-    private bool HasArrived(NavGraph nav, Vector2 position)
-    {
-        if (_spot is not Vector2 spot) return false;
-        NavPlatform here = nav.FindPlatformBelow(position);
-        return here != null && here == nav.FindPlatformBelow(spot)
-            && Mathf.Abs(spot.X - position.X) <= RADIUS + AIController.ARRIVE_DISTANCE;
-    }
-
-    // A random reachable spot that isn't right next to us. Falls back to any spot if none qualify.
     private static Vector2? PickSpot(Vector2 position, NavGraph nav)
     {
         List<Vector2> all = new List<Vector2>(nav.StandingSpots());

@@ -11,7 +11,6 @@ public partial class Scientist : CharacterBody2D
     [Export]
 	public Sprite2D Sprite;
 
-	// Public so the AI can predict how scientists move.
 	public const double MAX_GROUND_SPEED = 750.0f;
 	public const double MAX_GROUND_ACCELERATION = 10000.0f;
 	public const double MAX_GROUND_DECELERATION = 5000.0f;
@@ -20,7 +19,6 @@ public partial class Scientist : CharacterBody2D
 	public const double GRAVITY = 5000.0f;
 	const double KNOCKBACK_DURATION = 0.3f;
 
-	// The AI's nav graph jump limits (NavGraph.cs) assume this value. Update them together.
 	const double JUMP_FORCE = 1300.0f;
 
 	public EmployeeData HeldEmployeeData = null;

@@ -2,7 +2,6 @@ using Godot;
 using System;
 using System.Collections.Generic;
 
-// Moves a bot's scientist toward its intent (a debug target, or wandering) along routes on the mini-game's nav graph.
 public partial class AIController : ScientistController
 {
     private enum Fidget
@@ -12,7 +11,6 @@ public partial class AIController : ScientistController
         Hop,
     }
 
-    // Fidgeting once arrived, weighted by how often each is picked.
     private static readonly WeightedAction<Fidget>[] FIDGETS =
     {
         new WeightedAction<Fidget>(Fidget.Idle, 3.0f),
@@ -27,8 +25,6 @@ public partial class AIController : ScientistController
     private const float TAKEOFF_TOLERANCE = 12.0f;
     private const float MAX_TAKEOFF_DRIFT = 50.0f;
     private const float BRAKE_MARGIN = 8.0f;
-
-    // Hopping over whatever is blocking us. The delay is randomized so two AIs blocking each other don't hop in sync.
     private const float STUCK_SPEED = 30.0f;
     private const float STUCK_MIN_TIME = 0.2f;
     private const float STUCK_MAX_TIME = 0.5f;
@@ -40,7 +36,6 @@ public partial class AIController : ScientistController
 
     private MiniGame _miniGame = null;
     private AIIntent _intent = AIIntent.Idle;
-    // The link we're currently taking (walking off its edge, or in the air).
     private NavLink _activeLink = null;
 
     // Fidgeting.
@@ -53,7 +48,6 @@ public partial class AIController : ScientistController
     private float _lastX = 0.0f;
     private float? _unstickDirection = null;
 
-    // The default when there's no other intent.
     private readonly Wander _wander = new Wander();
 
     public override void _PhysicsProcess(double delta)
@@ -96,26 +90,19 @@ public partial class AIController : ScientistController
         Vector2 position = scientist.GlobalPosition;
         NavPlatform here = graph.FindPlatformBelow(position);
 
-        // Standing anywhere but the link's start platform means it's done (succeeded or failed).
-        if (_activeLink != null && here != _activeLink.From)
-        {
-            _activeLink = null;
-        }
+        _activeLink = null;
 
-        // Graphs are tiny, so replanning every frame is cheap and keeps up with moving targets.
         Path = graph.FindPath(here, position.X, graph.FindPlatformBelow(target), target.X);
 
         bool onTargetPlatform = here != null && Path != null && Path.Count == 0;
 
-        bool arrived = onTargetPlatform && Mathf.Abs(target.X - position.X) <= arriveRadius + ARRIVE_DISTANCE;
-        if (arrived)
+        if (_intent.HasArrived(graph, position))
         {
             _stuckTime = 0.0;
             UpdateFidget(scientist, here, target, arriveRadius, delta);
             return;
         }
 
-        // Reset so a fresh fidget is picked on the next arrival.
         _fidgetTimer = 0.0;
 
         // No link to take, so walk straight at the target.
@@ -142,7 +129,7 @@ public partial class AIController : ScientistController
         }
         else
         {
-            // Walk off the edge toward the landing spot. Braking happens in UpdateAirborne.
+            // Walk off the edge toward the landing spot.
             _activeLink = next;
             scientist.SetMovementDirection(Mathf.Sign(next.LandingX - position.X));
         }
@@ -150,7 +137,6 @@ public partial class AIController : ScientistController
         UnstickIfBlocked(scientist, delta);
     }
 
-    // If we've been walking into something (usually another scientist) without moving, hop over it.
     private void UnstickIfBlocked(Scientist scientist, double delta)
     {
         float direction = scientist.MovementDirection;
@@ -166,7 +152,6 @@ public partial class AIController : ScientistController
 
         _stuckTime = 0.0;
         _stuckLimit = GD.RandRange(STUCK_MIN_TIME, STUCK_MAX_TIME);
-        // Abandon any link in progress. We'll replan on landing.
         _activeLink = null;
         _unstickDirection = Mathf.Sign(direction);
         scientist.Jump(true);
