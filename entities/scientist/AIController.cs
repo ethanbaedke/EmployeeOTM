@@ -5,7 +5,6 @@ using System.Collections.Generic;
 public partial class AIController : ScientistController
 {
     // Movement tolerances.
-    public const float ARRIVE_DISTANCE = 16.0f;
     private const float TAKEOFF_TOLERANCE = 12.0f;
     private const float MAX_TAKEOFF_DRIFT = 50.0f;
     private const float BRAKE_MARGIN = 8.0f;
@@ -13,9 +12,8 @@ public partial class AIController : ScientistController
     private const float STUCK_MIN_TIME = 0.2f;
     private const float STUCK_MAX_TIME = 0.5f;
 
-    // The route currently being followed. Empty when already on the target's platform, null when it can't be reached.
+    // Empty when on the target's platform, null when unreachable.
     public List<NavLink> Path { get; private set; } = null;
-    // Where we're heading, or null when idle.
     public Vector2? Target => _intent.MoveTo;
 
     private MiniGame _miniGame = null;
@@ -25,7 +23,6 @@ public partial class AIController : ScientistController
     // Getting unstuck.
     private double _stuckTime = 0.0;
     private double _stuckLimit = GD.RandRange(STUCK_MIN_TIME, STUCK_MAX_TIME);
-    private float _lastX = 0.0f;
     private float? _unstickDirection = null;
 
     private readonly Wander _wander = new Wander();
@@ -59,7 +56,6 @@ public partial class AIController : ScientistController
             _stuckTime = 0.0;
             UpdateAirborne(scientist);
         }
-        _lastX = scientist.GlobalPosition.X;
     }
 
     private void UpdateGrounded(Scientist scientist, NavGraph graph, Vector2 target, double delta)
@@ -81,10 +77,10 @@ public partial class AIController : ScientistController
             return;
         }
 
-        // No link to take, so walk straight at the target.
+        // Walk straight at the target.
         if (here == null || Path == null || Path.Count == 0)
         {
-            WalkTo(scientist, target.X, ARRIVE_DISTANCE);
+            WalkTo(scientist, target.X, AIIntent.ARRIVE_DISTANCE);
             SetDebugText(onTargetPlatform ? $"#{here.Id}" : "no path");
             UnstickIfBlocked(scientist, delta);
             return;
@@ -94,7 +90,7 @@ public partial class AIController : ScientistController
         if (next.Kind == NavLinkKind.Jump)
         {
             bool atTakeoff = WalkTo(scientist, next.TakeoffX, TAKEOFF_TOLERANCE);
-            // Tight jumps fail if we're still sliding away from the target, so wait for that to stop.
+            // Wait until we stop sliding away from the target.
             float towardTarget = Mathf.Sign((next.To.Left + next.To.Right) / 2.0f - next.TakeoffX);
             bool driftingAway = scientist.Velocity.X * towardTarget < -MAX_TAKEOFF_DRIFT;
             if (atTakeoff && driftingAway == false)
@@ -105,7 +101,7 @@ public partial class AIController : ScientistController
         }
         else
         {
-            // Walk off the edge toward the landing spot.
+            // Walk off the edge.
             _activeLink = next;
             scientist.SetMovementDirection(Mathf.Sign(next.LandingX - position.X));
         }
@@ -116,7 +112,8 @@ public partial class AIController : ScientistController
     private void UnstickIfBlocked(Scientist scientist, double delta)
     {
         float direction = scientist.MovementDirection;
-        float speed = Mathf.Abs(scientist.GlobalPosition.X - _lastX) / (float)delta;
+        // Real velocity, not Velocity, so being pressed into a wall reads as stopped.
+        float speed = Mathf.Abs(scientist.GetRealVelocity().X);
         if (direction == 0.0f || speed > STUCK_SPEED)
         {
             _stuckTime = 0.0;
@@ -137,7 +134,6 @@ public partial class AIController : ScientistController
     {
         if (_unstickDirection is float unstickDirection)
         {
-            // Hold jump for max height and keep pushing forward.
             if (scientist.Velocity.Y < 0.0f)
             {
                 scientist.Jump(false);
@@ -150,7 +146,7 @@ public partial class AIController : ScientistController
         NavLink link = _activeLink;
         if (link == null)
         {
-            // Knocked off, or fell without a plan. Hold still and replan on landing.
+            // Knocked off. Replan on landing.
             scientist.SetMovementDirection(0.0f);
             SetDebugText("falling");
             return;
@@ -161,13 +157,12 @@ public partial class AIController : ScientistController
 
         if (link.Kind == NavLinkKind.Jump && velocity.Y < 0.0f)
         {
-            // Hold jump the whole way up.
             scientist.Jump(false);
         }
 
         float aimX = link.LandingX;
 
-        // Until our feet are above the target platform, aim for just outside its edge so we don't hit its side or underside.
+        // Aim outside the platform's edge until we're above it.
         if (link.Kind == NavLinkKind.Jump && position.Y + NavGraph.SCIENTIST_RADIUS > link.To.Top)
         {
             float blockLeft = link.To.Left - NavGraph.SCIENTIST_RADIUS;
@@ -186,7 +181,7 @@ public partial class AIController : ScientistController
         SetDebugText($"#{link.From.Id}>#{link.To.Id} air");
     }
 
-    // Walks toward x, braking so we stop on it. Returns true once within tolerance.
+    // Returns true once within tolerance.
     private bool WalkTo(Scientist scientist, float x, float tolerance)
     {
         float offset = x - scientist.GlobalPosition.X;
@@ -200,7 +195,7 @@ public partial class AIController : ScientistController
         return false;
     }
 
-    // The direction toward offset, or 0 if we need to brake to avoid overshooting it.
+    // Returns 0 when we need to brake to avoid overshooting.
     private static float SteerToward(float offset, float velocityX, float deceleration, float margin)
     {
         float direction = Mathf.Sign(offset);

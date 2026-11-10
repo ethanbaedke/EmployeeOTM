@@ -16,10 +16,10 @@ public sealed class Wander : AIBehavior
     public override AIIntent Tick(NavGraph nav, Scientist bot, double delta)
     {
         _timer -= delta;
-        // Only pick a new spot once landed, so we can tell what's reachable from here.
+        // Wait until landed so reachability checks work.
         if (bot.IsOnFloor() == false) return Intent();
 
-        // On arrival, swap the give-up timer for a dwell timer.
+        // Arrived, start dwelling.
         if (_arrived == false && Intent().HasArrived(nav, bot.GlobalPosition))
         {
             _arrived = true;

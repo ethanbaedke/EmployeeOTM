@@ -8,7 +8,6 @@ public partial class NavDebugDraw : Node2D
     private static readonly Color PLATFORM_COLOR = Colors.LimeGreen;
     private static readonly Color JUMP_COLOR = Colors.Orange;
     private static readonly Color DROP_COLOR = Colors.DeepSkyBlue;
-    private static readonly Color UNREACHABLE_COLOR = Colors.Red;
 
     private const int LABEL_FONT_SIZE = 20;
 
@@ -16,8 +15,26 @@ public partial class NavDebugDraw : Node2D
 
     private bool _showGraph = false;
     private bool _showPaths = false;
-    public bool ShowGraph { get => _showGraph; set { _showGraph = value; Visible = _showGraph || _showPaths; } }
-    public bool ShowPaths { get => _showPaths; set { _showPaths = value; Visible = _showGraph || _showPaths; } }
+
+    public bool ShowGraph
+    {
+        get => _showGraph;
+        set
+        {
+            _showGraph = value;
+            Visible = _showGraph || _showPaths;
+        }
+    }
+
+    public bool ShowPaths
+    {
+        get => _showPaths;
+        set
+        {
+            _showPaths = value;
+            Visible = _showGraph || _showPaths;
+        }
+    }
 
     public override void _Ready()
     {
@@ -31,7 +48,6 @@ public partial class NavDebugDraw : Node2D
     {
         base._Process(delta);
 
-        // Scientists move, so their paths have to be redrawn every frame.
         if (Visible)
         {
             QueueRedraw();
@@ -50,7 +66,7 @@ public partial class NavDebugDraw : Node2D
         }
         if (ShowPaths)
         {
-            DrawPaths(graph, font);
+            DrawPaths(graph);
         }
     }
 
@@ -77,19 +93,14 @@ public partial class NavDebugDraw : Node2D
         }
     }
 
-    private void DrawPaths(NavGraph graph, Font font)
+    private void DrawPaths(NavGraph graph)
     {
         foreach (Scientist scientist in Game.Scientists)
         {
             if (scientist.Visible == false) continue;
             if (scientist.TryGetController() is not AIController ai || ai.Target is not Vector2 target) continue;
 
-            if (ai.Path == null)
-            {
-                DrawCross(target, UNREACHABLE_COLOR);
-                DrawString(font, target + new Vector2(16.0f, -16.0f), "unreachable", fontSize: LABEL_FONT_SIZE, modulate: UNREACHABLE_COLOR);
-                continue;
-            }
+            if (ai.Path == null) continue;
 
             Color color = scientist.HeldEmployeeData.EmpColor.PrimaryColor;
             Vector2 position = scientist.GlobalPosition;
@@ -122,7 +133,7 @@ public partial class NavDebugDraw : Node2D
 
         if (link.Kind == NavLinkKind.Jump)
         {
-            // A rough arc that peaks a little above the higher of the two platforms.
+            // Rough jump arc.
             float peakY = Mathf.Min(takeoff.Y, landing.Y) - 60.0f;
             Vector2 control = new Vector2((takeoff.X + landing.X) / 2.0f, 2.0f * peakY - (takeoff.Y + landing.Y) / 2.0f);
             Vector2[] points = new Vector2[17];

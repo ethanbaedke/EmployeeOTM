@@ -2,8 +2,7 @@ using Godot;
 using System.Collections.Generic;
 using System.Linq;
 
-// A walkable top surface in global coordinates.
-// Left/Right is the x-range a scientist's center can occupy while standing on it.
+// Left/Right is the range a scientist's center can stand on.
 public class NavPlatform
 {
     public int Id;
@@ -46,21 +45,21 @@ public class NavGraph
     private const float MIN_PLATFORM_WIDTH = SCIENTIST_RADIUS * 2.0f;
     private const float MERGE_TOLERANCE = 2.0f;
 
-    // Jump limits, hand tuned.
+    // Jump limits.
     // TODO: Simulate directly from Scientist's movement.
     private const float MAX_JUMP_RISE = 175.0f;
     private const float JUMP_GAP_AT_LOW_RISE = 260.0f;
     private const float JUMP_GAP_FALLOFF_START = 150.0f;
     private const float JUMP_GAP_FALLOFF = 1.4f;
 
-    // Takeoff and landing spots. Taking off outside the target's edge keeps us from hitting its underside.
+    // Take off outside the target's edge to avoid hitting its underside.
     private const float TAKEOFF_OFFSET = 100.0f;
     private const float LANDING_INSET = SCIENTIST_RADIUS * 2.0f;
 
-    // Extra sideways reach on drops, from rolling over the edge's corner before falling. Simulation measured at least 10.8px.
+    // Sideways reach from rolling off the edge's corner.
     private const float DROP_CORNER_REACH = 8.0f;
 
-    // Link costs, in pixels of walking. Keeps paths from taking extra jumps to save a few steps.
+    // Link costs, in pixels of walking.
     private const float JUMP_COST = 250.0f;
     private const float DROP_COST = 50.0f;
 
@@ -79,15 +78,20 @@ public class NavGraph
         return graph;
     }
 
-    // The closest platform at or below a point whose x-range contains it, or null.
-    // Also finds what a scientist is standing on, since its center is just above its platform.
+    // Also finds the platform a scientist is standing on.
     public NavPlatform FindPlatformBelow(Vector2 point)
     {
         NavPlatform best = null;
         foreach (NavPlatform platform in Platforms)
         {
-            if (platform.ContainsX(point.X, SCIENTIST_RADIUS * 0.5f) == false) continue;
-            if (platform.Top < point.Y - MERGE_TOLERANCE) continue;
+            if (platform.ContainsX(point.X, SCIENTIST_RADIUS * 0.5f) == false)
+            {
+                continue;
+            }
+            if (platform.Top < point.Y - MERGE_TOLERANCE)
+            {
+                continue;
+            }
 
             if (best == null || platform.Top < best.Top)
             {
@@ -109,20 +113,24 @@ public class NavGraph
         {
             foreach (float x in new[] { platform.Left + inset, (platform.Left + platform.Right) / 2.0f, platform.Right - inset })
             {
-                // Clamp so spots stay on narrow platforms.
                 yield return new Vector2(platform.ClampX(x), platform.Top - SCIENTIST_RADIUS);
             }
         }
     }
 
-    // Returns an empty list if already on the target platform, or null if it can't be reached.
+    // Empty if already on the goal platform, null if unreachable.
     public List<NavLink> FindPath(NavPlatform start, float startX, NavPlatform goal, float goalX)
     {
-        if (start == null || goal == null) return null;
-        if (start == goal) return new List<NavLink>();
+        if (start == null || goal == null)
+        {
+            return null;
+        }
+        if (start == goal)
+        {
+            return new List<NavLink>();
+        }
 
-        // Dijkstra where each node is a link (having landed at its LandingX). Keyed by link, not platform, because
-        // where we land decides how far we walk to the next link.
+        // Dijkstra over links, not platforms, since the landing spot changes the walk to the next link.
         Dictionary<NavLink, float> cost = new Dictionary<NavLink, float>();
         Dictionary<NavLink, NavLink> cameFrom = new Dictionary<NavLink, NavLink>();
         HashSet<NavLink> visited = new HashSet<NavLink>();
@@ -144,8 +152,11 @@ public class NavGraph
                     current = link;
                 }
             }
-            // Every remaining route costs at least this much, so none can beat what we've found.
-            if (current == null || cost[current] >= totalCost) break;
+            // Nothing left can beat the best route.
+            if (current == null || cost[current] >= totalCost)
+            {
+                break;
+            }
             visited.Add(current);
 
             if (current.To == goal)
@@ -158,7 +169,7 @@ public class NavGraph
                 }
             }
 
-            // Keep going even from the goal platform: leaving and coming back could land closer to goalX.
+            // Leaving the goal and coming back can land closer to goalX.
             foreach (NavLink next in current.To.Links)
             {
                 float newCost = cost[current] + Mathf.Abs(next.TakeoffX - current.LandingX) + LinkCost(next);
@@ -170,7 +181,10 @@ public class NavGraph
             }
         }
 
-        if (last == null) return null;
+        if (last == null)
+        {
+            return null;
+        }
 
         List<NavLink> path = new List<NavLink>();
         for (NavLink link = last; link != null; link = cameFrom.GetValueOrDefault(link))
@@ -221,7 +235,9 @@ public class NavGraph
         }
 
         Vector2 size = rectShape.Size * xform.Scale.Abs();
-        Solids.Add(new Rect2(xform.Origin - size / 2.0f, size));
+        // Round off sub-pixel noise so equal heights compare equal.
+        Vector2 start = (xform.Origin - size / 2.0f).Round();
+        Vector2 end = (xform.Origin + size / 2.0f).Round();
     }
 
     private void BuildPlatforms(Rect2 bounds)
@@ -237,17 +253,19 @@ public class NavGraph
                 continue;
             }
 
-            // Start with the whole top edge, then cut out anything blocking the space a scientist needs above it.
+            // Cut out anything blocking the space above the top edge.
             List<(float Left, float Right)> open = new List<(float, float)> { (solid.Position.X, solid.End.X) };
             for (int j = 0; j < Solids.Count; j++)
             {
-                if (i == j) continue;
+                if (i == j)
+                {
+                    continue;
+                }
 
                 Rect2 other = Solids[j];
                 bool intrudesAbove = other.Position.Y < top && other.End.Y > top - SCIENTIST_RADIUS * 2.0f;
                 if (intrudesAbove)
                 {
-                    // A scientist's center can't get closer than its radius to the blocker.
                     open = Subtract(open, other.Position.X - SCIENTIST_RADIUS, other.End.X + SCIENTIST_RADIUS);
                 }
             }
@@ -265,7 +283,7 @@ public class NavGraph
         {
             NavPlatform last = merged.LastOrDefault();
             if (last != null
-                && Mathf.Abs(last.Top - surface.Top) <= MERGE_TOLERANCE
+                && last.Top == surface.Top
                 && surface.Left <= last.Right + MERGE_TOLERANCE)
             {
                 last.Right = Mathf.Max(last.Right, surface.Right);
@@ -294,10 +312,13 @@ public class NavGraph
         {
             foreach (NavPlatform to in Platforms)
             {
-                if (from == to) continue;
+                if (from == to)
+                {
+                    continue;
+                }
 
-                // Drop to lower platforms, since jumping down risks hitting whatever is overhead. Jump to level or higher ones.
-                if (to.Top > from.Top + MERGE_TOLERANCE)
+                // Jumping down risks hitting the ceiling, so drop instead.
+                if (to.Top > from.Top)
                 {
                     TryAddDrop(from, to, -1.0f);
                     TryAddDrop(from, to, 1.0f);
@@ -311,52 +332,71 @@ public class NavGraph
         }
     }
 
-    // A jump onto the given side of the target platform (side -1 = its left edge, 1 = its right edge).
+    // Side -1 is the target's left edge, 1 its right edge.
     private void TryAddJump(NavPlatform from, NavPlatform to, float side)
     {
         float rise = Mathf.Max(0.0f, from.Top - to.Top);
-        if (rise > MAX_JUMP_RISE) return;
+        if (rise > MAX_JUMP_RISE)
+        {
+            return;
+        }
 
         float edge = side < 0.0f ? to.Left : to.Right;
 
         float takeoffX = Mathf.Clamp(edge + side * TAKEOFF_OFFSET, from.Left + SCIENTIST_RADIUS, from.Right - SCIENTIST_RADIUS);
-        // Skip if clamping put the takeoff under the target. The jump from the other side covers that.
-        if ((takeoffX - edge) * side < SCIENTIST_RADIUS) return;
+        // Clamped under the target. The other side's jump covers this.
+        if ((takeoffX - edge) * side < SCIENTIST_RADIUS)
+        {
+            return;
+        }
 
         float gap = Mathf.Abs(takeoffX - edge);
         float maxGap = JUMP_GAP_AT_LOW_RISE - Mathf.Max(0.0f, rise - JUMP_GAP_FALLOFF_START) * JUMP_GAP_FALLOFF;
-        if (gap > maxGap) return;
+        if (gap > maxGap)
+        {
+            return;
+        }
 
         float clearanceTop = Mathf.Min(from.Top, to.Top) - SCIENTIST_RADIUS * 2.0f;
         float landingX = to.ClampX(edge - side * LANDING_INSET);
         Rect2 riseColumn = new Rect2(takeoffX - SCIENTIST_RADIUS, clearanceTop, SCIENTIST_RADIUS * 2.0f, from.Top - clearanceTop);
         Rect2 crossing = new Rect2(Mathf.Min(takeoffX, landingX), clearanceTop, Mathf.Abs(landingX - takeoffX), SCIENTIST_RADIUS * 2.0f);
-        if (IsBlocked(riseColumn) || IsBlocked(crossing)) return;
+        if (IsBlocked(riseColumn) || IsBlocked(crossing))
+        {
+            return;
+        }
 
         from.Links.Add(new NavLink { From = from, To = to, Kind = NavLinkKind.Jump, TakeoffX = takeoffX, LandingX = landingX });
     }
 
-    // Walking off the given end of our platform (side -1 = left end, 1 = right end) and landing on the target platform.
+    // Side -1 walks off our left end, 1 off our right end.
     private void TryAddDrop(NavPlatform from, NavPlatform to, float side)
     {
         float edge = side < 0.0f ? from.Left : from.Right;
 
-        // Land just past the edge if the target is beneath it, otherwise on the target's near end.
-        // The landing must be clear of our edge and fully on the target, or we'd roll off a corner.
+        // Land clear of our edge and fully on the target, or we'd roll off a corner.
         float landingX = Mathf.Clamp(edge + side * LANDING_INSET, to.Left + SCIENTIST_RADIUS, to.Right - SCIENTIST_RADIUS);
-        if ((landingX - edge) * side < SCIENTIST_RADIUS) return;
+        if ((landingX - edge) * side < SCIENTIST_RADIUS)
+        {
+            return;
+        }
 
-        // The sideways gap to the target (0 if it extends under us) must be crossable at full walking speed during the fall.
+        // The gap must be crossable at full speed during the fall.
         float nearEdge = side > 0.0f ? to.Left : to.Right;
         float gap = Mathf.Max(0.0f, (nearEdge - edge) * side);
         float fallTime = Mathf.Sqrt(2.0f * (to.Top - from.Top) / (float)Scientist.GRAVITY);
-        if (gap > (float)Scientist.MAX_GROUND_SPEED * fallTime + DROP_CORNER_REACH) return;
+        if (gap > (float)Scientist.MAX_GROUND_SPEED * fallTime + DROP_CORNER_REACH)
+        {
+            return;
+        }
 
-        // Anything in the fall path would catch us. The path starts a bit past our edge, so a platform below that
-        // sticks out a few pixels doesn't count.
+        // Start past our edge so slight overhangs below don't count.
         float fallStart = edge + side * SCIENTIST_RADIUS * 0.5f;
         Rect2 fallSpace = new Rect2(Mathf.Min(fallStart, landingX), from.Top - SCIENTIST_RADIUS * 2.0f, Mathf.Abs(landingX - fallStart), to.Top - from.Top + SCIENTIST_RADIUS * 2.0f);
-        if (IsBlocked(fallSpace)) return;
+        if (IsBlocked(fallSpace))
+        {
+            return;
+        }
 
         from.Links.Add(new NavLink { From = from, To = to, Kind = NavLinkKind.Drop, TakeoffX = edge, LandingX = landingX });
     }
@@ -365,8 +405,11 @@ public class NavGraph
     {
         foreach (Rect2 solid in Solids)
         {
-            // Touching edges don't count, so the platforms we leave from and land on never block.
-            if (solid.Intersects(space)) return true;
+            // Touching edges don't count, so our own platforms never block.
+            if (solid.Intersects(space))
+            {
+                return true;
+            }
         }
         return false;
     }
@@ -381,8 +424,14 @@ public class NavGraph
                 result.Add((left, right));
                 continue;
             }
-            if (cutLeft > left) result.Add((left, cutLeft));
-            if (cutRight < right) result.Add((cutRight, right));
+            if (cutLeft > left)
+            {
+                result.Add((left, cutLeft));
+            }
+            if (cutRight < right)
+            {
+                result.Add((cutRight, right));
+            }
         }
         return result;
     }
