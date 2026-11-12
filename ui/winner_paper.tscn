@@ -3,8 +3,8 @@
 [ext_resource type="Texture2D" uid="uid://bkx3lngsb5b6v" path="res://ui/winner_paper.svg" id="1_fn350"]
 [ext_resource type="Theme" uid="uid://t5tockmdbb05" path="res://ui/winner_paper.tres" id="1_pd8br"]
 [ext_resource type="Script" uid="uid://gf5pulat3gif" path="res://ui/WinnerPaper.cs" id="2_7n1pa"]
-[ext_resource type="Texture2D" uid="uid://chey6hp3g6q6a" path="res://entities/scientist/scientist.svg" id="3_fyj2y"]
 [ext_resource type="Shader" uid="uid://bfxw6w7c7s14p" path="res://effects/sprite_painter.gdshader" id="4_b6o73"]
+[ext_resource type="Texture2D" uid="uid://c2f2grqx3mv8w" path="res://entities/scientist/skins/WFH-F-RGB.png" id="5_74qvt"]
 
 [sub_resource type="ShaderMaterial" id="ShaderMaterial_vr0p4"]
 shader = ExtResource("4_b6o73")
@@ -124,38 +124,38 @@ offset_bottom = 1080.0
 material = SubResource("ShaderMaterial_vr0p4")
 layout_mode = 0
 offset_left = 354.0
-offset_top = 964.0
+offset_top = 914.0
 offset_right = 450.0
-offset_bottom = 1060.0
-texture = ExtResource("3_fyj2y")
-expand_mode = 1
+offset_bottom = 1061.6036
+texture = ExtResource("5_74qvt")
+expand_mode = 5
 
 [node name="P2" type="TextureRect" parent="." unique_id=963224391]
 material = SubResource("ShaderMaterial_ue7bf")
 layout_mode = 0
 offset_left = 754.0
-offset_top = 964.0
+offset_top = 914.0
 offset_right = 850.0
-offset_bottom = 1060.0
-texture = ExtResource("3_fyj2y")
-expand_mode = 1
+offset_bottom = 1061.6036
+texture = ExtResource("5_74qvt")
+expand_mode = 5
 
 [node name="P3" type="TextureRect" parent="." unique_id=1045897814]
 material = SubResource("ShaderMaterial_b6o73")
 layout_mode = 0
 offset_left = 1154.0
-offset_top = 964.0
+offset_top = 914.0
 offset_right = 1250.0
-offset_bottom = 1060.0
-texture = ExtResource("3_fyj2y")
-expand_mode = 1
+offset_bottom = 1061.6036
+texture = ExtResource("5_74qvt")
+expand_mode = 5
 
 [node name="P4" type="TextureRect" parent="." unique_id=1646642205]
 material = SubResource("ShaderMaterial_74qvt")
 layout_mode = 0
 offset_left = 1554.0
-offset_top = 964.0
+offset_top = 914.0
 offset_right = 1650.0
-offset_bottom = 1060.0
-texture = ExtResource("3_fyj2y")
-expand_mode = 1
+offset_bottom = 1061.6036
+texture = ExtResource("5_74qvt")
+expand_mode = 5

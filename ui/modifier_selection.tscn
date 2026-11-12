@@ -1,6 +1,5 @@
 [gd_scene format=3 uid="uid://djkhtg47n3nw0"]
 
-[ext_resource type="Texture2D" uid="uid://chey6hp3g6q6a" path="res://entities/scientist/scientist.svg" id="1_byluw"]
 [ext_resource type="Script" uid="uid://diuyv3srnj7sf" path="res://ui/ModifierSelection.cs" id="1_d1a7p"]
 [ext_resource type="Resource" uid="uid://qu0dpc6ceyyh" path="res://modifiers/competitive_atmosphere.tres" id="2_bod3q"]
 [ext_resource type="Resource" uid="uid://c3byyja25jcw2" path="res://modifiers/cooperative_atmosphere.tres" id="3_ydf4l"]
@@ -8,6 +7,7 @@
 [ext_resource type="Resource" uid="uid://bgypyutpqymc1" path="res://modifiers/public_transportation.tres" id="5_mxjly"]
 [ext_resource type="Resource" uid="uid://n2ajsaqbn4pk" path="res://modifiers/health_benefits.tres" id="6_cfenc"]
 [ext_resource type="Shader" uid="uid://bfxw6w7c7s14p" path="res://effects/sprite_painter.gdshader" id="7_cfenc"]
+[ext_resource type="Texture2D" uid="uid://c2f2grqx3mv8w" path="res://entities/scientist/skins/WFH-F-RGB.png" id="8_cfenc"]
 
 [sub_resource type="StyleBoxFlat" id="StyleBoxFlat_jsssl"]
 bg_color = Color(0.2, 0.2, 0.2, 1)
@@ -399,10 +399,11 @@ anchors_preset = 4
 anchor_top = 0.5
 anchor_bottom = 0.5
 offset_top = -256.0
-offset_right = 512.0
-offset_bottom = 256.0
+offset_right = 666.0
+offset_bottom = 768.0
 grow_vertical = 2
-texture = ExtResource("1_byluw")
+scale = Vector2(0.5, 0.5)
+texture = ExtResource("8_cfenc")
 
 [node name="Prompt" type="Label" parent="PanelContainer/Control" unique_id=775997883]
 layout_mode = 1

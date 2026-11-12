@@ -4,7 +4,7 @@
 
 [resource]
 script = ExtResource("1_8cyko")
-PrimaryColor = Color(1, 1, 0, 1)
-SecondaryColor = Color(0.8, 0.8, 0, 1)
-TertiaryColor = Color(0.6, 0.6, 0, 1)
+PrimaryColor = Color(0.45882353, 0.76862746, 0.44705883, 1)
+SecondaryColor = Color(0, 0.1764706, 0, 1)
+TertiaryColor = Color(0.16470589, 0.5019608, 0.14901961, 1)
 metadata/_custom_type_script = "uid://y03lr2ef5umi"

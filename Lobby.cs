@@ -96,7 +96,7 @@ public partial class Lobby : Node2D
         // Create new player.
         Scientist newPlayer = _scientistScene.Instantiate<Scientist>();
         newPlayer.ProcessMode = ProcessModeEnum.Disabled;
-        EmployeeData newData = new EmployeeData(GameManager.EmployeeColors[_registeredDevices.Count - 1]);
+        EmployeeData newData = new EmployeeData();
         newData.inputDevice = inputDevice;
         newPlayer.InitializeScientist(newData, new Dictionary<MatchData.MatchModifier, int>());
         _joinParent.AddChild(newPlayer);

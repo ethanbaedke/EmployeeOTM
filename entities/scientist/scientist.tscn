@@ -2,14 +2,14 @@
 
 [ext_resource type="Script" uid="uid://djmm6ealjsf0d" path="res://entities/scientist/Scientist.cs" id="1_uawpl"]
 [ext_resource type="Shader" uid="uid://bfxw6w7c7s14p" path="res://effects/sprite_painter.gdshader" id="2_vxw10"]
-[ext_resource type="Texture2D" uid="uid://chey6hp3g6q6a" path="res://entities/scientist/scientist.svg" id="3_dhk5n"]
+[ext_resource type="Texture2D" uid="uid://c2f2grqx3mv8w" path="res://entities/scientist/skins/WFH-F-RGB.png" id="3_vxw10"]
 
 [sub_resource type="ShaderMaterial" id="ShaderMaterial_ar06b"]
 resource_local_to_scene = true
 shader = ExtResource("2_vxw10")
 shader_parameter/primary = Vector3(1, 0, 0)
-shader_parameter/secondary = Vector3(0.8, 0, 0)
-shader_parameter/tertiary = Vector3(0.6, 0, 0)
+shader_parameter/secondary = Vector3(0, 1, 0)
+shader_parameter/tertiary = Vector3(0, 0, 1)
 shader_parameter/modulation = Vector4(1, 1, 1, 1)
 
 [sub_resource type="CircleShape2D" id="CircleShape2D_uawpl"]
@@ -22,9 +22,8 @@ Sprite = NodePath("Sprite2D")
 
 [node name="Sprite2D" type="Sprite2D" parent="." unique_id=2072305348]
 material = SubResource("ShaderMaterial_ar06b")
-scale = Vector2(0.15, 0.15)
-texture = ExtResource("3_dhk5n")
-region_enabled = true
+scale = Vector2(0.07, 0.07)
+texture = ExtResource("3_vxw10")
 region_rect = Rect2(0, 0, 512, 512)
 
 [node name="CollisionShape2D" type="CollisionShape2D" parent="." unique_id=875452914]

@@ -47,7 +47,7 @@ public partial class WinnerPaper : Control
             _employeeTextures[i].Texture = matchData.Employees[i].EmployeeTexture;
 
             // Reset employee and stand height.
-            _employeeTextures[i].Position = new Vector2(_employeeTextures[i].Position.X, 964.0f);
+            _employeeTextures[i].Position = new Vector2(_employeeTextures[i].Position.X, 914.0f);
             _employeeStands[i].Size = new Vector2(96.0f, 26.0f);
             _employeeStands[i].Position = new Vector2(_employeeStands[i].Position.X, 1054.0f);
 
@@ -96,7 +96,7 @@ public partial class WinnerPaper : Control
         float height = PLACEMENT_HEIGHTS[place - 1];
 
         Tween employeePosTween = CreateTween();
-        employeePosTween.TweenProperty(employeeTexture, "position", new Vector2(employeeTexture.Position.X, 1080.0f - height - 90.0f), EMPLOYEE_RAISE_TIME)
+        employeePosTween.TweenProperty(employeeTexture, "position", new Vector2(employeeTexture.Position.X, 1080.0f - height - 140.0f), EMPLOYEE_RAISE_TIME)
             .SetEase(EMPLOYEE_RAISE_EASE_TYPE)
             .SetTrans(EMPLOYEE_RAISE_TRANSITION_TYPE);
         Tween standSizeTween = CreateTween();

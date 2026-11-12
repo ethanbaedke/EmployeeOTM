@@ -2,8 +2,8 @@
 
 [ext_resource type="Script" uid="uid://dnj31gwquvfpo" path="res://ui/SingleWinnerDisplay.cs" id="1_4nbt5"]
 [ext_resource type="Texture2D" uid="uid://d4ajcdicpxe8b" path="res://ui/winner_circle.svg" id="2_nh3i7"]
-[ext_resource type="Texture2D" uid="uid://chey6hp3g6q6a" path="res://entities/scientist/scientist.svg" id="3_nh3i7"]
 [ext_resource type="Shader" uid="uid://bfxw6w7c7s14p" path="res://effects/sprite_painter.gdshader" id="3_qfc2p"]
+[ext_resource type="Texture2D" uid="uid://c2f2grqx3mv8w" path="res://entities/scientist/skins/WFH-F-RGB.png" id="4_qfc2p"]
 
 [sub_resource type="ShaderMaterial" id="ShaderMaterial_rjlo1"]
 shader = ExtResource("3_qfc2p")
@@ -60,7 +60,7 @@ tracks/0/interp = 1
 tracks/0/loop_wrap = true
 tracks/0/keys = {
 "handle_modes": PackedInt32Array(0, 0),
-"points": PackedFloat32Array(416, -0.25, 0, 0.16666667, 91.11215, 741, -0.16666669, -90.52112, 0, 0),
+"points": PackedFloat32Array(504, -0.25, 0, 0.16666667, 91.11215, 829, -0.16666669, -90.52112, 0, 0),
 "times": PackedFloat32Array(0, 0.6)
 }
 tracks/1/type = "bezier"
@@ -117,10 +117,11 @@ material = SubResource("ShaderMaterial_rjlo1")
 layout_mode = 0
 offset_left = 416.0
 offset_top = 352.0
-offset_right = 1186.0085
-offset_bottom = 1122.0131
+offset_right = 1186.0114
+offset_bottom = 1376.0
 rotation = -0.17278759
-texture = ExtResource("3_nh3i7")
+scale = Vector2(0.75, 0.75)
+texture = ExtResource("4_qfc2p")
 
 [node name="AnimationPlayer" type="AnimationPlayer" parent="." unique_id=485800506]
 libraries/ = SubResource("AnimationLibrary_oxk0u")

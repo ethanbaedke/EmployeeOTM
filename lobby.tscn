@@ -4,6 +4,13 @@
 [ext_resource type="PackedScene" uid="uid://bpulko32timg0" path="res://entities/dirt_platform.tscn" id="1_ll2xe"]
 [ext_resource type="PackedScene" uid="uid://crtjetvxkwxpi" path="res://ui/color_selector.tscn" id="2_2wvic"]
 [ext_resource type="PackedScene" uid="uid://j3xevbmsvxst" path="res://ui/sprite_selector.tscn" id="3_tftiq"]
+[ext_resource type="Texture2D" uid="uid://qdrus1rcb7ac" path="res://entities/scientist/skins/Finance-F-RGB.png" id="4_up7ya"]
+[ext_resource type="Texture2D" uid="uid://frvbhb1t3r5l" path="res://entities/scientist/skins/Hair1-F-RGB.png" id="5_mcopp"]
+[ext_resource type="Texture2D" uid="uid://hdq16g6d2j7f" path="res://entities/scientist/skins/Hair2-F-RGB.png" id="6_nu6hm"]
+[ext_resource type="Texture2D" uid="uid://bggx10rb6bwg7" path="res://entities/scientist/skins/Janitor-F-RGB.png" id="7_7pn7i"]
+[ext_resource type="Texture2D" uid="uid://c87wrkurqq1x3" path="res://entities/scientist/skins/Sweater-F-RGB.png" id="8_7b1xw"]
+[ext_resource type="Texture2D" uid="uid://du4jq6yfrlnav" path="res://entities/scientist/skins/Tie-F-RGB.png" id="9_wjc17"]
+[ext_resource type="Texture2D" uid="uid://c2f2grqx3mv8w" path="res://entities/scientist/skins/WFH-F-RGB.png" id="10_hx1n1"]
 
 [sub_resource type="Gradient" id="Gradient_xrgmn"]
 colors = PackedColorArray(0.15, 0.15, 0.15, 1, 0.15, 0.15, 0.15, 1)
@@ -622,6 +629,7 @@ shape = SubResource("RectangleShape2D_tftiq")
 [node name="SpriteSelector" parent="SpriteChangeStation" unique_id=750747855 instance=ExtResource("3_tftiq")]
 position = Vector2(0, -64)
 scale = Vector2(1e-05, 1e-05)
+_textures = Array[CompressedTexture2D]([ExtResource("4_up7ya"), ExtResource("5_mcopp"), ExtResource("6_nu6hm"), ExtResource("7_7pn7i"), ExtResource("8_7b1xw"), ExtResource("9_wjc17"), ExtResource("10_hx1n1")])
 
 [node name="Platforms" type="Node2D" parent="." unique_id=1602256485]
 

@@ -1,8 +1,8 @@
 [gd_scene format=3 uid="uid://dhug5h2y0ce7e"]
 
 [ext_resource type="Script" uid="uid://cpbbddy68r764" path="res://MiniGamePlacement.cs" id="1_fqogx"]
-[ext_resource type="Texture2D" uid="uid://chey6hp3g6q6a" path="res://entities/scientist/scientist.svg" id="2_7c35k"]
 [ext_resource type="Shader" uid="uid://bfxw6w7c7s14p" path="res://effects/sprite_painter.gdshader" id="2_ra0wd"]
+[ext_resource type="Texture2D" uid="uid://c2f2grqx3mv8w" path="res://entities/scientist/skins/WFH-F-RGB.png" id="3_7c35k"]
 
 [sub_resource type="ShaderMaterial" id="ShaderMaterial_vxw10"]
 shader = ExtResource("2_ra0wd")
@@ -41,22 +41,22 @@ _1234 = NodePath("1234")
 [node name="4" type="Sprite2D" parent="1234" unique_id=2028559942]
 material = SubResource("ShaderMaterial_vxw10")
 position = Vector2(1424, 540)
-scale = Vector2(0.5, 0.5)
-texture = ExtResource("2_7c35k")
+scale = Vector2(0.4, 0.4)
+texture = ExtResource("3_7c35k")
 
 [node name="3" type="Sprite2D" parent="1234" unique_id=1160728553]
 material = SubResource("ShaderMaterial_mak3x")
 position = Vector2(1248, 540)
-scale = Vector2(0.75, 0.75)
-texture = ExtResource("2_7c35k")
+scale = Vector2(0.6, 0.6)
+texture = ExtResource("3_7c35k")
 
 [node name="2" type="Sprite2D" parent="1234" unique_id=891708074]
 material = SubResource("ShaderMaterial_5ixy5")
 position = Vector2(608, 540.00006)
-texture = ExtResource("2_7c35k")
+scale = Vector2(0.8, 0.8)
+texture = ExtResource("3_7c35k")
 
 [node name="1" type="Sprite2D" parent="1234" unique_id=932908781]
 material = SubResource("ShaderMaterial_vd4ph")
 position = Vector2(960, 540)
-scale = Vector2(1.25, 1.25)
-texture = ExtResource("2_7c35k")
+texture = ExtResource("3_7c35k")

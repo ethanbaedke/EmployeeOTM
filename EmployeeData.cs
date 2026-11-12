@@ -3,8 +3,8 @@ using System;
 
 public partial class EmployeeData : GodotObject
 {
-    public EmployeeColor EmpColor = null;
-    public Texture2D EmployeeTexture = GD.Load<CompressedTexture2D>("res://entities/scientist/scientist.svg");
+    public EmployeeColor EmpColor;
+    public CompressedTexture2D EmployeeTexture;
     // The number of points this employee has accrued this match.
     public int TotalPoints = 0;
     // The number of points this employee should be awarded from the last mini-game.
@@ -15,8 +15,11 @@ public partial class EmployeeData : GodotObject
     // -2 represents an AI controlled employee.
     public int inputDevice = -2;
 
-    public EmployeeData(EmployeeColor employeeColor)
+    public EmployeeData()
     {
-        EmpColor = employeeColor;
+        int randColor = GD.RandRange(0, GameManager.EmployeeColors.Length - 1);
+        EmpColor = GameManager.EmployeeColors[randColor];
+        int randTexture = GD.RandRange(0, GameManager.EmployeeTextures.Length - 1);
+        EmployeeTexture = GameManager.EmployeeTextures[randTexture];
     }
 }

@@ -3,10 +3,8 @@ using System;
 
 public partial class SpriteSelector : Node2D
 {
-[Export]
-    private AnimationPlayer _animPlayer;
     [Export]
-    private CompressedTexture2D[] _textures;
+    private AnimationPlayer _animPlayer;
     [Export]
     private Sprite2D _backLeft;
     [Export]
@@ -18,6 +16,7 @@ public partial class SpriteSelector : Node2D
     [Export]
     private Sprite2D _center;
 
+    private CompressedTexture2D[] _textures;
     private int _textureIndex = 0;
     private bool _isShifting = false;
     private int _queuedScrollDir = 0;
@@ -112,6 +111,7 @@ public partial class SpriteSelector : Node2D
     {
         base._Ready();
 
+        _textures = GameManager.EmployeeTextures;
         UpdateTextures();
     }
 

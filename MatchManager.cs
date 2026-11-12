@@ -98,6 +98,7 @@ public partial class MatchManager : Node2D
             }
 
             // Select modifier.
+            /*
             EmployeeData selectingEmployeeData = GetEmployeeForModifierSelection();
             _modifierSelection.InitializeSelection(selectingEmployeeData);
             _matchFlowAnimPlayer.Play("modifier_selection_in");
@@ -115,6 +116,7 @@ public partial class MatchManager : Node2D
             }
             _matchFlowAnimPlayer.Play("modifier_selection_out");
             await ToSignal(_matchFlowAnimPlayer, AnimationPlayer.SignalName.AnimationFinished);
+            */
 
             // Reset point tracking.
             foreach (EmployeeData data in _matchData.Employees)

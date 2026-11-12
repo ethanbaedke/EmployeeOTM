@@ -1,0 +1,10 @@
+[gd_resource type="Resource" script_class="EmployeeColor" format=3 uid="uid://dvmeqecrfo0hv"]
+
+[ext_resource type="Script" uid="uid://y03lr2ef5umi" path="res://employee_colors/EmployeeColor.cs" id="1_pr4d6"]
+
+[resource]
+script = ExtResource("1_pr4d6")
+PrimaryColor = Color(0.34117648, 0.42745098, 0.7529412, 1)
+SecondaryColor = Color(0, 0.03137255, 0.1764706, 1)
+TertiaryColor = Color(0.09803922, 0.18039216, 0.4862745, 1)
+metadata/_custom_type_script = "uid://y03lr2ef5umi"

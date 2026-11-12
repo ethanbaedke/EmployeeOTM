@@ -4,6 +4,7 @@
 
 [resource]
 script = ExtResource("1_xjpqs")
-SecondaryColor = Color(0.8, 0, 0, 1)
-TertiaryColor = Color(0.6, 0, 0, 1)
+PrimaryColor = Color(0.7294118, 0.49803922, 0.34901962, 1)
+SecondaryColor = Color(0.1764706, 0.0627451, 0, 1)
+TertiaryColor = Color(0.44313726, 0.23921569, 0.105882354, 1)
 metadata/_custom_type_script = "uid://y03lr2ef5umi"
