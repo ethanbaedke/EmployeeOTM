@@ -4,13 +4,6 @@
 [ext_resource type="PackedScene" uid="uid://bpulko32timg0" path="res://entities/dirt_platform.tscn" id="1_ll2xe"]
 [ext_resource type="PackedScene" uid="uid://crtjetvxkwxpi" path="res://ui/color_selector.tscn" id="2_2wvic"]
 [ext_resource type="PackedScene" uid="uid://j3xevbmsvxst" path="res://ui/sprite_selector.tscn" id="3_tftiq"]
-[ext_resource type="Texture2D" uid="uid://qdrus1rcb7ac" path="res://entities/scientist/skins/Finance-F-RGB.png" id="4_up7ya"]
-[ext_resource type="Texture2D" uid="uid://frvbhb1t3r5l" path="res://entities/scientist/skins/Hair1-F-RGB.png" id="5_mcopp"]
-[ext_resource type="Texture2D" uid="uid://hdq16g6d2j7f" path="res://entities/scientist/skins/Hair2-F-RGB.png" id="6_nu6hm"]
-[ext_resource type="Texture2D" uid="uid://bggx10rb6bwg7" path="res://entities/scientist/skins/Janitor-F-RGB.png" id="7_7pn7i"]
-[ext_resource type="Texture2D" uid="uid://c87wrkurqq1x3" path="res://entities/scientist/skins/Sweater-F-RGB.png" id="8_7b1xw"]
-[ext_resource type="Texture2D" uid="uid://du4jq6yfrlnav" path="res://entities/scientist/skins/Tie-F-RGB.png" id="9_wjc17"]
-[ext_resource type="Texture2D" uid="uid://c2f2grqx3mv8w" path="res://entities/scientist/skins/WFH-F-RGB.png" id="10_hx1n1"]
 
 [sub_resource type="Gradient" id="Gradient_xrgmn"]
 colors = PackedColorArray(0.15, 0.15, 0.15, 1, 0.15, 0.15, 0.15, 1)
@@ -448,19 +441,19 @@ scale = Vector2(256, 256)
 texture = SubResource("GradientTexture1D_4o8jc")
 
 [node name="PlayerPos1" type="Node2D" parent="Elevator/Back" unique_id=808549825]
-position = Vector2(-0.27734375, 0.375)
+position = Vector2(-0.27734375, 0.5)
 scale = Vector2(0.00390625, 0.00390625)
 
 [node name="PlayerPos2" type="Node2D" parent="Elevator/Back" unique_id=452019738]
-position = Vector2(-0.08984375, 0.375)
+position = Vector2(-0.08984375, 0.5)
 scale = Vector2(0.00390625, 0.00390625)
 
 [node name="PlayerPos3" type="Node2D" parent="Elevator/Back" unique_id=1034108702]
-position = Vector2(0.09765625, 0.375)
+position = Vector2(0.09765625, 0.5)
 scale = Vector2(0.00390625, 0.00390625)
 
 [node name="PlayerPos4" type="Node2D" parent="Elevator/Back" unique_id=1822069604]
-position = Vector2(0.28515625, 0.375)
+position = Vector2(0.28515625, 0.5)
 scale = Vector2(0.00390625, 0.00390625)
 
 [node name="LeftDoor" type="Sprite2D" parent="Elevator/Back" unique_id=115061761]
@@ -517,7 +510,7 @@ scale = Vector2(196, 256)
 texture = SubResource("GradientTexture1D_4o8jc")
 
 [node name="SpawnParent" type="Node2D" parent="JoinDoor/Back" unique_id=1955663673]
-position = Vector2(0.00036621094, 0.375)
+position = Vector2(0.00036621094, 0.5)
 scale = Vector2(0.0051020407, 0.00390625)
 
 [node name="LeftDoor" type="Sprite2D" parent="JoinDoor/Back" unique_id=275848695]
@@ -567,7 +560,7 @@ scale = Vector2(196, 256)
 texture = SubResource("GradientTexture1D_4o8jc")
 
 [node name="ChangeParent" type="Node2D" parent="ColorChangeStation/Back" unique_id=1557390700]
-position = Vector2(0, 0.375)
+position = Vector2(0, 0.5)
 scale = Vector2(2.6030819e-05, 1.5258789e-05)
 
 [node name="LeftBorder" type="Sprite2D" parent="ColorChangeStation/Back" unique_id=2046943682]
@@ -603,7 +596,7 @@ scale = Vector2(196, 256)
 texture = SubResource("GradientTexture1D_4o8jc")
 
 [node name="ChangeParent" type="Node2D" parent="SpriteChangeStation/Back" unique_id=1749797160]
-position = Vector2(0, 0.375)
+position = Vector2(0, 0.5)
 scale = Vector2(2.6030819e-05, 1.5258789e-05)
 
 [node name="LeftBorder" type="Sprite2D" parent="SpriteChangeStation/Back" unique_id=1773932370]
@@ -629,7 +622,6 @@ shape = SubResource("RectangleShape2D_tftiq")
 [node name="SpriteSelector" parent="SpriteChangeStation" unique_id=750747855 instance=ExtResource("3_tftiq")]
 position = Vector2(0, -64)
 scale = Vector2(1e-05, 1e-05)
-_textures = Array[CompressedTexture2D]([ExtResource("4_up7ya"), ExtResource("5_mcopp"), ExtResource("6_nu6hm"), ExtResource("7_7pn7i"), ExtResource("8_7b1xw"), ExtResource("9_wjc17"), ExtResource("10_hx1n1")])
 
 [node name="Platforms" type="Node2D" parent="." unique_id=1602256485]
 

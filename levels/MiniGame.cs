@@ -135,7 +135,7 @@ public abstract partial class MiniGame : Node2D
         {
             if (data.MarkerName == "MiniGameStartCountdown")
             {
-                DisplayCenterSceenTextOnBeats(new string[] {"4", "3", "2", "1"}, new int[] {1, 1, 1, 1});
+                DisplayCenterSceenTextOnBeats(new string[] {"3", "2", "1", "Go!"}, new int[] {1, 1, 1, 1});
             }
             else if (data.MarkerName.StartsWith("MG_"))
             {

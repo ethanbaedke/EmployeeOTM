@@ -63,18 +63,19 @@ position = Vector2(933, 190)
 
 [node name="Scientist" parent="SwagCannon" unique_id=1174776970 instance=ExtResource("3_ba5qu")]
 z_index = -1
+position = Vector2(1, 68)
 scale = Vector2(2, 2)
 collision_layer = 0
 collision_mask = 0
 
 [node name="Scientist2" parent="." unique_id=1941702726 instance=ExtResource("3_ba5qu")]
-position = Vector2(408, 1014)
+position = Vector2(408, 1045)
 
 [node name="Scientist3" parent="." unique_id=1859229547 instance=ExtResource("3_ba5qu")]
-position = Vector2(1143, 1013)
+position = Vector2(1145, 1045)
 
 [node name="Scientist4" parent="." unique_id=1556663606 instance=ExtResource("3_ba5qu")]
-position = Vector2(1512, 1013)
+position = Vector2(1513, 1045)
 
 [node name="DirtPlatform12" parent="." unique_id=1553320347 instance=ExtResource("4_okvo2")]
 position = Vector2(40, -3)

@@ -67,16 +67,16 @@ _zoomCurve = SubResource("Curve_i2gh2")
 _positionPercentCurve = SubResource("Curve_r3f8q")
 
 [node name="Scientist" parent="." unique_id=1174776970 instance=ExtResource("3_5q636")]
-position = Vector2(111, 219)
+position = Vector2(113, 251)
 
 [node name="Scientist2" parent="." unique_id=1941702726 instance=ExtResource("3_5q636")]
-position = Vector2(112, 757)
+position = Vector2(113, 789)
 
 [node name="Scientist3" parent="." unique_id=1859229547 instance=ExtResource("3_5q636")]
-position = Vector2(1104, 219)
+position = Vector2(1105, 251)
 
 [node name="Scientist4" parent="." unique_id=1556663606 instance=ExtResource("3_5q636")]
-position = Vector2(1104, 757)
+position = Vector2(1104, 789)
 
 [node name="DirtPlatform12" parent="." unique_id=1553320347 instance=ExtResource("4_mq8v0")]
 position = Vector2(40, -3)

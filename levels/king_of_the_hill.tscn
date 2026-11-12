@@ -22,23 +22,28 @@ _tutorial = NodePath("CanvasLayer/MiniGameTutorial")
 _miniGameDescription = "Capture microwaves to heat your lunch!"
 _tutorialVideo = ExtResource("2_6v4r3")
 
-[node name="Camera2D" type="Camera2D" parent="." unique_id=78114846 node_paths=PackedStringArray("_initialParentGame")]
+[node name="CanvasLayer" type="CanvasLayer" parent="." unique_id=743391810]
+
+[node name="CenterScreenCountdown" parent="CanvasLayer" unique_id=1320922543 instance=ExtResource("7_6v4r3")]
+
+[node name="MiniGameTutorial" parent="CanvasLayer" unique_id=858250490 instance=ExtResource("6_6v4r3")]
+
+[node name="Camera2D" type="Camera2D" parent="." unique_id=78114846]
 position = Vector2(960, 540)
 position_smoothing_enabled = true
 script = ExtResource("3_wyug6")
-_initialParentGame = NodePath("..")
 
 [node name="Scientist" parent="." unique_id=1174776970 instance=ExtResource("2_8thry")]
-position = Vector2(102, 1011)
+position = Vector2(110, 1045)
 
 [node name="Scientist2" parent="." unique_id=1941702726 instance=ExtResource("2_8thry")]
-position = Vector2(1008, 1011)
+position = Vector2(672, 1045)
 
 [node name="Scientist3" parent="." unique_id=1859229547 instance=ExtResource("2_8thry")]
-position = Vector2(1259, 1011)
+position = Vector2(1249, 1045)
 
 [node name="Scientist4" parent="." unique_id=1556663606 instance=ExtResource("2_8thry")]
-position = Vector2(1747, 1011)
+position = Vector2(1811, 1045)
 
 [node name="DirtPlatform12" parent="." unique_id=1553320347 instance=ExtResource("5_pfrlf")]
 position = Vector2(40, -3)
@@ -76,24 +81,6 @@ position = Vector2(1513, 1077)
 [node name="DirtPlatform23" parent="." unique_id=736932843 instance=ExtResource("5_pfrlf")]
 position = Vector2(1881, 1077)
 
-[node name="DirtPlatform5" parent="." unique_id=1310514991 instance=ExtResource("5_pfrlf")]
-position = Vector2(407, 924.9998)
-
-[node name="DirtPlatform7" parent="." unique_id=1602525458 instance=ExtResource("5_pfrlf")]
-position = Vector2(964, 779)
-
-[node name="DirtPlatform10" parent="." unique_id=800073943 instance=ExtResource("5_pfrlf")]
-position = Vector2(1510, 919.9998)
-
-[node name="DirtPlatform8" parent="." unique_id=1159806947 instance=ExtResource("5_pfrlf")]
-position = Vector2(963, 441)
-
-[node name="DirtPlatform9" parent="." unique_id=494077086 instance=ExtResource("5_pfrlf")]
-position = Vector2(1507, 615)
-
-[node name="DirtPlatform6" parent="." unique_id=299573172 instance=ExtResource("5_pfrlf")]
-position = Vector2(405, 615)
-
 [node name="StaticBody2D" type="StaticBody2D" parent="." unique_id=1604060188]
 position = Vector2(-52, 526)
 
@@ -107,25 +94,39 @@ position = Vector2(1972, 532)
 shape = SubResource("RectangleShape2D_o3a2j")
 
 [node name="CaptureArea2" parent="." unique_id=1561438111 instance=ExtResource("6_l53ne")]
-position = Vector2(965.00006, 644.99994)
+position = Vector2(960, 623)
 scale = Vector2(365, 200)
-
-[node name="DirtPlatform11" parent="." unique_id=1133907667 instance=ExtResource("5_pfrlf")]
-position = Vector2(407, 276.99982)
 
 [node name="CaptureArea4" parent="." unique_id=1043393287 instance=ExtResource("6_l53ne")]
-position = Vector2(409, 144.99994)
+position = Vector2(384.00003, 192.99994)
 scale = Vector2(365, 200)
-
-[node name="DirtPlatform24" parent="." unique_id=1477229597 instance=ExtResource("5_pfrlf")]
-position = Vector2(1511, 276.99982)
 
 [node name="CaptureArea6" parent="." unique_id=768799365 instance=ExtResource("6_l53ne")]
-position = Vector2(1513, 144.99994)
+position = Vector2(1536.0001, 191.99994)
 scale = Vector2(365, 200)
 
-[node name="CanvasLayer" type="CanvasLayer" parent="." unique_id=743391810]
+[node name="Platforms" type="Node2D" parent="." unique_id=1132042466]
 
-[node name="CenterScreenCountdown" parent="CanvasLayer" unique_id=1320922543 instance=ExtResource("7_6v4r3")]
+[node name="DirtPlatform5" parent="Platforms" unique_id=480909706 instance=ExtResource("5_pfrlf")]
+position = Vector2(384, 905)
 
-[node name="MiniGameTutorial" parent="CanvasLayer" unique_id=858250490 instance=ExtResource("6_6v4r3")]
+[node name="DirtPlatform7" parent="Platforms" unique_id=1949974021 instance=ExtResource("5_pfrlf")]
+position = Vector2(960, 755)
+
+[node name="DirtPlatform10" parent="Platforms" unique_id=1319957459 instance=ExtResource("5_pfrlf")]
+position = Vector2(1536, 905)
+
+[node name="DirtPlatform8" parent="Platforms" unique_id=2091498510 instance=ExtResource("5_pfrlf")]
+position = Vector2(960, 475)
+
+[node name="DirtPlatform9" parent="Platforms" unique_id=764261665 instance=ExtResource("5_pfrlf")]
+position = Vector2(1536, 625)
+
+[node name="DirtPlatform6" parent="Platforms" unique_id=1012563523 instance=ExtResource("5_pfrlf")]
+position = Vector2(384, 625)
+
+[node name="DirtPlatform11" parent="Platforms" unique_id=1131300204 instance=ExtResource("5_pfrlf")]
+position = Vector2(384, 325)
+
+[node name="DirtPlatform24" parent="Platforms" unique_id=1783820661 instance=ExtResource("5_pfrlf")]
+position = Vector2(1536, 325)

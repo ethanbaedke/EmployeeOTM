@@ -20,9 +20,9 @@ _yPositionCurve = SubResource("Curve_sw4mv")
 _pointLabel = NodePath("Label")
 
 [node name="Label" type="Label" parent="." unique_id=2068536982]
-offset_left = -14.0
-offset_top = -66.0
-offset_right = 26.0
-offset_bottom = -32.0
-theme_override_font_sizes/font_size = 24
+offset_left = -18.0
+offset_top = -146.0
+offset_right = 22.0
+offset_bottom = -101.0
+theme_override_font_sizes/font_size = 32
 text = "+0"

@@ -89,16 +89,16 @@ scale = Vector2(1920, 200)
 texture = SubResource("GradientTexture1D_852r7")
 
 [node name="Scientist" parent="." unique_id=1174776970 instance=ExtResource("3_wdlrn")]
-position = Vector2(285, 836)
+position = Vector2(285, 868)
 
 [node name="Scientist2" parent="." unique_id=1941702726 instance=ExtResource("3_wdlrn")]
-position = Vector2(735, 836)
+position = Vector2(735, 868)
 
 [node name="Scientist3" parent="." unique_id=1859229547 instance=ExtResource("3_wdlrn")]
-position = Vector2(1185, 836)
+position = Vector2(1185, 868)
 
 [node name="Scientist4" parent="." unique_id=1556663606 instance=ExtResource("3_wdlrn")]
-position = Vector2(1635, 836)
+position = Vector2(1635, 868)
 
 [node name="DirtPlatform24" parent="." unique_id=101771345 instance=ExtResource("4_6mdao")]
 position = Vector2(285, 900)
