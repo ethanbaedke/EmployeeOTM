@@ -238,6 +238,7 @@ public class NavGraph
         // Round off sub-pixel noise so equal heights compare equal.
         Vector2 start = (xform.Origin - size / 2.0f).Round();
         Vector2 end = (xform.Origin + size / 2.0f).Round();
+        Solids.Add(new Rect2(start, end - start));
     }
 
     private void BuildPlatforms(Rect2 bounds)
