@@ -28,13 +28,14 @@ public partial class PlayerController : ScientistController
 			{
 				moveDir += 1.0f;
 			}
-			if (actionStates.ContainsKey(Settings.InputAction.JUMP) && actionStates[Settings.InputAction.JUMP])
-			{
-				scientist.Jump(false, delta);
-			}
 
 			scientist.SetMovementDirection(moveDir);
 		}
+
+        if (actionStates.ContainsKey(Settings.InputAction.JUMP) && actionStates[Settings.InputAction.JUMP])
+        {
+            scientist.Jump(false, delta);
+        }
 	}
 
 	public override void _UnhandledInput(InputEvent @event)
