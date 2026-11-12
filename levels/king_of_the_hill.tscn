@@ -89,7 +89,7 @@ position = Vector2(1510, 919.9998)
 position = Vector2(963, 441)
 
 [node name="DirtPlatform9" parent="." unique_id=494077086 instance=ExtResource("5_pfrlf")]
-position = Vector2(1507, 626)
+position = Vector2(1507, 615)
 
 [node name="DirtPlatform6" parent="." unique_id=299573172 instance=ExtResource("5_pfrlf")]
 position = Vector2(405, 615)

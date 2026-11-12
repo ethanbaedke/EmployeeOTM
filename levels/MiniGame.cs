@@ -31,6 +31,11 @@ public abstract partial class MiniGame : Node2D
     private PackedScene _aiControllerScene = GD.Load<PackedScene>("res://entities/scientist/AIController.tscn");
     private PackedScene _pointAwardEffectScene = GD.Load<PackedScene>("res://entities/scientist/PointAwardEffect.tscn");
     private bool _debugIsAIEnabled = true;
+    private NavDebugDraw _navDebugDraw = null;
+
+    public NavGraph NavGraph { get; private set; }
+
+    public Scientist[] Scientists => _scientists;
 
     public void InitializeMiniGame(MatchData matchData)
     {
@@ -47,6 +52,16 @@ public abstract partial class MiniGame : Node2D
         {
             _scientists[i].InitializeScientist(matchData.Employees[i], matchData.Modifiers);
             _scientists[i].ProcessMode = ProcessModeEnum.Disabled;
+        }
+
+        // Build the AI navigation graph.
+        NavGraph = NavGraph.Build(this, GetViewportRect());
+        if (OS.IsDebugBuild())
+        {
+            _navDebugDraw = new NavDebugDraw();
+            _navDebugDraw.Game = this;
+            _navDebugDraw.ShowGraph = false;
+            AddChild(_navDebugDraw);
         }
     }
 
@@ -247,6 +262,14 @@ public abstract partial class MiniGame : Node2D
                 else if (keyEvent.Keycode == Key.Key5)
                 {
                     DebugSetAIEnabled(!_debugIsAIEnabled);
+                }
+                else if (keyEvent.Keycode == Key.Key6 && _navDebugDraw != null)
+                {
+                    _navDebugDraw.ShowGraph = !_navDebugDraw.ShowGraph;
+                }
+                else if (keyEvent.Keycode == Key.Key7 && _navDebugDraw != null)
+                {
+                    _navDebugDraw.ShowPaths = !_navDebugDraw.ShowPaths;
                 }
 
                 if (scientistInd != -1)

@@ -1,47 +1,218 @@
 using Godot;
 using System;
+using System.Collections.Generic;
 
 public partial class AIController : ScientistController
 {
-	const double DECISION_COOLDOWN = 1.0f;
-	private double _decisionTimer = 0.0f;
+    // Movement tolerances.
+    private const float TAKEOFF_TOLERANCE = 12.0f;
+    private const float MAX_TAKEOFF_DRIFT = 50.0f;
+    private const float BRAKE_MARGIN = 8.0f;
+    private const float STUCK_SPEED = 30.0f;
+    private const float STUCK_MIN_TIME = 0.2f;
+    private const float STUCK_MAX_TIME = 0.5f;
 
-	private float _moveDir = 0.0f;
+    // Empty when on the target's platform, null when unreachable.
+    public List<NavLink> Path { get; private set; } = null;
+    public Vector2? Target => _intent.MoveTo;
 
-	private void MakeDecision()
-	{
-		Scientist scientist = TryGetScientist();
-		if (scientist == null) return;
+    private MiniGame _miniGame = null;
+    private AIIntent _intent = AIIntent.Idle;
+    private NavLink _activeLink = null;
 
-		int decision = GD.RandRange(0, 1);
-		if (decision == 0)
-		{
-			_moveDir = (float)GD.RandRange(-1.0, 1.0);
-		}
-		else
-		{
-			scientist.Jump(true, 0.0f);
-		}
-	}
+    // Getting unstuck.
+    private double _stuckTime = 0.0;
+    private double _stuckLimit = GD.RandRange(STUCK_MIN_TIME, STUCK_MAX_TIME);
+    private float? _unstickDirection = null;
 
-	public override void _Process(double delta)
-	{
-		base._Process(delta);
+    private readonly Wander _wander = new Wander();
 
-		Scientist scientist = TryGetScientist();
-		if (scientist == null) return;
+    public override void _PhysicsProcess(double delta)
+    {
+        base._PhysicsProcess(delta);
 
-		scientist.SetMovementDirection(_moveDir);
+        Scientist scientist = TryGetScientist();
+        if (scientist == null) return;
 
-		if (_decisionTimer > 0.0f)
-		{
-			_decisionTimer -= delta;
-			return;
-		}
-		else
-		{
-			MakeDecision();
-			_decisionTimer = DECISION_COOLDOWN;
-		}
-	}
+        _miniGame ??= FindMiniGame(scientist);
+        NavGraph graph = _miniGame?.NavGraph;
+        _intent = graph != null ? _wander.Tick(graph, scientist, delta) : AIIntent.Idle;
+
+        if (graph == null || _intent.MoveTo is not Vector2 target)
+        {
+            Path = null;
+            scientist.SetMovementDirection(0.0f);
+            SetDebugText("AI");
+            return;
+        }
+
+        if (scientist.IsOnFloor())
+        {
+            _unstickDirection = null;
+            UpdateGrounded(scientist, graph, target, delta);
+        }
+        else
+        {
+            _stuckTime = 0.0;
+            UpdateAirborne(scientist, delta);
+        }
+    }
+
+    private void UpdateGrounded(Scientist scientist, NavGraph graph, Vector2 target, double delta)
+    {
+        Vector2 position = scientist.GlobalPosition;
+        NavPlatform here = graph.FindPlatformBelow(position);
+
+        _activeLink = null;
+
+        Path = graph.FindPath(here, position.X, graph.FindPlatformBelow(target), target.X);
+
+        bool onTargetPlatform = here != null && Path != null && Path.Count == 0;
+
+        if (_intent.HasArrived(graph, position))
+        {
+            _stuckTime = 0.0;
+            scientist.SetMovementDirection(0.0f);
+            SetDebugText("idle");
+            return;
+        }
+
+        // Walk straight at the target.
+        if (here == null || Path == null || Path.Count == 0)
+        {
+            WalkTo(scientist, target.X, AIIntent.ARRIVE_DISTANCE);
+            SetDebugText(onTargetPlatform ? $"#{here.Id}" : "no path");
+            UnstickIfBlocked(scientist, delta);
+            return;
+        }
+
+        NavLink next = Path[0];
+        if (next.Kind == NavLinkKind.Jump)
+        {
+            bool atTakeoff = WalkTo(scientist, next.TakeoffX, TAKEOFF_TOLERANCE);
+            // Wait until we stop sliding away from the target.
+            float towardTarget = Mathf.Sign((next.To.Left + next.To.Right) / 2.0f - next.TakeoffX);
+            bool driftingAway = scientist.Velocity.X * towardTarget < -MAX_TAKEOFF_DRIFT;
+            if (atTakeoff && driftingAway == false)
+            {
+                scientist.Jump(true, delta);
+                _activeLink = next;
+            }
+        }
+        else
+        {
+            // Walk off the edge.
+            _activeLink = next;
+            scientist.SetMovementDirection(Mathf.Sign(next.LandingX - position.X));
+        }
+        SetDebugText($"#{next.From.Id}>#{next.To.Id} {(next.Kind == NavLinkKind.Jump ? "jump" : "drop")}");
+        UnstickIfBlocked(scientist, delta);
+    }
+
+    private void UnstickIfBlocked(Scientist scientist, double delta)
+    {
+        float direction = scientist.MovementDirection;
+        // Real velocity, not Velocity, so being pressed into a wall reads as stopped.
+        float speed = Mathf.Abs(scientist.GetRealVelocity().X);
+        if (direction == 0.0f || speed > STUCK_SPEED)
+        {
+            _stuckTime = 0.0;
+            return;
+        }
+
+        _stuckTime += delta;
+        if (_stuckTime < _stuckLimit) return;
+
+        _stuckTime = 0.0;
+        _stuckLimit = GD.RandRange(STUCK_MIN_TIME, STUCK_MAX_TIME);
+        _activeLink = null;
+        _unstickDirection = Mathf.Sign(direction);
+        scientist.Jump(true, delta);
+    }
+
+    private void UpdateAirborne(Scientist scientist, double delta)
+    {
+        if (_unstickDirection is float unstickDirection)
+        {
+            if (scientist.Velocity.Y < 0.0f)
+            {
+                scientist.Jump(false, delta);
+            }
+            scientist.SetMovementDirection(unstickDirection);
+            SetDebugText("unstick");
+            return;
+        }
+
+        NavLink link = _activeLink;
+        if (link == null)
+        {
+            // Knocked off. Replan on landing.
+            scientist.SetMovementDirection(0.0f);
+            SetDebugText("falling");
+            return;
+        }
+
+        Vector2 position = scientist.GlobalPosition;
+        Vector2 velocity = scientist.Velocity;
+
+        if (link.Kind == NavLinkKind.Jump && velocity.Y < 0.0f)
+        {
+            scientist.Jump(false, delta);
+        }
+
+        float aimX = link.LandingX;
+
+        // Aim outside the platform's edge until we're above it.
+        if (link.Kind == NavLinkKind.Jump && position.Y + NavGraph.SCIENTIST_RADIUS > link.To.Top)
+        {
+            float blockLeft = link.To.Left - NavGraph.SCIENTIST_RADIUS;
+            float blockRight = link.To.Right + NavGraph.SCIENTIST_RADIUS;
+            if (position.X < blockLeft)
+            {
+                aimX = blockLeft;
+            }
+            else if (position.X > blockRight)
+            {
+                aimX = blockRight;
+            }
+        }
+
+        scientist.SetMovementDirection(SteerToward(aimX - position.X, velocity.X, (float)Scientist.MAX_AIR_ACCELERATION, BRAKE_MARGIN));
+        SetDebugText($"#{link.From.Id}>#{link.To.Id} air");
+    }
+
+    // Returns true once within tolerance.
+    private bool WalkTo(Scientist scientist, float x, float tolerance)
+    {
+        float offset = x - scientist.GlobalPosition.X;
+        if (Mathf.Abs(offset) <= tolerance)
+        {
+            scientist.SetMovementDirection(0.0f);
+            return true;
+        }
+
+        scientist.SetMovementDirection(SteerToward(offset, scientist.Velocity.X, (float)Scientist.MAX_GROUND_DECELERATION, tolerance));
+        return false;
+    }
+
+    // Returns 0 when we need to brake to avoid overshooting.
+    private static float SteerToward(float offset, float velocityX, float deceleration, float margin)
+    {
+        float direction = Mathf.Sign(offset);
+        float speedToward = velocityX * direction;
+        float stoppingDistance = speedToward > 0.0f ? speedToward * speedToward / (2.0f * deceleration) : 0.0f;
+        return Mathf.Abs(offset) <= stoppingDistance + margin ? 0.0f : direction;
+    }
+
+    private static MiniGame FindMiniGame(Node node)
+    {
+        for (Node current = node; current != null; current = current.GetParent())
+        {
+            if (current is MiniGame miniGame)
+            {
+                return miniGame;
+            }
+        }
+        return null;
+    }
 }

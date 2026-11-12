@@ -11,14 +11,15 @@ public partial class Scientist : CharacterBody2D
     [Export]
 	public Sprite2D Sprite;
 
-	const double MAX_GROUND_SPEED = 750.0f;
-	const double MAX_GROUND_ACCELERATION = 10000.0f;
-	const double MAX_GROUND_DECELERATION = 20000.0f;
+	public const double MAX_GROUND_SPEED = 750.0f;
+	public const double MAX_GROUND_ACCELERATION = 10000.0f;
+	public const double MAX_GROUND_DECELERATION = 20000.0f;
 	const double MAX_GROUND_TURN_ACCELERATION = 50000.0f;
-	const double MAX_AIR_ACCELERATION = 8000.0f;
-	const double MAX_FALL_SPEED = 1500.0f;
-	const double GRAVITY = 5000.0f;
+	public const double MAX_AIR_ACCELERATION = 8000.0f;
+	public const double MAX_FALL_SPEED = 1500.0f;
+	public const double GRAVITY = 5000.0f;
 	const double KNOCKBACK_DURATION = 0.3f;
+
 	const double JUMP_FORCE = 1200.0f;
 
 	public EmployeeData HeldEmployeeData = null;
@@ -83,6 +84,8 @@ public partial class Scientist : CharacterBody2D
 
         Sprite.Texture = HeldEmployeeData.EmployeeTexture;
     }
+
+	public float MovementDirection => _movement_direction;
 
 	// Expects a direciton between (-1.0, 1.0).
 	public void SetMovementDirection(float dir)

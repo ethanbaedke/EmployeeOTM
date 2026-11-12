@@ -5,6 +5,14 @@ public partial class ScientistController : Node2D
 {
     [Export] private Label _debugLabel;
 
+    protected void SetDebugText(string text)
+    {
+        if (_debugLabel != null)
+        {
+            _debugLabel.Text = text;
+        }
+    }
+
     protected Scientist TryGetScientist()
     {
         Node parent = this.GetParent<Node>();
