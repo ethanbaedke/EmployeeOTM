@@ -35,7 +35,6 @@ project/assembly_name="EmployeeOTM"
 
 banks/import/fmod_studio_path="C:/Users/ethan/EOTM/FMOD Studio 2.03.15/FMOD Studio.exe"
 banks/import/fmod_project_path="C:/Users/ethan/EOTM/FMOD Project/FMOD Project.fspro"
-banks/initialization/load_banks=2
 
 [layer_names]
 

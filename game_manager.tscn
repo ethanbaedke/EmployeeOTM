@@ -3,13 +3,19 @@
 [ext_resource type="Script" uid="uid://l0n8vboqork1" path="res://GameManager.cs" id="1_70yv6"]
 [ext_resource type="PackedScene" uid="uid://cpgb6caqng3qx" path="res://match_manager.tscn" id="2_smx3j"]
 [ext_resource type="PackedScene" uid="uid://bl4pbjfr3wpaf" path="res://lobby.tscn" id="3_o2178"]
+[ext_resource type="FmodBank" uid="uid://bpyv3scgvhfuf" path="res://banks/Music.bank" id="4_shwjl"]
+[ext_resource type="FmodBank" uid="uid://y6qnrnh4w1q4" path="res://banks/Master.bank" id="5_eakoi"]
+[ext_resource type="FmodBank" uid="uid://ch4vahxfcdn64" path="res://banks/Master.strings.bank" id="6_8jrwq"]
 
 [node name="GameManager" type="Node2D" unique_id=2034387908 node_paths=PackedStringArray("_matchManager")]
 script = ExtResource("1_70yv6")
 _matchManager = NodePath("MatchManager")
 _lobbyScene = ExtResource("3_o2178")
-_gameMusicEvent = Vector4i(1129335406, 1115886165, -2068864067, 743816418)
 
 [node name="MatchManager" parent="." unique_id=1381656787 instance=ExtResource("2_smx3j")]
 
 [node name="FmodListener2D" type="FmodListener2D" parent="." unique_id=450886155]
+
+[node name="FmodBankLoader" type="FmodBankLoader" parent="." unique_id=1165818949]
+banks = Array[FmodBank]([ExtResource("4_shwjl"), ExtResource("5_eakoi"), ExtResource("6_8jrwq")])
+preload_sample_data = true
