@@ -8,11 +8,6 @@ public partial class UnhingedCoworker : MiniGame, INameProvider
     [Export]
     private Node2D[] _hrSpawnPoints;
 
-    private const double POINT_AWARD_TIME = 1.0;
-    private const double GAME_THEME_LOOPS = 4;
-
-    private double _pointAwardTimer = 0.0;
-    private double _themeLoopsRemaining = GAME_THEME_LOOPS;
     private PackedScene _funnyJokeScene = GD.Load<PackedScene>("res://entities/funny_joke.tscn");
     private PackedScene _hrScene = GD.Load<PackedScene>("res://entities/hr_joke_recipient.tscn");
     private HeldItemRecipient _hr = null;
@@ -64,18 +59,17 @@ public partial class UnhingedCoworker : MiniGame, INameProvider
         return "Unhinged Coworker";
     }
 
-    protected override void OnTheme()
+    protected override void OnGameMusicCallback(OtmAudioManager.MusicCallbackData data)
     {
-        _themeLoopsRemaining--;
-        if (_themeLoopsRemaining == 0)
-        {
-            OtmAudioManager.Instance.SetThemeRepeat(false);
-        }
-    }
+        base.OnGameMusicCallback(data);
 
-    protected override void OnThemeCountdown()
-    {
-        HandleFinalCountdown();
+        if (data.Type == FMOD.Studio.EVENT_CALLBACK_TYPE.TIMELINE_BEAT)
+        {
+            if (_miniGameStarted && data.BeatBeat == 1)
+            {
+                AwardPoints();
+            }
+        }
     }
 
     public override async Task StartMiniGame()
@@ -86,26 +80,12 @@ public partial class UnhingedCoworker : MiniGame, INameProvider
         SpawnHR();
     }
 
-    private async void HandleFinalCountdown()
-    {
-        for (int i = 4; i > 2; i--)
-        {
-            _countdownUI.ShowText(i, OtmAudioManager.Instance.GetBeatTime() * 2.0f);
-            await ToSignal(GetTree().CreateTimer(OtmAudioManager.Instance.GetBeatTime() * 2.0f), SceneTreeTimer.SignalName.Timeout);
-        }
-        for (int i = 4; i > 0; i--)
-        {
-            _countdownUI.ShowText(i, OtmAudioManager.Instance.GetBeatTime());
-            await ToSignal(GetTree().CreateTimer(OtmAudioManager.Instance.GetBeatTime()), SceneTreeTimer.SignalName.Timeout);
-        }
-        EndMiniGame();
-    }
-
     public override void _Ready()
     {
         base._Ready();
 
-        OtmAudioManager.Instance.SetThemeRepeat(true); 
+        OtmAudioManager.Instance.GameMusicInstance.setParameterByName("MiniGameIndex", 9.0f);
+
         _jokeTeller = _scientists[0];
         _jokeStoppers = new Scientist[]
         {
@@ -113,26 +93,5 @@ public partial class UnhingedCoworker : MiniGame, INameProvider
             _scientists[2],
             _scientists[3],
         };
-    }
-
-    public override void _Process(double delta)
-    {
-        base._Process(delta);
-
-        if (_miniGameStarted == false)
-        {
-            return;
-        }
-
-        // Tick point awarding.
-        if (_pointAwardTimer < POINT_AWARD_TIME)
-        {
-            _pointAwardTimer += delta;
-        }
-        else
-        {
-            _pointAwardTimer = 0.0;
-            AwardPoints();
-        }
     }
 }

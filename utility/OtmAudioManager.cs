@@ -3,6 +3,7 @@ using FMOD.Studio;
 using FmodGodot;
 using Godot;
 using System;
+using System.Collections.Concurrent;
 using System.Runtime.InteropServices;
 using System.Threading.Tasks;
 
@@ -10,96 +11,71 @@ public partial class OtmAudioManager : Node2D
 {
     public static OtmAudioManager Instance { get; private set; } = null;
 
+    public readonly record struct MusicCallbackData(
+        EVENT_CALLBACK_TYPE Type,
+        string MarkerName = null,
+        int MarkerPosition = 0,
+        int BeatBar = 0,
+        int BeatBeat = 0,
+        int BeatPosition = 0,
+        float BeatTempo = 0.0f,
+        int BeatTimeSignatureUpper = 0,
+        int BeatTimeSignatureLower = 0
+    );
+    private readonly ConcurrentQueue<MusicCallbackData> _musicCallbackQueue = new ConcurrentQueue<MusicCallbackData>();
+
+    public delegate void GameMusicCallbackDelegate(MusicCallbackData data);
+    public GameMusicCallbackDelegate GameMusicCallback;
+
     [Signal]
-    public delegate void BeatEventHandler();
-    [Signal]
-    public delegate void ThemeEventHandler();
-    [Signal]
-    public delegate void ThemeCountdownEventHandler();
-    [Signal]
-    public delegate void MatchCountdownEventHandler();
-    
-    [Signal]
-    private delegate void NewSoundPlayedEventHandler();
+    private delegate void MiniGameCountdownEndEventHandler();
 
     [Export(PropertyHint.None, "FmodEvent")]
-    private Vector4I _matchMusicEvent;
-
-    private EventInstance _matchMusicInstance;
+    private Vector4I _gameMusicEvent;
+    public EventInstance GameMusicInstance;
     // Must store callback delegate in field to prevent garbage collection.
-    private EVENT_CALLBACK _matchMusicInstanceCallback;
-    private bool _beatEventQueued = false;
-    private bool _themeEventQueued = false;
-    private bool _themeCountdownEventQueued = false;
-    private bool _matchCountdownEventQueued = false;
-    private bool _newSoundPlayedEventQueued = false;
+    private EVENT_CALLBACK _gameMusicInstanceCallback;
 
     public float GetBeatTime()
     {
         return (120.0f / 130.0f) * 0.5f;
     }
 
-    public void PlayLobbyMusic()
+    public async Task WaitForMiniGameCountdownFinished()
     {
-        _matchMusicInstance.start();
-        OTMLogger.Instance.Info(this, "Playing lobby theme.");
+        await ToSignal(this, SignalName.MiniGameCountdownEnd);
     }
 
-    public async Task StartMatchBuildup()
+    private RESULT OnGameMusicInstanceCallback(EVENT_CALLBACK_TYPE type, IntPtr evnt, IntPtr parameters)
     {
-        _matchMusicInstance.setParameterByName("LobbyLoopEnabled", 0.0f);
-        _matchMusicInstance.setParameterByName("MatchBuildupIndex", 0.0f);
-        await ToSignal(this, "NewSoundPlayed");
-        OTMLogger.Instance.Info(this, "Match buildup started.");
-    }
-
-    public async Task ProgressMatchBuildup()
-    {
-        float index;
-        _matchMusicInstance.getParameterByName("MatchBuildupIndex", out index);
-        _matchMusicInstance.setParameterByName("MatchBuildupIndex", Mathf.Max((((int)index) + 1) % 3, 1));
-        await ToSignal(this, "NewSoundPlayed");
-        OTMLogger.Instance.Info(this, "Match buildup progressed.");
-    }
-
-    public async Task StartMatchTheme()
-    {
-        await ProgressMatchBuildup();
-        await ToSignal(this, "Theme");
-        OTMLogger.Instance.Info(this, "Match theme started.");
-    }
-
-    public void SetThemeRepeat(bool shouldRepeat)
-    {
-        int repeatValue = shouldRepeat ? 1 : 0;
-        _matchMusicInstance.setParameterByName("ShouldRepeatTheme", repeatValue);
-    }
-
-    private RESULT OnMatchMusicInstanceCallback(EVENT_CALLBACK_TYPE type, IntPtr evnt, IntPtr parameters)
-    {
-        //OTMLogger.Instance.Trace(this, $"Type: {type.ToString()}, Event: {evnt.ToString()}, Parameters: {parameters.ToString()}");
+        // In the future, other callback types can be added to this switch statement.
+        // The MusicCallbackData record will need to be updated with any relevant values to other callback types.
         switch (type)
         {
-            case EVENT_CALLBACK_TYPE.TIMELINE_BEAT:
-                _beatEventQueued = true;
-                break;
             case EVENT_CALLBACK_TYPE.TIMELINE_MARKER:
-                string markerName = Marshal.PtrToStructure<TIMELINE_MARKER_PROPERTIES>(parameters).name;
-                if (markerName == "Theme")
-                {
-                    _themeEventQueued = true;
-                }
-                else if (markerName == "ThemeCountdown")
-                {
-                    _themeCountdownEventQueued = true;
-                }
-                else if (markerName == "Countdown")
-                {
-                    _matchCountdownEventQueued = true;
-                }
+                TIMELINE_MARKER_PROPERTIES markerProperties = Marshal.PtrToStructure<TIMELINE_MARKER_PROPERTIES>(parameters);
+                _musicCallbackQueue.Enqueue(new MusicCallbackData(
+                    type,
+                    MarkerName: markerProperties.name,
+                    MarkerPosition: markerProperties.position
+                ));
                 break;
-            case EVENT_CALLBACK_TYPE.SOUND_PLAYED:
-                _newSoundPlayedEventQueued = true;
+            case EVENT_CALLBACK_TYPE.TIMELINE_BEAT:
+                TIMELINE_BEAT_PROPERTIES beatProperties = Marshal.PtrToStructure<TIMELINE_BEAT_PROPERTIES>(parameters);
+                _musicCallbackQueue.Enqueue(new MusicCallbackData(
+                    type,
+                    BeatBar: beatProperties.bar,
+                    BeatBeat: beatProperties.beat,
+                    BeatPosition: beatProperties.position,
+                    BeatTempo: beatProperties.tempo,
+                    BeatTimeSignatureUpper: beatProperties.timesignatureupper,
+                    BeatTimeSignatureLower: beatProperties.timesignaturelower
+                ));
+                break;
+            default:
+                _musicCallbackQueue.Enqueue(new MusicCallbackData(
+                    type
+                ));
                 break;
         }
         return default;
@@ -110,44 +86,19 @@ public partial class OtmAudioManager : Node2D
         base._Ready();
         Instance = this;
 
-        FmodAudioServer.GetEventDescription(_matchMusicEvent).createInstance(out _matchMusicInstance);
-        _matchMusicInstanceCallback = OnMatchMusicInstanceCallback;
-        _matchMusicInstance.setCallback(_matchMusicInstanceCallback);
+        FmodAudioServer.GetEventDescription(_gameMusicEvent).createInstance(out GameMusicInstance);
+        _gameMusicInstanceCallback = OnGameMusicInstanceCallback;
+        GameMusicInstance.setCallback(_gameMusicInstanceCallback);
+        GameMusicInstance.start();
     }
 
     public override void _Process(double delta)
     {
         base._Process(delta);
 
-        if (_beatEventQueued)
+        while (_musicCallbackQueue.TryDequeue(out MusicCallbackData data))
         {
-            OTMLogger.Instance.Trace(this, "Firing beat event.");
-            _beatEventQueued = false;
-            EmitSignal("Beat");
-        }
-        if (_themeEventQueued)
-        {
-            OTMLogger.Instance.Trace(this, "Firing theme event.");
-            _themeEventQueued = false;
-            EmitSignal("Theme");
-        }
-        if (_themeCountdownEventQueued)
-        {
-            OTMLogger.Instance.Trace(this, "Firing theme countdown event.");
-            _themeCountdownEventQueued = false;
-            EmitSignal("ThemeCountdown");
-        }
-        if (_matchCountdownEventQueued)
-        {
-            OTMLogger.Instance.Trace(this, "Firing match countdown event.");
-            _matchCountdownEventQueued = false;
-            EmitSignal("MatchCountdown");
-        }
-        if (_newSoundPlayedEventQueued)
-        {
-            OTMLogger.Instance.Trace(this, "Firing new sound event.");
-            _newSoundPlayedEventQueued = false;
-            EmitSignal("NewSoundPlayed");
+            GameMusicCallback?.Invoke(data);
         }
     }
 }

@@ -38,7 +38,6 @@ public partial class Recess : MiniGame, INameProvider
 
     private void SpawnBall()
     {
-        OtmAudioManager.Instance.SetThemeRepeat(true);
         _ballsRemaining--;
         _ball = _ballScene.Instantiate<Volleyball>();
         _ball.ProcessMode = ProcessModeEnum.Disabled;
@@ -50,6 +49,8 @@ public partial class Recess : MiniGame, INameProvider
 
     private void ReleaseBall()
     {
+        OtmAudioManager.Instance.GameMusicInstance.setParameterByName("BallInPlay", 1.0f);
+
         _ball.ProcessMode = ProcessModeEnum.Inherit;
         int dir = GD.RandRange(0, 1);
         if (dir == 0)
@@ -62,6 +63,13 @@ public partial class Recess : MiniGame, INameProvider
 
     private void OnBallGroundHit()
     {
+        if (_ballState != BallState.IN_PLAY)
+        {
+            return;
+        }
+
+        OtmAudioManager.Instance.GameMusicInstance.setParameterByName("BallInPlay", 0.0f);
+
         if (_ball.GlobalPosition.X > 1920.0f * 0.5f)
         {
             _leftScore++;
@@ -71,7 +79,6 @@ public partial class Recess : MiniGame, INameProvider
             _rightScore++;
         }
 
-        OtmAudioManager.Instance.SetThemeRepeat(false);
         _unzoomTime = 1.0f;
         _ball.Disable();
         _ballState = BallState.WAITING_TO_CLEANUP;
@@ -132,6 +139,13 @@ public partial class Recess : MiniGame, INameProvider
 
     private async void HandleShowFinalScore()
     {
+        OtmAudioManager.Instance.GameMusicInstance.setParameterByName("RecessOver", 1.0f);
+
+        _scientists[0].HeldEmployeeData.MiniGamePointTracker = _leftScore;
+        _scientists[1].HeldEmployeeData.MiniGamePointTracker = _leftScore;
+        _scientists[2].HeldEmployeeData.MiniGamePointTracker = _rightScore;
+        _scientists[3].HeldEmployeeData.MiniGamePointTracker = _rightScore;
+
         _leftScoreLabel.Text = _leftScore.ToString();
         _rightScoreLabel.Text = _rightScore.ToString();
         _scoreParent.Visible = true;
@@ -159,13 +173,6 @@ public partial class Recess : MiniGame, INameProvider
         TextAreaOut();
         await ToSignal(GetTree().CreateTimer(OtmAudioManager.Instance.GetBeatTime() * 1.0f), SceneTreeTimer.SignalName.Timeout);
         _scoreParent.Visible = false;
-
-        _scientists[0].HeldEmployeeData.MiniGamePointTracker = _leftScore;
-        _scientists[1].HeldEmployeeData.MiniGamePointTracker = _leftScore;
-        _scientists[2].HeldEmployeeData.MiniGamePointTracker = _rightScore;
-        _scientists[3].HeldEmployeeData.MiniGamePointTracker = _rightScore;
-
-        EndMiniGame();
     }
 
     public static string OTMGetName()
@@ -173,32 +180,40 @@ public partial class Recess : MiniGame, INameProvider
         return "Recess";
     }
 
-    protected override void OnTheme()
+    protected override void OnGameMusicCallback(OtmAudioManager.MusicCallbackData data)
     {
-        if (_ballState == BallState.WAITING_TO_RELEASE)
+        base.OnGameMusicCallback(data);
+
+        if (data.Type == FMOD.Studio.EVENT_CALLBACK_TYPE.TIMELINE_MARKER)
         {
-            ReleaseBall();
+            if (data.MarkerName == "MiniGameStartCountdown")
+            {
+                SpawnBall();
+            }
+            else if (data.MarkerName == "MG_Recess" && _ballState == BallState.WAITING_TO_RELEASE)
+            {
+                ReleaseBall();
+            }
+            else if (data.MarkerName == "ScoreDisplay")
+            {
+                if (_ballsRemaining > 0)
+                {
+                    HandleScoreShowIntoBallSpawn();
+                }
+                else
+                {
+                    HandleShowFinalScore();
+                }
+            }
         }
     }
 
-    protected override void OnThemeCountdown()
+    public override void _Ready()
     {
-        if (_ballsRemaining > 0)
-        {
-            OtmAudioManager.Instance.SetThemeRepeat(true);
-            HandleScoreShowIntoBallSpawn();
-        }
-        else
-        {
-            HandleShowFinalScore();
-        }
-    }
+        base._Ready();
 
-    protected override void OnMatchCountdown()
-    {
-        base.OnMatchCountdown();
-
-        SpawnBall();
+        OtmAudioManager.Instance.GameMusicInstance.setParameterByName("MiniGameIndex", 8.0f);
+        OtmAudioManager.Instance.GameMusicInstance.setParameterByName("RecessOver", 0.0f);
     }
 
     public override void _PhysicsProcess(double delta)
@@ -210,7 +225,6 @@ public partial class Recess : MiniGame, INameProvider
             if (_ballState == BallState.IN_PLAY)
             {
                 float timeToHit = _ball.GetTimeToHitGround();
-                OTMLogger.Instance.Info(this, timeToHit.ToString());
                 if (timeToHit < 0.0f || timeToHit > 0.25)
                 {
                     _camera.SetZoomManual(_ball, 0.0f);

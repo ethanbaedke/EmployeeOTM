@@ -1,11 +1,16 @@
+using FMOD;
+using FMOD.Studio;
 using Godot;
 using Godot.Collections;
 using System;
+using System.Data.Common;
 using System.Linq;
 using System.Reflection;
 using System.Reflection.Metadata;
+using System.Runtime.InteropServices;
 using System.Text.RegularExpressions;
 using System.Threading.Tasks;
+using System.Xml.Serialization;
 
 public abstract partial class MiniGame : Node2D
 {
@@ -25,11 +30,15 @@ public abstract partial class MiniGame : Node2D
     [Signal]
     public delegate void GameFinishedEventHandler();
 
+    [Signal]
+    private delegate void StartCountdownFinishedEventHandler();
+
     protected bool _miniGameStarted = false;
 
     private PackedScene _playerControllerScene = GD.Load<PackedScene>("res://entities/scientist/PlayerController.tscn");
     private PackedScene _aiControllerScene = GD.Load<PackedScene>("res://entities/scientist/AIController.tscn");
     private PackedScene _pointAwardEffectScene = GD.Load<PackedScene>("res://entities/scientist/PointAwardEffect.tscn");
+    
     private bool _debugIsAIEnabled = true;
     private NavDebugDraw _navDebugDraw = null;
 
@@ -40,6 +49,8 @@ public abstract partial class MiniGame : Node2D
     public void InitializeMiniGame(MatchData matchData)
     {
         OTMLogger.Instance.Info(this, "Initializing mini-game.");
+
+        OtmAudioManager.Instance.GameMusicCallback += OnGameMusicCallback;
 
         if (matchData.Employees.Length != 4)
         {
@@ -79,7 +90,9 @@ public abstract partial class MiniGame : Node2D
 
     public virtual async Task StartMiniGame()
     {
-        await OtmAudioManager.Instance.StartMatchTheme();
+        OtmAudioManager.Instance.GameMusicInstance.setParameterByName("BuildupIndex", 3.0f);
+        await ToSignal(this, SignalName.StartCountdownFinished);
+        OtmAudioManager.Instance.GameMusicInstance.setParameterByName("MiniGameInProgress", 1.0f);
 
         OTMLogger.Instance.Info(this, "Starting mini-game.");
 
@@ -91,12 +104,6 @@ public abstract partial class MiniGame : Node2D
         _miniGameStarted = true;
     }
 
-    protected void EndMiniGame()
-    {
-        AwardMiniGamePoints();
-        EmitSignal("GameFinished");
-    }
-
     protected void DisplayPointAwardEffect(Scientist scientist, int numPoints)
     {
         PointAwardEffect effect = _pointAwardEffectScene.Instantiate<PointAwardEffect>();
@@ -105,22 +112,53 @@ public abstract partial class MiniGame : Node2D
         scientist.AddChild(effect);
     }
 
-    protected abstract void OnTheme();
-    protected abstract void OnThemeCountdown();
-
-    protected virtual void OnMatchCountdown()
+    protected async void DisplayCenterSceenTextOnBeats(string[] textQueue, int[] numBeatsQueue)
     {
-        HandleCountdown();
+        // Allowing generic arrays to be passed in so we can copy them and not remove items from input reference arrays.
+        Array<string> _centerScreenTextQueue = new Array<string>(textQueue);
+        Array<int> _centerScreenTextNumBeatsQueue = new Array<int>(numBeatsQueue);
+
+        while (_centerScreenTextQueue.Count > 0 && _centerScreenTextNumBeatsQueue.Count > 0)
+        {
+            string textToDisplay = _centerScreenTextQueue[0];
+            _centerScreenTextQueue.RemoveAt(0);
+            int numBeatsToDisplayFor = _centerScreenTextNumBeatsQueue[0];
+            _centerScreenTextNumBeatsQueue.RemoveAt(0);
+            _countdownUI.ShowText(textToDisplay, numBeatsToDisplayFor * OtmAudioManager.Instance.GetBeatTime());
+            await ToSignal(GetTree().CreateTimer(OtmAudioManager.Instance.GetBeatTime() * numBeatsToDisplayFor), SceneTreeTimer.SignalName.Timeout);
+        }
     }
 
-    private async void HandleCountdown()
+    protected virtual void OnGameMusicCallback(OtmAudioManager.MusicCallbackData data)
     {
-        for (int i = 3; i > 0; i--)
+        if (data.Type == EVENT_CALLBACK_TYPE.TIMELINE_MARKER)
         {
-            _countdownUI.ShowText(i, OtmAudioManager.Instance.GetBeatTime());
-            await ToSignal(GetTree().CreateTimer(OtmAudioManager.Instance.GetBeatTime()), SceneTreeTimer.SignalName.Timeout);
+            if (data.MarkerName == "MiniGameStartCountdown")
+            {
+                DisplayCenterSceenTextOnBeats(new string[] {"4", "3", "2", "1"}, new int[] {1, 1, 1, 1});
+            }
+            else if (data.MarkerName.StartsWith("MG_"))
+            {
+                EmitSignal(SignalName.StartCountdownFinished);
+            }
+            else if (data.MarkerName == "MiniGameEndCountdown")
+            {
+                DisplayCenterSceenTextOnBeats(new string[] {"4", "3", "4", "3", "2", "1"}, new int[] {2, 2, 1, 1, 1, 1});
+            }
+            else if (data.MarkerName == "MiniGameEnd")
+            {
+                EndMiniGame();
+            }
         }
-        _countdownUI.ShowText("GO!");
+    }
+
+    private void EndMiniGame()
+    {
+        OtmAudioManager.Instance.GameMusicCallback -= OnGameMusicCallback;
+        OtmAudioManager.Instance.GameMusicInstance.setParameterByName("MiniGameInProgress", 0.0f);
+        OtmAudioManager.Instance.GameMusicInstance.setParameterByName("BuildupIndex", 1.0f);
+        AwardMiniGamePoints();
+        EmitSignal("GameFinished");
     }
 
     // Called once when the mini-game is ending to set the amount of points each employee should get.
@@ -209,24 +247,6 @@ public abstract partial class MiniGame : Node2D
             }
         }
         _debugIsAIEnabled = enabled;
-    }
-
-    public override void _EnterTree()
-    {
-        base._EnterTree();
-
-        OtmAudioManager.Instance.Theme += OnTheme;
-        OtmAudioManager.Instance.ThemeCountdown += OnThemeCountdown;
-        OtmAudioManager.Instance.MatchCountdown += OnMatchCountdown;
-    }
-
-    public override void _ExitTree()
-    {
-        base._ExitTree();
-
-        OtmAudioManager.Instance.Theme -= OnTheme;
-        OtmAudioManager.Instance.ThemeCountdown -= OnThemeCountdown;
-        OtmAudioManager.Instance.MatchCountdown -= OnMatchCountdown;
     }
 
     public override void _Input(InputEvent @event)

@@ -97,15 +97,9 @@ public partial class OfficeFlood : MiniGame, INameProvider
             if (_remainingEmployees.Count == 1)
             {
                 _winConditionMet = true;
-                OtmAudioManager.Instance.SetThemeRepeat(false);
+                OtmAudioManager.Instance.GameMusicInstance.setParameterByName("FloodInProgress", 0.0f);
             }
         }
-    }
-
-    private async void CallEndGameAfterThemeCountdown()
-    {
-        await ToSignal(GetTree().CreateTimer(OtmAudioManager.Instance.GetBeatTime() * 8.0), SceneTreeTimer.SignalName.Timeout);
-        EndMiniGame();
     }
 
     public static string OTMGetName()
@@ -113,26 +107,20 @@ public partial class OfficeFlood : MiniGame, INameProvider
         return "Office Flood";
     }
 
-    protected override void OnTheme()
-    {
-    }
-
-    protected override void OnThemeCountdown()
-    {
-        CallEndGameAfterThemeCountdown();
-    }
-
     public override async Task StartMiniGame()
     {
         _remainingEmployees = new Array<Scientist>(_scientists);
-        OtmAudioManager.Instance.SetThemeRepeat(true);
 
         await base.StartMiniGame();
+
+        OtmAudioManager.Instance.GameMusicInstance.setParameterByName("FloodInProgress", 1.0f);
     }
 
     public override void _Ready()
     {
         base._Ready();
+
+        OtmAudioManager.Instance.GameMusicInstance.setParameterByName("MiniGameIndex", 7.0f);
 
         _waterArea.BodyEntered += OnWaterAreaBodyEntered;
         _previousRowPlatformXPositions = new Array<float>(_evenRowSpawnXs);

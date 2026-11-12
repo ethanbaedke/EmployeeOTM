@@ -22,10 +22,9 @@ _camera = NodePath("Camera2D")
 _tutorial = NodePath("CanvasLayer/MiniGameTutorial")
 _miniGameDescription = "Grab brewed coffee and deliver it to management."
 
-[node name="Camera2D" type="Camera2D" parent="." unique_id=211476339 node_paths=PackedStringArray("_initialParentGame")]
+[node name="Camera2D" type="Camera2D" parent="." unique_id=211476339]
 position = Vector2(960, 540)
 script = ExtResource("3_e5f7s")
-_initialParentGame = NodePath("..")
 
 [node name="Scientist" parent="." unique_id=1174776970 instance=ExtResource("4_s6oqh")]
 position = Vector2(62, 1011)

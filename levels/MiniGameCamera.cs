@@ -15,21 +15,22 @@ public partial class MiniGameCamera : Camera2D
     public void ZoomOnTarget(Node2D target, float time)
     {
         _target = target;
+
         Tween zoomTween = CreateTween();
-        zoomTween.SetIgnoreTimeScale();
-        zoomTween.TweenProperty(this, "zoom", new Vector2(2.0f, 2.0f), time)
-        .SetEase(Tween.EaseType.InOut)
-        .SetTrans(Tween.TransitionType.Quad);
+        zoomTween.SetIgnoreTimeScale(true);
+        zoomTween.TweenMethod(Callable.From<float>(percent => SetZoomManual(target, percent)), 0.0f, 1.0f, time);
     }
 
-    public void ResetCamera(float time)
+    public void ResetZoom(float time)
     {
-        _target = null;
+        if (_target == null)
+        {
+            return;
+        }
+
         Tween zoomTween = CreateTween();
-        zoomTween.SetIgnoreTimeScale();
-        zoomTween.TweenProperty(this, "zoom", new Vector2(1.0f, 1.0f), time)
-        .SetEase(Tween.EaseType.InOut)
-        .SetTrans(Tween.TransitionType.Quad);
+        zoomTween.SetIgnoreTimeScale(true);
+        zoomTween.TweenMethod(Callable.From<float>(percent => SetZoomManual(_target, percent)), 1.0f, 0.0f, time);
     }
 
     public void SetZoomManual(Node2D target, float percent)

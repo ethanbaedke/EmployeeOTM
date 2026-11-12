@@ -3,6 +3,10 @@ using System;
 using Godot.Collections;
 using System.Threading.Tasks;
 using System.Threading;
+using FMOD.Studio;
+using System.Text.RegularExpressions;
+using FMOD;
+using System.Runtime.InteropServices;
 
 public partial class Lobby : Node2D
 {
@@ -38,7 +42,7 @@ public partial class Lobby : Node2D
     private Array<int> _registeredDevices = new Array<int>();
     private bool _deliveringNewPlayer = false;
     private Array<Scientist> _playersReadyToStart = new Array<Scientist>();
-    private bool _elevatorGoingUp = false;
+    private bool _elevatorPreparing = false;
     private Scientist _colorChangingScientist = null;
     private bool _colorChangeInputEnabled = false;
     private Scientist _spriteChangingScientist = null;
@@ -46,8 +50,10 @@ public partial class Lobby : Node2D
 
     private async void TakeElevatorUp()
     {
-        OTMLogger.Instance.Info(this, "All players ready. Elevator going up.");
-        _elevatorGoingUp = true;
+        OTMLogger.Instance.Info(this, "All players ready. Preparing elevator.");
+        _elevatorPreparing = true;
+
+        OtmAudioManager.Instance.GameMusicInstance.setParameterByName("LobbyLoopEnabled", 0.0f);
 
         // Disable player movement.
         foreach (Scientist scientist in _playersReadyToStart)
@@ -63,23 +69,24 @@ public partial class Lobby : Node2D
         }
         await ToSignal(GetTree().CreateTimer(0.75f), SceneTreeTimer.SignalName.Timeout);
 
-        await OtmAudioManager.Instance.StartMatchBuildup();
+        // Take up.
         _elevatorAnimPlayer.Play("close_doors");
         await ToSignal(_elevatorAnimPlayer, "animation_finished");
         _elevatorAnimPlayer.Play("take_up");
         await ToSignal(_elevatorAnimPlayer, "animation_finished");
 
+        // Fire player data.
         Array<EmployeeData> data = new Array<EmployeeData>();
         foreach (Scientist scientist in _playersReadyToStart)
         {
             data.Add(scientist.HeldEmployeeData);
         }
-        EmitSignal("PlayersReady", data);
+        EmitSignal(SignalName.PlayersReady, data);
     }
 
     private async void DeliverNewPlayer(int inputDevice)
     {
-        if (_elevatorGoingUp)
+        if (_elevatorPreparing)
         {
             return;
         }
@@ -193,7 +200,7 @@ public partial class Lobby : Node2D
 
     private void OnStartAreaBodyEntered(Node2D body)
     {
-        if (_elevatorGoingUp)
+        if (_elevatorPreparing)
         {
             return;
         }
@@ -211,7 +218,7 @@ public partial class Lobby : Node2D
 
     private void OnStartAreaBodyExited(Node2D body)
     {
-        if (_elevatorGoingUp)
+        if (_elevatorPreparing)
         {
             return;
         }
@@ -277,8 +284,6 @@ public partial class Lobby : Node2D
 
         _colorChangeArea.BodyEntered += OnColorChangeAreaBodyEntered;
         _spriteChangeArea.BodyEntered += OnSpriteChangeAreaBodyEntered;
-
-        OtmAudioManager.Instance.PlayLobbyMusic();
     }
 
     private Dictionary<int, bool> _deviceJoypadAxisActive = new Dictionary<int, bool>();

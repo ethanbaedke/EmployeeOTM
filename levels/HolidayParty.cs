@@ -2,42 +2,104 @@ using Godot;
 using System;
 using System.Threading.Tasks;
 using Godot.Collections;
+using System.Text.RegularExpressions;
 
 public partial class HolidayParty : MiniGame, INameProvider
 {
     [Export]
     private HolidayPartyArrows[] _arrows = new HolidayPartyArrows[4];
 
-    private const double GAME_THEME_LOOPS = 4;
-
-    private double _themeLoopsRemaining = GAME_THEME_LOOPS;
-
-    private Array<HolidayPartyArrowData> GenerateArrows(bool finalStretch = false)
+    // Should be called 4-beats before the arrows should be hit.
+    // Round should be 0-3;
+    private Array<HolidayPartyArrowData> GenerateArrows(int round)
     {
         Array<HolidayPartyArrowData> data = new Array<HolidayPartyArrowData>();
         float targetTime = OtmAudioManager.Instance.GetBeatTime() * 4.0f;
-        if (finalStretch == false)
+        switch (round)
         {
-            for (int i = 0; i < 12; i++)
-            {
-                data.Add(new HolidayPartyArrowData(GetRandomArrowDirection(), targetTime));
-                targetTime += OtmAudioManager.Instance.GetBeatTime();
-            }
-        }
-        else
-        {
-            for (int i = 0; i < 4; i++)
-            {
-                data.Add(new HolidayPartyArrowData(GetRandomArrowDirection(), targetTime));
-                targetTime += OtmAudioManager.Instance.GetBeatTime();
-            }
-            for (int i = 0; i < 16; i++)
-            {
-                data.Add(new HolidayPartyArrowData(GetRandomArrowDirection(), targetTime));
-                targetTime += OtmAudioManager.Instance.GetBeatTime() * 0.5f;
-            }
+            case 0:
+                for (int i = 0; i < 16; i++)
+                {
+                    data.Add(new HolidayPartyArrowData(GetRandomArrowDirection(), targetTime));
+                    targetTime += OtmAudioManager.Instance.GetBeatTime();
+                }
+                break;
+            case 1:
+                for (int i = 0; i < 4; i++)
+                {
+                    for (int a = 0; a < 2; a++)
+                    {
+                        data.Add(new HolidayPartyArrowData(GetRandomArrowDirection(), targetTime));
+                        targetTime += OtmAudioManager.Instance.GetBeatTime();
+                    }
+                    for (int b = 0; b < 2; b++)
+                    {
+                        data.Add(new HolidayPartyArrowData(GetRandomArrowDirection(), targetTime));
+                        targetTime += OtmAudioManager.Instance.GetBeatTime() * 0.5f;
+                    }
+                    data.Add(new HolidayPartyArrowData(GetRandomArrowDirection(), targetTime));
+                    targetTime += OtmAudioManager.Instance.GetBeatTime();
+                }
+                break;
+            case 2:
+                for (int i = 0; i < 2; i++)
+                {
+                    for (int a = 0; a < 2; a++)
+                    {
+                        data.Add(new HolidayPartyArrowData(GetRandomArrowDirection(), targetTime));
+                        targetTime += OtmAudioManager.Instance.GetBeatTime();
+                    }
+                    for (int b = 0; b < 2; b++)
+                    {
+                        data.Add(new HolidayPartyArrowData(GetRandomArrowDirection(), targetTime));
+                        targetTime += OtmAudioManager.Instance.GetBeatTime() * 0.5f;
+                    }
+                    data.Add(new HolidayPartyArrowData(GetRandomArrowDirection(), targetTime));
+                    targetTime += OtmAudioManager.Instance.GetBeatTime();
+
+                    for (int a = 0; a < 2; a++)
+                    {
+                        data.Add(new HolidayPartyArrowData(GetRandomArrowDirection(), targetTime));
+                        targetTime += OtmAudioManager.Instance.GetBeatTime();
+                    }
+                    for (int b = 0; b < 4; b++)
+                    {
+                        data.Add(new HolidayPartyArrowData(GetRandomArrowDirection(), targetTime));
+                        targetTime += OtmAudioManager.Instance.GetBeatTime() * 0.5f;
+                    }
+                }
+                break;
+            case 3:
+                for (int i = 0; i < 2; i++)
+                {
+                    for (int a = 0; a < 2; a++)
+                    {
+                        data.Add(new HolidayPartyArrowData(GetRandomArrowDirection(), targetTime));
+                        targetTime += OtmAudioManager.Instance.GetBeatTime();
+                    }
+                    for (int b = 0; b < 4; b++)
+                    {
+                        data.Add(new HolidayPartyArrowData(GetRandomArrowDirection(), targetTime));
+                        targetTime += OtmAudioManager.Instance.GetBeatTime() * 0.5f;
+                    }
+                }
+                for (int f = 0; f < 16; f++)
+                {
+                    data.Add(new HolidayPartyArrowData(GetRandomArrowDirection(), targetTime));
+                    targetTime += OtmAudioManager.Instance.GetBeatTime() * 0.5f;
+                }
+                break;
         }
         return data;
+    }
+
+    private void InitializeArrowsForRound(int round)
+    {
+        Array<HolidayPartyArrowData> arrows = GenerateArrows(round);
+        foreach (HolidayPartyArrows arrowCollection in _arrows)
+        {
+            arrowCollection.AddArrows(arrows);
+        }
     }
 
     private Vector2I GetRandomArrowDirection()
@@ -62,44 +124,29 @@ public partial class HolidayParty : MiniGame, INameProvider
         return "Holiday Party";
     }
 
-    protected override void OnTheme()
+    protected override void OnGameMusicCallback(OtmAudioManager.MusicCallbackData data)
     {
-        _themeLoopsRemaining--;
-        Array<HolidayPartyArrowData> arrowData = null;
-        if (_themeLoopsRemaining == 0)
-        {
-            OtmAudioManager.Instance.SetThemeRepeat(false);
-            arrowData = GenerateArrows(true);
-        }
-        else
-        {
-            arrowData = GenerateArrows();
-        }
+        base.OnGameMusicCallback(data);
 
-        foreach (HolidayPartyArrows arrows in _arrows)
+        if (data.Type == FMOD.Studio.EVENT_CALLBACK_TYPE.TIMELINE_MARKER)
         {
-            arrows.AddArrows(arrowData);
+            if (data.MarkerName == "MiniGameStartCountdown")
+            {
+                InitializeArrowsForRound(0);
+            }
+            else if (data.MarkerName == "InitializeRound1")
+            {
+                InitializeArrowsForRound(1);
+            }
+            else if (data.MarkerName == "InitializeRound2")
+            {
+                InitializeArrowsForRound(2);
+            }
+            else if (data.MarkerName == "InitializeRound3")
+            {
+                InitializeArrowsForRound(3);
+            }
         }
-    }
-
-    protected override void OnThemeCountdown()
-    {
-        HandleFinalCountdown();
-    }
-
-    private async void HandleFinalCountdown()
-    {
-        for (int i = 4; i > 2; i--)
-        {
-            _countdownUI.ShowText(i, OtmAudioManager.Instance.GetBeatTime() * 2.0f);
-            await ToSignal(GetTree().CreateTimer(OtmAudioManager.Instance.GetBeatTime() * 2.0f), SceneTreeTimer.SignalName.Timeout);
-        }
-        for (int i = 4; i > 0; i--)
-        {
-            _countdownUI.ShowText(i, OtmAudioManager.Instance.GetBeatTime());
-            await ToSignal(GetTree().CreateTimer(OtmAudioManager.Instance.GetBeatTime()), SceneTreeTimer.SignalName.Timeout);
-        }
-        EndMiniGame();
     }
 
     public override async Task StartMiniGame()
@@ -118,7 +165,7 @@ public partial class HolidayParty : MiniGame, INameProvider
     {
         base._Ready();
 
-        OtmAudioManager.Instance.SetThemeRepeat(true);
+        OtmAudioManager.Instance.GameMusicInstance.setParameterByName("MiniGameIndex", 3.0f);
 
         for (int i = 0; i < _arrows.Length; i++)
         {
