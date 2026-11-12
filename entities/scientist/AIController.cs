@@ -54,7 +54,7 @@ public partial class AIController : ScientistController
         else
         {
             _stuckTime = 0.0;
-            UpdateAirborne(scientist);
+            UpdateAirborne(scientist, delta);
         }
     }
 
@@ -95,7 +95,7 @@ public partial class AIController : ScientistController
             bool driftingAway = scientist.Velocity.X * towardTarget < -MAX_TAKEOFF_DRIFT;
             if (atTakeoff && driftingAway == false)
             {
-                scientist.Jump(true);
+                scientist.Jump(true, delta);
                 _activeLink = next;
             }
         }
@@ -127,16 +127,16 @@ public partial class AIController : ScientistController
         _stuckLimit = GD.RandRange(STUCK_MIN_TIME, STUCK_MAX_TIME);
         _activeLink = null;
         _unstickDirection = Mathf.Sign(direction);
-        scientist.Jump(true);
+        scientist.Jump(true, delta);
     }
 
-    private void UpdateAirborne(Scientist scientist)
+    private void UpdateAirborne(Scientist scientist, double delta)
     {
         if (_unstickDirection is float unstickDirection)
         {
             if (scientist.Velocity.Y < 0.0f)
             {
-                scientist.Jump(false);
+                scientist.Jump(false, delta);
             }
             scientist.SetMovementDirection(unstickDirection);
             SetDebugText("unstick");
@@ -157,7 +157,7 @@ public partial class AIController : ScientistController
 
         if (link.Kind == NavLinkKind.Jump && velocity.Y < 0.0f)
         {
-            scientist.Jump(false);
+            scientist.Jump(false, delta);
         }
 
         float aimX = link.LandingX;
