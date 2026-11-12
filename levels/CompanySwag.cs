@@ -7,13 +7,6 @@ public partial class CompanySwag : MiniGame, INameProvider
     [Export]
     private SwagCannon _swagCannon;
 
-    private const double POINT_AWARD_TIME = 1.0;
-    private const int NUM_EMPLOYEE_FREES = 2;
-
-    private double _pointAwardTimer = 0.0;
-    private int _remainingEmployeeFrees = NUM_EMPLOYEE_FREES;
-    private bool _onFirstThemeLoop = true;
-    private bool _isInitialThemePlay = true;
     private PackedScene _swagHatScene = GD.Load<PackedScene>("res://entities/swag_hat.tscn");
     private PackedScene _swagShirtScene = GD.Load<PackedScene>("res://entities/swag_shirt.tscn");
     private Scientist _cannonEmployee = null;
@@ -66,7 +59,6 @@ public partial class CompanySwag : MiniGame, INameProvider
 
     private void FreeEmployees()
     {
-        _remainingEmployeeFrees--;
         foreach (Scientist scientist in _runningEmployees)
         {
             foreach (Node child in scientist.GetChildren())
@@ -79,63 +71,32 @@ public partial class CompanySwag : MiniGame, INameProvider
         }
     }
 
-    private async void HandleCountdown(bool endGame)
-    {
-        for (int i = 4; i > 2; i--)
-        {
-            _countdownUI.ShowText(i, OtmAudioManager.Instance.GetBeatTime() * 2.0f);
-            await ToSignal(GetTree().CreateTimer(OtmAudioManager.Instance.GetBeatTime() * 2.0f), SceneTreeTimer.SignalName.Timeout);
-        }
-        for (int i = 4; i > 0; i--)
-        {
-            _countdownUI.ShowText(i, OtmAudioManager.Instance.GetBeatTime());
-            await ToSignal(GetTree().CreateTimer(OtmAudioManager.Instance.GetBeatTime()), SceneTreeTimer.SignalName.Timeout);
-        }
-
-        if (endGame)
-        {
-            EndMiniGame();
-        }
-    }
-
     public static string OTMGetName()
     {
         return "Company Swag";
     }
 
-    protected override void OnTheme()
+    protected override void OnGameMusicCallback(OtmAudioManager.MusicCallbackData data)
     {
-        if (_isInitialThemePlay)
-        {
-            _isInitialThemePlay = false;
-        }
-        else if (_onFirstThemeLoop)
-        {
-            FreeEmployees();
-        }
+        base.OnGameMusicCallback(data);
 
-        if (_onFirstThemeLoop)
+        if (data.Type == FMOD.Studio.EVENT_CALLBACK_TYPE.TIMELINE_BEAT)
         {
-            OtmAudioManager.Instance.SetThemeRepeat(true);
-            _onFirstThemeLoop = false;
+            if (_miniGameStarted && data.BeatBeat == 1)
+            {
+                AwardPoints();
+            }
         }
-        else
+        else if (data.Type == FMOD.Studio.EVENT_CALLBACK_TYPE.TIMELINE_MARKER)
         {
-            OtmAudioManager.Instance.SetThemeRepeat(false);
-        }
-    }
-
-    protected override void OnThemeCountdown()
-    {
-        if (_remainingEmployeeFrees > 0)
-        {
-            HandleCountdown(false);
-            OtmAudioManager.Instance.SetThemeRepeat(true);
-            _onFirstThemeLoop = true;
-        }
-        else
-        {
-            HandleCountdown(true);
+            if (data.MarkerName == "CountdownToFree")
+            {
+                this.DisplayCenterSceenTextOnBeats(new string[] {"Free", "In", "4", "3", "2", "1"}, new int[] {2, 2, 1, 1, 1, 1});
+            }
+            else if (data.MarkerName == "FreeEmployees")
+            {
+                FreeEmployees();
+            }
         }
     }
 
@@ -175,30 +136,11 @@ public partial class CompanySwag : MiniGame, INameProvider
     {
         base._Ready();
 
+        OtmAudioManager.Instance.GameMusicInstance.setParameterByName("MiniGameIndex", 1.0f);
+
         _swagCannon.SwagBoxFired += (SwagBox swagBox) =>
         {
             swagBox.EmployeeHit += OnSwagBoxEmployeeHit;
         };
-    }
-
-    public override void _Process(double delta)
-    {
-        base._Process(delta);
-
-        if (_miniGameStarted == false)
-        {
-            return;
-        }
-
-        // Tick point awarding.
-        if (_pointAwardTimer < POINT_AWARD_TIME)
-        {
-            _pointAwardTimer += delta;
-        }
-        else
-        {
-            _pointAwardTimer = 0.0;
-            AwardPoints();
-        }
     }
 }

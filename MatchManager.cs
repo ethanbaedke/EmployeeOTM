@@ -4,6 +4,8 @@ using System.Threading.Tasks;
 using Godot.Collections;
 using FMOD.Studio;
 using FmodGodot;
+using FMOD;
+using System.Runtime.InteropServices;
 
 public partial class MatchManager : Node2D
 {
@@ -35,6 +37,7 @@ public partial class MatchManager : Node2D
         _starSheet.InitializeStarSheet(_matchData);
 
         // Play intro.
+        OtmAudioManager.Instance.GameMusicInstance.setParameterByName("BuildupIndex", 1.0f);
         _introduction.Visible = true;
         _matchFlowAnimPlayer.Play("black_panel_out");
         await _introduction.PlayIntroduction(_matchData);
@@ -43,7 +46,7 @@ public partial class MatchManager : Node2D
         while (true)
         {
             // Select a mini-game.
-            await OtmAudioManager.Instance.ProgressMatchBuildup();
+            OtmAudioManager.Instance.GameMusicInstance.setParameterByName("BuildupIndex", 2.0f);
             _matchFlowAnimPlayer.Play("mini_game_selection_in");
             await ToSignal(_matchFlowAnimPlayer, AnimationPlayer.SignalName.AnimationFinished);
             PackedScene miniGameScene = await _miniGameSelection.SelectMiniGame();

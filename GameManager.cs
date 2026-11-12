@@ -6,6 +6,8 @@ using System.Linq;
 using System.Text.RegularExpressions;
 using FmodGodot;
 using FMOD.Studio;
+using FMOD;
+using System.Runtime.InteropServices;
 
 public partial class GameManager : Node2D
 {

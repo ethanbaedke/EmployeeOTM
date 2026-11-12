@@ -28,17 +28,14 @@ public partial class MailRoom : MiniGame, INameProvider
     [Export]
     private CollisionShape2D _centerShape;
 
-    private const double GAME_THEME_LOOPS = 4;
-
-    private double _themeLoopsRemaining = GAME_THEME_LOOPS;
     private PackedScene _redPackageScene = GD.Load<PackedScene>("res://entities/red_package.tscn");
     private PackedScene _bluePackageScene = GD.Load<PackedScene>("res://entities/blue_package.tscn");
     private Array<RigidBody2D> _redPackages = new Array<RigidBody2D>();
     private Array<RigidBody2D> _bluePackages = new Array<RigidBody2D>();
     private PackedScene _greenCheckScene = GD.Load<PackedScene>("res://entities/green_check.tscn");
     private PackedScene _redXScene = GD.Load<PackedScene>("res://entities/red_x.tscn");
-    private float _packageDropTime = 0.0f;
-    private float _packageDropTimer = 0.0f;
+    private int _beatsPerPackageDrop = 4;
+    private int _beatsUntilNextPackageDrop = 0;
     private Scientist[] _leftTeam;
     private Scientist[] _rightTeam;
 
@@ -81,40 +78,41 @@ public partial class MailRoom : MiniGame, INameProvider
         return "Mail Room";
     }
 
-    protected override void OnTheme()
+    protected override void OnGameMusicCallback(OtmAudioManager.MusicCallbackData data)
     {
-        _packageDropTime = OtmAudioManager.Instance.GetBeatTime() * (float)_themeLoopsRemaining;
-        if (_themeLoopsRemaining == GAME_THEME_LOOPS / 2)
-        {
-            _centerShape.Disabled = true;
-            Tween fadeTween = CreateTween();
-            fadeTween.TweenProperty(_centerColumn, "modulate", Colors.Transparent, OtmAudioManager.Instance.GetBeatTime());
-        }
-        _themeLoopsRemaining--;
-        if (_themeLoopsRemaining == 0)
-        {
-            OtmAudioManager.Instance.SetThemeRepeat(false);
-        }
-    }
+        base.OnGameMusicCallback(data);
 
-    protected override void OnThemeCountdown()
-    {
-        HandleFinalCountdown();
-    }
+        if (data.Type == FMOD.Studio.EVENT_CALLBACK_TYPE.TIMELINE_BEAT)
+        {
+            if (_miniGameStarted == false)
+            {
+                return;
+            }
 
-    private async void HandleFinalCountdown()
-    {
-        for (int i = 4; i > 2; i--)
-        {
-            _countdownUI.ShowText(i, OtmAudioManager.Instance.GetBeatTime() * 2.0f);
-            await ToSignal(GetTree().CreateTimer(OtmAudioManager.Instance.GetBeatTime() * 2.0f), SceneTreeTimer.SignalName.Timeout);
+            if (_beatsUntilNextPackageDrop > 0)
+            {
+                _beatsUntilNextPackageDrop--;
+            }
+            else
+            {
+                _beatsUntilNextPackageDrop = _beatsPerPackageDrop;
+                DropPackage(_leftPackageSpawnPositions);
+                DropPackage(_rightPackageSpawnPositions);
+            }
         }
-        for (int i = 4; i > 0; i--)
+        if (data.Type == FMOD.Studio.EVENT_CALLBACK_TYPE.TIMELINE_MARKER)
         {
-            _countdownUI.ShowText(i, OtmAudioManager.Instance.GetBeatTime());
-            await ToSignal(GetTree().CreateTimer(OtmAudioManager.Instance.GetBeatTime()), SceneTreeTimer.SignalName.Timeout);
+            if (data.MarkerName == "IncreaseDropRate")
+            {
+                _beatsPerPackageDrop--;
+            }
+            else if (data.MarkerName == "WallDown")
+            {
+                _centerShape.Disabled = true;
+                Tween fadeTween = CreateTween();
+                fadeTween.TweenProperty(_centerColumn, "modulate", Colors.Transparent, OtmAudioManager.Instance.GetBeatTime());
+            }
         }
-        EndMiniGame();
     }
 
     private void OnLeftRedHopperBodyEntered(Node2D body)
@@ -217,8 +215,8 @@ public partial class MailRoom : MiniGame, INameProvider
     {
         base._Ready();
 
-        OtmAudioManager.Instance.SetThemeRepeat(true);
-        _packageDropTime = OtmAudioManager.Instance.GetBeatTime() * 4.0f;
+        OtmAudioManager.Instance.GameMusicInstance.setParameterByName("MiniGameIndex", 6.0f);
+        
         _leftTeam = new Scientist[]
         {
             _scientists[0],
@@ -233,26 +231,5 @@ public partial class MailRoom : MiniGame, INameProvider
         _leftBlueHopper.BodyEntered += OnLeftBlueHopperBodyEntered;
         _rightBlueHopper.BodyEntered += OnRightBlueHopperBodyEntered;
         _rightRedHopper.BodyEntered += OnRightRedHopperBodyEntered;
-    }
-
-    public override void _Process(double delta)
-    {
-        base._Process(delta);
-
-        if (_miniGameStarted == false)
-        {
-            return;
-        }
-
-        if (_packageDropTimer > 0.0f)
-        {
-            _packageDropTimer -= (float)delta;
-        }
-        else
-        {
-            _packageDropTimer = _packageDropTime;
-            DropPackage(_leftPackageSpawnPositions);
-            DropPackage(_rightPackageSpawnPositions);
-        }
     }
 }

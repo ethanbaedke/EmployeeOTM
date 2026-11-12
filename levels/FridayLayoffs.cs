@@ -16,7 +16,6 @@ public partial class FridayLayoffs : MiniGame, INameProvider
     private Scientist _pinkSlipHandoffTarget = null;
     private double _handoffCooldown = HAND_OFF_COOLDOWN;
     private bool _canHandoffPinkSlip = true;
-    private bool _onFirstThemeLoop = true;
 
     public override async Task StartMiniGame()
     {
@@ -27,31 +26,20 @@ public partial class FridayLayoffs : MiniGame, INameProvider
         GiveNewPinkSlipToScientist(initialPinkSlipHolder);
     }
 
-    protected override void OnTheme()
+    protected override void OnGameMusicCallback(OtmAudioManager.MusicCallbackData data)
     {
-        if (_onFirstThemeLoop)
-        {
-            OtmAudioManager.Instance.SetThemeRepeat(true);
-            _onFirstThemeLoop = false;
-        }
-        else
-        {
-            OtmAudioManager.Instance.SetThemeRepeat(false);
-            HandleCountdown();
-        }
-    }
+        base.OnGameMusicCallback(data);
 
-    protected override void OnThemeCountdown()
-    {
-        HandleFiring();
-    }
-
-    private async void HandleCountdown()
-    {
-        for (int i = 4; i > 0; i--)
+        if (data.Type == FMOD.Studio.EVENT_CALLBACK_TYPE.TIMELINE_MARKER)
         {
-            _countdownUI.ShowText(i, OtmAudioManager.Instance.GetBeatTime() * 2.0f);
-            await ToSignal(GetTree().CreateTimer(OtmAudioManager.Instance.GetBeatTime() * 2.0f), SceneTreeTimer.SignalName.Timeout);
+            if (data.MarkerName == "CountdownToLayoff")
+            {
+                this.DisplayCenterSceenTextOnBeats(new string[] {"Layoff", "In", "4", "3", "2", "1"}, new int[] {2, 2, 1, 1, 1, 1});
+            }
+            else if (data.MarkerName == "Layoff")
+            {
+                HandleFiring();
+            }
         }
     }
 
@@ -78,29 +66,26 @@ public partial class FridayLayoffs : MiniGame, INameProvider
         AwardPoints();
         if (_remainingScientists.Count > 1)
         {
-            OtmAudioManager.Instance.SetThemeRepeat(true);
-            _onFirstThemeLoop = true;
-
             // Zoom in on next holder.
+            _camera.ResetZoom(OtmAudioManager.Instance.GetBeatTime());
+            await ToSignal(GetTree().CreateTimer(OtmAudioManager.Instance.GetBeatTime(), ignoreTimeScale:true), SceneTreeTimer.SignalName.Timeout);
             Scientist nextHolder = GetNextPinkSlipScientist();
             _camera.ZoomOnTarget(nextHolder, OtmAudioManager.Instance.GetBeatTime());
-            await ToSignal(GetTree().CreateTimer(OtmAudioManager.Instance.GetBeatTime() * 2.0f, ignoreTimeScale:true), SceneTreeTimer.SignalName.Timeout);
+            await ToSignal(GetTree().CreateTimer(OtmAudioManager.Instance.GetBeatTime(), ignoreTimeScale:true), SceneTreeTimer.SignalName.Timeout);
 
             // Give new holder pink slip.
             GiveNewPinkSlipToScientist(nextHolder);
             await ToSignal(GetTree().CreateTimer(OtmAudioManager.Instance.GetBeatTime() * 2.0f, ignoreTimeScale:true), SceneTreeTimer.SignalName.Timeout);
 
-            _camera.ResetCamera(OtmAudioManager.Instance.GetBeatTime());
+            _camera.ResetZoom(OtmAudioManager.Instance.GetBeatTime());
             Engine.TimeScale = 1.0f;
             _canHandoffPinkSlip = true;
         }
         else
         {
-            OtmAudioManager.Instance.SetThemeRepeat(false);
-            _camera.ResetCamera(OtmAudioManager.Instance.GetBeatTime());
+            _camera.ResetZoom(OtmAudioManager.Instance.GetBeatTime());
             await ToSignal(GetTree().CreateTimer(OtmAudioManager.Instance.GetBeatTime() * 4.0f, ignoreTimeScale:true), SceneTreeTimer.SignalName.Timeout);
             Engine.TimeScale = 1.0f;
-            EndMiniGame();
         }
     }
 
@@ -185,6 +170,8 @@ public partial class FridayLayoffs : MiniGame, INameProvider
     public override void _Ready()
     {
         base._Ready();
+
+        OtmAudioManager.Instance.GameMusicInstance.setParameterByName("MiniGameIndex", 2.0f);
 
         _remainingScientists = new Array<Scientist>(_scientists);
         // TODO: Listen for collisions between scientists.

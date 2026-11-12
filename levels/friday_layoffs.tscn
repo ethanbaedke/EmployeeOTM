@@ -8,6 +8,19 @@
 [ext_resource type="PackedScene" uid="uid://bpulko32timg0" path="res://entities/dirt_platform.tscn" id="5_kwhk1"]
 [ext_resource type="PackedScene" uid="uid://km4o30h8u3rt" path="res://ui/center_screen_countdown.tscn" id="7_k6j0r"]
 
+[sub_resource type="Curve" id="Curve_ynfla"]
+_data = [Vector2(0, 1), 0.0, -2.0, 0, 0, Vector2(1, 0.10344827), 0.0, 0.0, 0, 0]
+point_count = 2
+
+[sub_resource type="Curve" id="Curve_i2gh2"]
+_limits = [1.0, 2.0, 0.0, 1.0]
+_data = [Vector2(0, 1), 0.0, 0.0, 0, 0, Vector2(1, 2), 0.0, 0.0, 0, 0]
+point_count = 2
+
+[sub_resource type="Curve" id="Curve_r3f8q"]
+_data = [Vector2(0, 0), 0.0, 0.0, 0, 0, Vector2(1, 1), 0.0, 0.0, 0, 0]
+point_count = 2
+
 [sub_resource type="RectangleShape2D" id="RectangleShape2D_o3a2j"]
 size = Vector2(100, 1080)
 
@@ -20,10 +33,12 @@ _tutorial = NodePath("CanvasLayer/MiniGameTutorial")
 _miniGameDescription = "Don't end up with the pink slip when time runs out!"
 _tutorialVideo = ExtResource("2_mb2uj")
 
-[node name="Camera2D" type="Camera2D" parent="." unique_id=211476339 node_paths=PackedStringArray("_initialParentGame")]
+[node name="Camera2D" type="Camera2D" parent="." unique_id=211476339]
 position = Vector2(960, 540)
 script = ExtResource("3_xemdx")
-_initialParentGame = NodePath("..")
+_timeCurve = SubResource("Curve_ynfla")
+_zoomCurve = SubResource("Curve_i2gh2")
+_positionPercentCurve = SubResource("Curve_r3f8q")
 
 [node name="Scientist" parent="." unique_id=1174776970 instance=ExtResource("2_cdpv0")]
 position = Vector2(102, 1011)

@@ -19,11 +19,12 @@ public partial class CenterScreenCountdown : Control
         _effectLength = time;
     }
 
-    public void ShowText(string text)
+    public void ShowText(string text, float time)
     {
         _countdownLabel.Text = text;
         // Resetting percent is how we trigger the effect.
         _effectPercent = 0.0f;
+        _effectLength = time;
     }
 
     public override void _Process(double delta)
